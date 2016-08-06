@@ -1,0 +1,322 @@
+class:: SID6581f
+summary:: (faulty) SID Sound Chip Simulator
+categories:: UGens>Emulators
+related:: Classes/Beep
+
+DESCRIPTION::
+Emulation of the sound generation hardware of the famous SID chip. Original code by Peter Trauner and Michael Schwend among others.
+http://en.wikipedia.org/wiki/MOS_Technology_SID
+
+NOTE::
+Something is wrong with my port so this will sound different from a real SID chip.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::freqLo0
+table::
+## bits 7-0 || frequency low (8bits 0-255)
+::
+
+argument::freqHi0
+table::
+## bits 7-0 || frequency high (8bits 0-255)
+::
+
+argument::pwLo0
+table::
+## bits 7-0 || pulse width low (8bits 0-255)
+::
+
+argument::pwHi0
+table::
+## bits 3-0 || pulse width low (4bits 0-15)
+::
+
+argument::ctrl0
+table::
+## bit 7 || noise
+## bit 6 || square
+## bit 5 || saw
+## bit 4 || triangle
+## bit 3 || test
+## bit 2 || ring modulation
+## bit 1 || sync
+## bit 0 || gate
+::
+
+argument::atkDcy0
+table::
+## bits 7-4 || attack
+## bits 3-0 || decay (4bits 0-15)
+::
+
+argument::susRel0
+table::
+## bits 7-4 || sustain
+## bits 3-0 || release (4bits 0-15)
+::
+
+argument::freqLo1
+table::
+## bits 7-0 || frequency low (8bits 0-255)
+::
+
+argument::freqHi1
+table::
+## bits 7-0 || frequency high (8bits 0-255)
+::
+
+argument::pwLo1
+table::
+## bits 7-0 || pulse width low (8bits 0-255)
+::
+
+argument::pwHi1
+table::
+## bits 3-0 || pulse width low (4bits 0-15)
+::
+
+argument::ctrl1
+table::
+## bit 7 || noise
+## bit 6 || square
+## bit 5 || saw
+## bit 4 || triangle
+## bit 3 || test
+## bit 2 || ring modulation
+## bit 1 || sync
+## bit 0 || gate
+::
+
+argument::atkDcy1
+table::
+## bits 7-4 || attack
+## bits 3-0 || decay (4bits 0-15)
+::
+
+argument::susRel1
+table::
+## bits 7-4 || sustain
+## bits 3-0 || release (4bits 0-15)
+::
+
+argument::freqLo2
+table::
+## bits 7-0 || frequency low (8bits 0-255)
+::
+
+argument::freqHi2
+table::
+## bits 7-0 || frequency high (8bits 0-255)
+::
+
+argument::pwLo2
+table::
+## bits 7-0 || pulse width low (8bits 0-255)
+::
+
+argument::pwHi2
+table::
+## bits 3-0 || pulse width low (4bits 0-15)
+::
+
+argument::ctrl2
+table::
+## bit 7 || noise
+## bit 6 || square
+## bit 5 || saw
+## bit 4 || triangle
+## bit 3 || test
+## bit 2 || ring modulation
+## bit 1 || sync
+## bit 0 || gate
+::
+
+argument::atkDcy2
+table::
+## bits 7-4 || attack
+## bits 3-0 || decay (4bits 0-15)
+::
+
+argument::susRel2
+table::
+## bits 7-4 || sustain
+## bits 3-0 || release (4bits 0-15)
+::
+
+argument::fcLo
+table::
+## bits 2-0 || filter low (3bits 0-7)
+::
+
+argument::fcHi
+table::
+## bits 7-0 || filter high (8bits 0-255)
+::
+
+argument::resFilt
+table::
+## bits 7-4 || filter resonanse
+## bit 3 || filter enable for external input strong::(not used)::
+## bits 2-0 || filter enable for voices 1-3 (3bits 0-7)
+::
+
+argument::modeVol
+table::
+## bit 7 || voice 3 off
+## bit 6 || highpass
+## bit 5 || bandpass
+## bit 4 || lowpass
+## bits 3-0 || volume (4bits 0-15)
+::
+
+argument::rate
+Floating-point playback rate. Only set when the synth is created (like .ir).
+
+EXAMPLES::
+
+code::
+s.boot
+
+{Pan2.ar(SID6581f.ar(240, 33, 0, 0, LFPulse.kr(3)+128, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 104, 1, 79, 1))}.play
+
+{Pan2.ar(SID6581f.ar(0, 100, 0, 0, LFPulse.kr(0.1)+18, 219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 15))}.play
+
+{Pan2.ar(SID6581f.ar(0, 130, 0, 0, LFPulse.kr(0.4)+20, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 15, 1))}.play
+
+{Pan2.ar(SID6581f.ar(LFNoise0.kr(10).abs*255, LFNoise0.kr(10).abs*255, 0, 1, 65, 0, 240, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 16, 0, 0, 0, 0, 0, 143, 1))}.play
+
+//--lowpass filtered
+{Pan2.ar(SID6581f.ar(LFNoise0.kr(10).abs*255, LFNoise0.kr(10).abs*255, 0, 1, 65, 0, 240, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 16, 0, 0, 0, MouseX.kr(0, 255), 2r11110001, 2r10011111, 1))}.play
+
+//--all 3 voices
+({Pan2.ar(SID6581f.ar(
+	0, LFNoise0.kr(4).abs*255, 0, 0, 2r10000001, 0, 255,
+	LFSaw.kr(1, 0, 127.5, 127.5), LFNoise0.kr(0.02, 3, 6), 50, 50, 2r01000001, 0, 255,
+	0, (LFNoise0.kr(0.25).abs*255).round(25), 64, LFSaw.kr(0.1).abs*255, 2r00010001, 0, 255,
+	0, 0, 2r00000000, 2r00000111, 1
+))}.play;
+)
+
+
+(
+SynthDef(\sid6581f, {|out= 0, gate= 1, freqLo= 0, freqHi= 0, pwLo= 0, pwHi= 0, ctrl= 65, atkDcy= 5, susRel= 5, fcLo= 0, fcHi= 0, res= 0, mode= 15, rate= 1, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= SID6581f.ar(
+		freqLo, freqHi, pwLo, pwHi,
+		ctrl, atkDcy, susRel,
+		0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0,
+		fcLo, fcHi,
+		res, mode, rate
+	);
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, 0.1,
+	\amp, 0.8,
+	\freqLo, 80,
+	\freqHi, Pstutter(64, Pseq([8, 4], inf)),
+	\pwHi, Pseq([10, 3, Pwrand([2, 1], [0.6, 0.4])], inf),
+	\rate, Pseq([Pn(1, 8), Pn(2, 8), Pn(1, 8), Pn(Pwrand([1.1, 1.5], [0.8, 0.2]), 8)], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, 0.125,
+	\amp, 0.8,
+	\freqHi, Pseq([Pseq([3, 1], 16), Pn(2, 32), Pn(10, 14), 4, 3], inf).midicps,
+	\pwHi, Pseq([Pn(8, 32), Pwhite(0, 15, 12)], inf)+Pseq([Pseries(0, 1, 128)], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, Pseq([0.1, 0.15], inf),
+	\amp, Pseq([1, 0.5, 0.25], inf),
+	\ctrl, 2r10000001,
+	\freqHi, Pseq([0, 24, 24, Pwrand([200, 230], [0.6, 0.4])], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, Pseq([0.03, 0.02], inf),
+	\ctrl, Pseq([2r00110101, 2r00010101], inf),
+	\amp, Pseq([1, 0.5], inf),
+	\pwHi, Pn(Pseries(0, 0.01, 25400), inf),
+	\atkDcy, Pn(Pseries(0, 0.005, 51000), inf),
+	\susRel, Pn(Pseries(0, 0.004, 63750), inf),
+	\freqLo, 32,
+	\freqHi, Pseq([Pseq([3, 30, 3, 3, 10, 3], 4), Pseq([1, 20, 3, 4], 3), Pseq([10, 10, 10, 30], 2)], inf)*Pseq([Pn(1, 256), Pn(0.75, 128), Pn(1, 256), Pn(0.5, 128)], inf).midicps
+).play
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, Pseq([0.1, 0.1, 0.1, 0.18], inf),
+	\amp, Pseq([1.2, 1], inf),
+	\pwHi, 150,
+	\atkDcy, 2r00100010,
+	\susRel, 2r10000010,
+	\freqHi, Pseq([Pseries(6, [1, 6], 32), Pseries(6, [4, 6], 16)], inf),
+	\ctrl, Pseq([Pseq([2r01010101, 2r00010001], 16), Pn(2r01010101, 32)], inf),
+	\fcHi, Pseq([Pseries(0, 1, 255)], inf),
+	\res, 2r11110001,
+	\mode, 2r11001111
+).play
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, 0.1,
+	\amp, 2,
+	\atkDcy, 7,
+	\susRel, 80,
+	\pwHi, Pseq([Pseries(10, 14, 16), Pseries(10, 5, 16),], inf),
+	\freqHi, Pseq([Pseries(9, 31, 16), Pseries(26, 31, 16)], inf)*Pseq([Pn(1, 128), Pn(12, 128)], inf).midicps*Pstutter(128, Pseq([0.5, 0.6, 1], inf)),
+	\ctrl, 2r00010001,
+	\legato, 1.5
+).play
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, Pseq([0.09, 0.1, 0.11], inf)*Pseq([Pn(1, 64), Pn(0.75, 8)], inf)*Pn(Pseries(0.75, -0.0002, 2000), inf),
+	\amp, 1,
+	\atkDcy, 10,
+	\susRel, 3,
+	\ctrl, Pstutter(128, Pseq([2r01010001, 2r00010001], inf)),
+	\freqHi, Pseq([Pn(3, 64), Pn([2, 8], 32), Pn(1, 16), Pn([1, 7], 9)], inf).midicps,
+	\legato, 1.1,
+	\rate, Pseq([Pseries(1, 1, 11)], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \sid6581f,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.2,
+	\freqHi, Pstutter(64, Pseq([6, 7, 8, 4], inf)),
+	\pwHi, Pseq([10, 3, Pwrand([2, 1], [0.6, 0.4])], inf),
+	\rate, Pseq([Pn(1, 8), Pn(2, 8), Pn(1, 8), Pn(Pwrand([1.1, 1.5], [0.8, 0.2]), 8)], inf)
+).play
+)
+::

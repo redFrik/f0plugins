@@ -1,0 +1,54 @@
+class:: Slub
+summary:: generate cpu spikes
+categories:: UGens>User Interaction
+
+DESCRIPTION::
+Take control over those lovely CPU hickups and add some excitement to your live set.
+But careful with the amount! Need to be trimmed for your particular CPU!
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+For audio dropouts.
+
+argument::trig
+Trigger input.
+
+argument::spike
+Amount (7.0 pushes a spike with avg.cpu ~4600% on a TiBook 1Ghz).
+
+METHOD:: bang
+To mess up sclang's timing.
+
+EXAMPLES::
+
+code::
+//scserver example
+s.boot;
+
+(	//mouse in bottom right corner will cause a severe cpu spike
+{
+	var trig;
+	trig= MouseX.kr>0.99;
+	Slub.kr(trig, MouseY.kr(2, 8));	//increase max value here a little if no effect
+	SinOsc.ar([400, 404], 0, 0.1);
+}.play
+)
+
+
+
+//sclang example
+(
+p= Pbind(\dur, 0.25, \degree, Pshuf((0..10), inf)).play;
+x= Slub.new;
+)
+
+x.bang(3)
+x.bang(4)
+x.bang(4.7)
+x.bang(4.8)
+x.bang(4.9)
+x.bang(5.0)
+x.bang(5.5)
+p.stop;
+::

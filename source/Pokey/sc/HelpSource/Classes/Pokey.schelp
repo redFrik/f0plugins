@@ -1,0 +1,191 @@
+class:: Pokey
+summary:: POKEY Chip Sound Simulator
+categories:: UGens>Emulators
+related:: Classes/PokeySquare
+
+DESCRIPTION::
+Emulation of the sound generation hardware of the POKEY chip by Ron Fries.
+Code adapted from v2.3 of POKEYSND: POKEY Chip Sound Emulation Library (Atari 8-bit), available at ftp://members.aol.com/atari800xl/pokey23.zip
+See also link::Classes/PokeySquare:: for a simpler interface.
+
+NOTE::
+Internal clipping is not activated. when playing all 4 voices at maximum volume, the signal will peak above 1.0.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::audf1
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc1
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume mask (4bits 0-15)
+::
+
+argument::audf2
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc2
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume mask (4bits 0-15)
+::
+
+argument::audf3
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc3
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume mask (4bits 0-15)
+::
+
+argument::audf4
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc4
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume mask (4bits 0-15)
+::
+
+argument::audctl
+table::
+## bit 7 || poly9 or poly17
+## bit 6 || 1.78979mhz or ch1
+## bit 5 || 1.78979mhz or ch3
+## bit 4 || clocks ch1 with ch2
+## bit 3 || clocks ch3 with ch4
+## bit 2 || ( )
+## bit 1 || ( )
+## bit 0 || 15.6999khz or 63.9210khz
+::
+
+EXAMPLES::
+
+code::
+s.boot;
+
+{Pokey.ar(Line.kr(0, 255, 5), 2r00001111)}.play
+{Pokey.ar(Line.kr(0, 255, 5), 2r00101111)}.play	//one bit differs in the voice control register
+{Pokey.ar(Line.kr(0, 255, 5), 2r10101111)}.play	//one bit differs in the voice control register
+{Pokey.ar(Line.kr(0, 255, 5), 2r10101111, audctl: 2r00000001)}.play	//general control register
+
+//--two voices
+{Pokey.ar(MouseX.kr(0, 255), 2r10101010, MouseY.kr(0, 255), 2r10101010, audctl: 2r00000001)}.play
+
+//--all four voices
+({Pokey.ar(
+	MouseX.kr(0, 255), 2r11000111,
+	MouseY.kr(0, 255), 2r11100111,
+	SinOsc.kr(0.4, 0, 127.5, 127.5), 2r11000111,
+	SinOsc.kr(0.5, 0, 127.5, 127.5), 2r01000111,
+	2r10000000	//general ctl
+).dup}.play)
+
+
+
+(
+SynthDef(\pokey, {|out= 0, gate= 1, f1= 0, c1= 0, f2= 0, c2= 0, f3= 0, c3= 0, f4= 0, c4= 0, ctl= 0, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= Pokey.ar(f1, c1, f2, c2, f3, c3, f4, c4, ctl);
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \pokey,
+	\dur, Pseq([Pn(0.1, 10), Pn(0.05, 12)], inf),
+	\amp, 0.8,
+	\ctl, 2r00000001,
+	\f1, Pseq([Pseries(0, 10, 20), Pgeom(200, 0.94, 20)], inf),
+	\c1, 2r10101111
+).play
+)
+
+(
+Pbind(
+	\instrument, \pokey,
+	\dur, Pseq([0.1, 0.08], inf),
+	\amp, 0.8,
+	\ctl, 2r00000000,
+	\f1, Pbrown(0, 10, 8)*Pseq([0, 1], inf),
+	\c1, Pseq([2r01001111, 2r10001111, 2r10000000, 2r01000111], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \pokey,
+	\dur, 0.125,
+	\amp, 0.8,
+	\ctl, Pseq([2r00010001, 2r00000001, 2r00000000], inf),
+	\f1, Pseq([Pn(88, 8), Pseq([120, 130, 140, 50], 4)], inf)+Pseq([Pn(0, 72), Pn(-10, 72)], inf),
+	\c1, 2r10101111,
+	\f2, Pseq([0, 255, 255, 0, 25, 255, 0, 25, Pn(13, 11)], inf),
+	\c2, Pseq([2r10101111, 2r00100111], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \pokey,
+	\dur, 0.1,
+	\amp, 0.8,
+	\ctl, Pseq([2r01100000, (2r01100000).setBit(0), (2r01100000).setBit(4)], inf),
+	\f1, Pseq([30, 80, 70, 30, 80, 70, 30], inf),
+	\c1, Pseq([2r11101111], inf),
+	\f2, Pseq([8, 9, 10, 8], inf)*Pseq([Pn(1, 64), Pn(3, 32)], inf),
+	\c2, 2r11101111
+).play
+)
+
+(
+Pbind(
+	\instrument, \pokey,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.15,
+	\ctl, 2r00000001,
+	\f1, Pseq([5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 140, 6, 5, 6], inf),
+	\c1, Pseq([2r10000000], inf)|Pseq([15, 15, 0, 0, 15, 0, 15, 0, 8, 8, 0, 0, 8, 0, 0, 15+64], inf),
+	\f2, Pseq([Pn(0, 32), Pn(255, 64), Pseq([0, 255, 255, 0, 25, 255, 0, 25, Pseries(8, -1, 8)], inf)]),
+	\c2, Pseq([Pseq([2r10101111, 2r00101000], inf)], inf),
+	\f3, Pseq([Pn(32, 15), Prand([33, 35])], inf),
+	\c3, Pseq([Pn(0, 128), Pn(2r01101000, 64), Pn(2r11101100, 64)], inf)
+).play
+)
+
+(
+Ppar([
+	Pbind(\instrument, \pokey, \dur, 0.16, \f1, 10, \c1, 2r11101111),
+	Pbind(\instrument, \pokey, \dur, 0.181, \f2, 10, \c2, 2r11101111),
+	Pbind(\instrument, \pokey, \dur, 1.1, \legato, 4, \f2, Pseries(20, 0.1, 100), \c2, 2r11101111),
+]).play
+)
+::

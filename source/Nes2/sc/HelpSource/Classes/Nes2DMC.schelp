@@ -1,0 +1,35 @@
+class:: Nes2DMC
+summary:: wrapper class for the Nes2 UGen
+categories:: UGens>Emulators
+related:: Classes/Nes2Noise, Classes/Nes2Square, Classes/Nes2Triangle
+
+DESCRIPTION::
+Simplifies the interface for the link::Classes/Nes2:: UGen a little. Provides standard ranges with clipping for all inputs. No need to deal with bitwise register calculations, though note that this class is a bit less CPU efficient than to use the standard Nes2.
+
+NOTE::
+Requires my link::Classes/BitOr:: plugin available in the sc3-plugins package.
+::
+NOTE::
+All functionality is not implemented, but it can still be somewhat (mis)used.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::trig
+Control or audio rate trigger.
+argument::loop
+Looping off or on (0/1).
+
+argument::freq
+Frequency (0-15).
+
+EXAMPLES::
+
+code::
+s.boot
+{Nes2DMC.ar(Impulse.kr(4), MouseX.kr(0, 1), MouseY.kr(0, 15))}.play
+
+{Nes2DMC.ar(Impulse.kr(10), 1, SinOsc.kr([SinOsc.kr(0.05, pi, 0.5, 1.5).round, 1], 0, 7.5, 7.5).round(SinOsc.kr(0.19, 0, 2.5, 2.5)))}.play
+::

@@ -1,0 +1,251 @@
+class:: Nes2
+summary:: APU Chip Sound Simulator
+categories:: UGens>Emulators
+related:: Classes/Nes2DMC, Classes/Nes2Noise, Classes/Nes2Square, Classes/Nes2Triangle
+
+DESCRIPTION::
+Emulation of the sound generation hardware of the NES APU chip by Matthew Conte. This UGen has 5 oscillators: 2 squares, 1 triangle, 1 noise, 1 dmc.
+
+Code adapted from v1.2 of Nofrendo, available here http://sourceforge.net/projects/nosefart/
+and more detailed info about this chip can be found here...
+http://www.slack.net/~ant/nes-emu/apu_ref.txt
+http://web.textfiles.com/games/nessound.txt
+http://nesdev.parodius.com/dmc.txt
+
+NOTE::
+dmc is only partially implemented.
+::
+NOTE::
+For simplified interfaces to this class see link::Classes/Nes2Square::, link::Classes/Nes2Triangle::, link::Classes/Nes2Noise::, link::Classes/Nes2DMC::
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::trig
+
+argument::a0
+(the 2 square waves)
+table::
+## bits 7-6 || duty cycle
+## bit 5 || loop envelope
+## bit 4 || envelope decay disable
+## bits 3-0 || volume / envelope decay rate (4bits 0-15)
+::
+
+argument::a1
+table::
+## bit 7 || sweep on
+## bits 6-4 || sweep length
+## bit 3 || sweep inc/dec
+## bits 2-0 || sweep shifts (3bits 0-7)
+::
+
+argument::a2
+table::
+## bits 7-0 || frequency low bits (8bits 0-255)
+::
+
+argument::a3
+table::
+## bits 7-3 || vbl length counter
+## bits 2-0 || frequency high bits (3bits 0-7)
+::
+
+argument::b0
+(the 2 square waves)
+table::
+## bits 7-6 || duty cycle
+## bit 5 || loop envelope
+## bit 4 || envelope decay disable
+## bits 3-0 || volume / envelope decay rate (4bits 0-15)
+::
+
+argument::b1
+table::
+## bit 7 || sweep on
+## bits 6-4 || sweep length
+## bit 3 || sweep inc/dec
+## bits 2-0 || sweep shifts (3bits 0-7)
+::
+
+argument::b2
+table::
+## bits 7-0 || frequency low bits (8bits 0-255)
+::
+
+argument::b3
+table::
+## bits 7-3 || vbl length counter
+## bits 2-0 || frequency high bits (3bits 0-7)
+::
+
+argument::c0
+(the triangle wave)
+table::
+## bit 7 || linear counter start
+## bits 6-0 || linear counter (7bits 0-127)
+::
+
+argument::c2
+table::
+## bits 7-0 || frequency low bits (8bits 0-255)
+::
+
+argument::c3
+table::
+## bits 7-3 || length counter
+## bits 2-0 || frequency high bits (3bits 0-7)
+::
+
+argument::d0
+(the noise)
+table::
+## bit 5 || loop envelope
+## bit 4 || envelope decay disable
+## bits 3-0 || volume / envelope decay rate (4bits 0-15)
+::
+
+argument::d2
+table::
+## bit 7 || short mode
+## bits 3-0 || playback sample rate (4bits 0-15)
+::
+
+argument::d3
+table::
+## bits 7-3 || length counter
+::
+
+argument::e0
+(the delta modulation channel)
+table::
+## bit 7 || irq generator strong::(not in use)::
+## bit 6 || looping
+## bits 3-0 || frequency control (4bits 0-15)
+::
+
+argument::e1
+table::
+## bits 6-0 || delta count register or output dc level strong::(not in use)::
+::
+
+argument::e2
+table::
+## bits 7-0 || address load register strong::(not in use)::
+::
+
+argument::e3
+table::
+## bits 7-0 || length register strong::(not in use)::
+::
+
+argument::smask
+table::
+## bit 4 || dmc channel enabled
+## bit 3 || noise channel enabled
+## bit 2 || triangle wave channel enabled
+## bit 1 || square wave channel 2 enabled
+## bit 0 || square wave channel 1 enabled
+::
+
+EXAMPLES::
+
+code::
+s.boot;
+
+//--rectangle
+{Nes2.ar(Impulse.kr(3), a0:2r00010111, a2:2r10000000, smask:2r00000001)}.play
+{Nes2.ar(Impulse.kr(3), a0:2r00010111, a2:MouseX.kr(0, 255), smask:2r00000001)}.play
+{Nes2.ar(Impulse.kr(3), a0:2r00100000, a2:MouseX.kr(0, 255), smask:2r00000001)}.play
+
+//--2 rectangles
+{Nes2.ar(Impulse.kr(3), a0:2r00010111, a2:MouseX.kr(0, 255), b0:2r00010111, b2:MouseY.kr(0, 255), smask:2r00000011)}.play
+
+//--triangle
+{Nes2.ar(Impulse.kr(3), c0:2r10000100, c2:MouseX.kr(0, 255), smask:2r00000100)}.play
+
+//--noise
+{Nes2.ar(Impulse.kr(3), d0:2r00000100, d2:MouseX.kr(0, 15), smask:2r00001000)}.play
+{Nes2.ar(Impulse.kr(3), d0:2r00100111, d2:Line.kr(0, 15, 3), smask:2r00001000)}.play
+
+
+(
+SynthDef(\nes2, {|out= 0, gate= 1, a0= 0, a1= 0, a2= 0, a3= 0, b0= 0, b1= 0, b2= 0, b3= 0, c0= 0, c2= 0, c3= 0, d0= 0, d2= 0, d3= 0, e0= 0, e1= 0, e2= 0, e3= 0, smask= 0, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= Nes2.ar(gate, a0, a1, a2, a3, b0, b1, b2, b3, c0, c2, c3, d0, d2, d3, e0, e1, e2, e3, smask);
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \nes2,
+	\dur, 1,
+	\amp, 0.8,
+	\a0, 2r10111100,
+	\a1, Pseq([2r11111100, 2r11111100, 2r11110100, 2r11110100], inf),
+	\a2, 2r10010000,
+	\a3, Pseq([2r11111010, 2r00101011], inf),
+	\smask, 2r00000001
+).play
+)
+
+(
+Pbind(
+	\instrument, \nes2,
+	\dur, 0.12,
+	\amp, 0.8,
+	\legato, 1.5,
+	\a0, Pseq([Pn(0, 12), Pn(2r00000100, 12), Pn(0, 12), Pn(2r11000111, 12)], inf),
+	\a1, Pseq([Pn(2r00000000, 32), Pn(2r11110100, 12)], inf),
+	\a2, 2r00000000,
+	\a3, Pseq([2r00001010, 2r00000011], inf),
+	\smask, 2r00000001
+).play
+)
+
+(
+Pbind(
+	\instrument, \nes2,
+	\dur, 0.125,
+	\amp, 0.8,
+	\a0, Pseq([Pn(0, 12), Pn(2r00000100, 12), Pn(0, 12), Pn(2r11000111, 12)], inf),
+	\a1, Pseq([Pn(2r00000000, 32), Pn(2r11110100, 12)], inf),
+	\a2, 2r00000000,
+	\a3, Pseq([2r00001010, 2r00000011], inf),
+	\b0, 2r11100000,
+	\b1, Pseq([Pn(2r00000000, 32), Pn(2r11110011, 12)], inf),
+	\b2, Pseq([Pseries(255, -10, 25)], inf),
+	\b3, Pseq([2r11111010, 2r11111001], inf),
+	\smask, 2r00000011
+).play
+)
+
+(
+Pbind(
+	\instrument, \nes2,
+	\dur, Pbrown(0.1, 0.15, 0.1),
+	\amp, 0.8,
+	\d0, 2r00011000,
+	\d2, Pseq([2r00001000, 2r00000111, Pseq([2r10000100, 2r10001010], 3)], inf),
+	\d3, Pseq([2r11000000, 2r11100000, Pseq([2r11010000, 2r11011000], 4)], inf),
+	\smask, 2r00001000
+).play
+)
+
+(
+Pbind(	//not working really but does produce some nice artifacts
+	\instrument, \nes2,
+	\dur, Pseq([0.06, 0.04], inf),
+	\amp, 1,
+	\e0, Pseq([Pn(2r01000000, 64), Pwhite(0, 12, 15).round(4)+2r01000000], inf),
+	\e1, 2r00000000,
+	\e2, 2r00000000,
+	\e3, 2r00000000,
+	\smask, 2r00010000
+).play
+)
+::

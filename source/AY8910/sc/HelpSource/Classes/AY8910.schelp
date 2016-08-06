@@ -1,0 +1,302 @@
+class:: AY8910
+summary:: AY-3-891X Chip Sound Simulator
+categories:: UGens>Emulators
+related:: Classes/AY8910Square
+
+DESCRIPTION::
+Emulation of the sound generation hardware of the AY-3-8910 chip by Ville Hallik, Michael Cuddy, Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
+This was a very popular sound chip used in many arcade games and consoles (Intellivision, Vectrex) as well as in many home computers (MSX, AtariST, ZX Spectrum 128...)
+http://en.wikipedia.org/wiki/AY-3-8910
+http://www.atarimagazines.com/v4n7/stsound.html
+http://www.howell1964.freeserve.co.uk/parts/ay3891x_datasheet.htm
+
+NOTE::
+This UGen outputs 3 separate channels of sound! Often you want to mix them.
+::
+NOTE::
+For a simplified interface to this class see link::Classes/AY8910Square::.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::r0
+AFINE
+table::
+## bits 7-0 || channel A fine frequency (8bits 0-255)
+::
+
+argument::r1
+ACOARSE
+table::
+## bits 3-0 || channel A coarse frequency (4bits 0-15)
+::
+
+argument::r2
+BFINE
+table::
+## bits 7-0 || channel B fine frequency (8bits 0-255)
+::
+
+argument::r3
+BCOARSE
+table::
+## bits 3-0 || channel B coarse frequency (4bits 0-15)
+::
+
+argument::r4
+CFINE
+table::
+## bits 7-0 || channel C fine frequency (8bits 0-255)
+::
+
+argument::r5
+CCOARSE
+table::
+## bits 3-0 || channel C coarse frequency (4bits 0-15)
+::
+
+argument::r6
+NOISEPER
+table::
+## bits 4-0 || noise channel frequency (5bits 0-31)
+::
+
+argument::r7
+ENABLE
+table::
+## bit 5 || enable voice channel C noise
+## bit 4 || enable voice channel B noise
+## bit 3 || enable voice channel A noise
+## bit 2 || enable voice channel C tone
+## bit 1 || enable voice channel B tone
+## bit 0 || enable voice channel A tone
+::
+
+argument::r8
+AVOL
+table::
+## bit 4 || envelope enable
+## bits 3-0 || channel A volume (4bits 0-15)
+::
+
+argument::r9
+BVOL
+table::
+## bit 4 || envelope enable
+## bits 3-0 || channel B volume (4bits 0-15)
+::
+
+argument::rA
+CVOL
+table::
+## bit 4 || envelope enable
+## bit 3-0 || channel C volume (4bits 0-15)
+::
+
+argument::rB
+EFINE
+table::
+## bits 7-0 || envelope fine period (8bits 0-255)
+::
+
+argument::rC
+ECOARSE
+table::
+## bits 7-0 || envelope coarse period (8bits 0-255)
+::
+
+argument::rD
+ESHAPE
+table::
+## bit 3 || envelope shape: continue
+## bit 2 || envelope shape: attack
+## bit 1 || envelope shape: alternate
+## bit 0 || envelope shape: hold
+::
+
+argument::rate
+Scale playbackrate for the 3 tones (float 0.0-...)
+
+EXAMPLES::
+
+code::
+s.boot;
+
+//one voice
+{AY8910.ar(r0:50, r1:0, r7:2r00001000, r8:13)}.play
+{AY8910.ar(r0:50, r1:1, r7:2r00001000, r8:13)}.play
+
+//two voices
+{AY8910.ar(r0:50, r1:0, r2:75, r3:0, r7:2r00011000, r8:13, r9:13)}.play
+
+//three voices.  to listen to all three in a stereo output you'll need to mix
+{Mix(AY8910.ar(r0:50, r1:0, r2:75, r3:0, r4:90, r5:0, r7:2r00111000, r8:13, r9:13, rA:13))*0.5}.play
+
+//noise only on first voice + mouse xy countrol
+{AY8910.ar(r0:100, r1:0, r6:MouseY.kr(0, 31), r7:2r00000001, r8:MouseX.kr(0, 15))}.play
+
+//looping envelope on voice first voice
+{AY8910.ar(r0:100, r1:0, r6:15, r7:2r00001000, r8:31, rB:MouseX.kr(0, 255), rC:1, rD:2r1010)}.play
+{AY8910.ar(r0:100, r1:0, r6:15, r7:2r00001001, r8:31, rB:MouseX.kr(0, 255), rC:1, rD:2r1010)}.play
+{AY8910.ar(r0:100, r1:0, r6:15, r7:2r00000001, r8:31, rB:MouseX.kr(0, 255), rC:1, rD:2r1010)}.play
+
+//different envelope
+{AY8910.ar(r0:100, r1:0, r6:15, r7:2r00000001, r8:31, rB:0, rC:20, rD:2r0001)}.play
+
+//the rate argument
+{AY8910.ar(r0:Line.kr(0, 127, 0.15), r1:Line.kr(0, 0, 0.15), r7:2r00001000, r8:15, rate:1)}.play
+{AY8910.ar(r0:Line.kr(0, 127, 0.15), r1:Line.kr(0, 0, 0.15), r7:2r00001000, r8:15, rate:2)}.play
+{AY8910.ar(r0:Line.kr(0, 127, 0.15), r1:Line.kr(0, 0, 0.15), r7:2r00001000, r8:15, rate:1.5)}.play
+{AY8910.ar(r0:Line.kr(0, 127, 0.15), r1:Line.kr(0, 0, 0.15), r7:2r00001000, r8:15, rate:MouseX.kr(0, 10))}.play
+
+
+//misuse
+{AY8910.ar(r0:SinOsc.kr(SinOsc.kr(0.2), 0, 10, 10), r1:0, r2:SinOsc.kr(SinOsc.kr(0.15), 0, 10, 10), r3:0, r7:2r00011000, r8:12, r9:12)}.play
+
+{AY8910.ar(r0:SinOsc.kr(0.25)<0.8*SinOsc.kr(0.2, 0, 25, 25), r1:SinOsc.kr(4, SinOsc.kr(1))>0.3, r2:20, r3:SinOsc.kr(12)>SinOsc.kr(0.2, 0, 0.5, 1), r7:2r00011000, r8:13, r9:SinOsc.kr(0.1, 0, 6, 6).max(0))}.play
+
+{Pan2.ar(Mix(AY8910.ar(r0:50+SinOsc.kr(14, 0, 12), r1:0, r2:60+SinOsc.kr(8, 0, 14), r3:0, r4:70+SinOsc.kr(10, 0, 16), r5:2, r7:2r00111000, r8:31, r9:31, rA:31, rB:SinOsc.kr(0.1, 0, 127.5, 127.5), rC:2, rD:2r1010))*0.6)}.play
+
+{Pan2.ar(Mix(AY8910.ar(r0:SinOsc.kr(0.11)>0.9*10+5, r1:0, r2:SinOsc.kr(0.12)>0.9*2+20, r3:0, r4:SinOsc.kr(0.13)>0.9*25+25, r5:SinOsc.kr(14)>0.9, r7:2r00111000, r8:31, r9:31, rA:31, rB:0, rC:SinOsc.kr(Lag.kr(SinOsc.kr(0.1)>0.9*4+1, 3), 0, LFTri.kr(0.1, 0, 4, 4), 4), rD:2r1110))*0.6)}.play
+
+
+(
+SynthDef(\ay8910, {|out= 0, gate= 1, r0= 0, r1= 0, r2= 0, r3= 0, r4= 0, r5= 0, r6= 0, r7= 0, r8= 0, r9= 0, rA= 0, rB= 0, rC= 0, rD= 0, rate= 1, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= Mix(AY8910.ar(r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, rA, rB, rC, rD, rate));
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \ay8910,
+	\dur, 0.125,
+	\amp, 0.3,
+	\r0, Pseq([Pn(3, 64), Pn(32, 54), Pn(10, 10)], inf),
+	\r1, Pseq([Pn(1, 32), Pwhite(0, 3, 12)], inf),
+	\r2, Pseq([Pn(3, 17), Pn(Prand([10, 20, 30]), 4), Pn(10, 3)], inf),
+	\r3, Pseq([1, 2, Pwrand([3, 2, 1, 0], [0.1, 0.2, 0.3, 0.4])], inf),
+	\r6, Pseq([Pseq([10, 20, Pwrand([100, 110], [0.7, 0.3]), 50], 15), Pn(3, 4)], inf),
+	\r7, 2r00011100,
+	\r8, 15,
+	\r9, 15,
+	\rA, 31,
+	\rB, 10,
+	\rC, Pseq([Pseq([1, 0], 24), Pseq([1, 0, 2], 8)], inf),
+	\rD, 2r0000
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910,
+	\dur, Pbrown(0.1, 0.15, 0.1),
+	\amp, 0.8,
+	\r0, Pseq([100, 130, 160], inf)*Pseq([Pn(1, 32), Pn(0.75, 32)], inf),
+	\r1, 0,
+	\r2, Pseq([24, 24, Pwrand([20, 23], [0.6, 0.4])], inf),
+	\r3, Pseq([0, 2, Pwrand([1, 0], [0.6, 0.4])], inf),
+	\r7, 2r00011100,
+	\r8, 10,
+	\r9, 31,
+	\rA, 31,
+	\rB, 10,
+	\rC, Pseq([Pseq([1, 0], 24), Pseq([1, 0, 2], 8)], inf),
+	\rD, 2r0000
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910,
+	\dur, Pseq([0.06, 0.04], inf),
+	\amp, 0.8,
+	\r7, 2r00101111,
+	\r8, 31,
+	\r9, Pseq([Pn(31, 48), Pn(13, 48)], inf),
+	\rA, 31,
+	\rB, Pseq([1, 3, Pwrand([2, 1], [0.6, 0.4])], inf),
+	\rC, Pseq([Pn(1, 8), Pn(2, 12), Pn(1, 16), Pn(Pwrand([0, 40], [0.8, 0.2]), 12)], inf),
+	\rD, 2r0000
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910,
+	\dur, Pseq([0.025, 0.025, 0.025, 0.045], inf),
+	\amp, 0.8,
+	\r7, 2r00101111,
+	\r8, Pseq([Pn(31, 128), Pn(13, 128)], inf),
+	\r9, Pseq([Pn(31, 48), Pn(13, 48)], inf),
+	\rA, Pseq([Pn(31, 16), Pn(13, 16)], inf),
+	\rB, Pseq([1, 3, 2], inf),
+	\rC, Pseq([Pn(1, 8), Pn(2, 12), Pn(1, 16), Pn(40, 40)], inf),
+	\rD, 2r0000
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910,
+	\dur, 0.1,
+	\amp, 0.8,
+	\r0, Pseq([Pseq([10, 2], 32), Pseq([1, 9], 32), Pseq([1, 2, 4], 36)], inf),
+	\r1, Pseq([Pseries(0, 14, 16), Pseries(10, 5, 16)], inf),
+	\r2, Pseq([Pseries(0, 31, 16), Pseries(27, 31, 16)], inf),
+	\r3, Pseq([Pseries(0, 31, 16), Pseries(26, 31, 16)], inf),
+	\r4, Pseq([2, 3, 3, 2], inf),
+	\r5, 0,
+	\r6, Pseq([Pseries(0, 2, 120)], inf),
+	\r7, 2r00111000,
+	\r8, 12,
+	\r9, 31,
+	\rA, 31,
+	\rB, 10,
+	\rC, Pseq([Pseq([1, 0, 1, 4], 24), Pseq([1, 1, 4], 8)], inf),
+	\rD, 2r0000
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.5,	
+	\r0, Pseq([Pn(2, 80), Pn(3, 80), Pn(4, 80), Pn(0, 40)], inf),
+	\r1, Pseq([Pseries(0, 0.01, 10)], inf),
+	\r2, Pseq([Pseries(5, 0.1, 40)], inf),
+	\r3, Pseq([Pseries(10, 0.05, 50)], inf),
+	\r4, 10,
+	\r5, 0,
+	\r6, Pseq([Pseries(0, 2, 120)], inf),
+	\r7, 2r00111000,
+	\r8, 31,
+	\r9, 31,
+	\rA, 31,
+	\rB, Pseq([Pseries(10, 1, 100)], inf),
+	\rC, Pseq([Pseq([1, 0, 1, 4], 24), Pseq([1, 1, 4], 8)], inf),
+	\rD, 2r0000,
+	\rate, Pseq([Pseries(1, 1, 20)], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.2,
+	\r0, Pseq([Pn(3, 40), Pwhite(3, 10, 8)], inf),
+	\r1, 0,
+	\r7, 2r00001000,
+	\r8, 14,
+	\rate, Pseq([Pn(1, 8), Pn(2, 8), Pn(1, 8), Pn(Pwrand([1.1, 1.5], [0.8, 0.2]), 8)], inf)*Pseq([Pn(1, 64), Pn(20, 64)], inf)
+).play
+)
+::

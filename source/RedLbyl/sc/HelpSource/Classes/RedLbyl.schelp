@@ -1,0 +1,50 @@
+class:: RedLbyl
+summary:: look before you leap
+categories:: UGens>Filters>Linear, UGens>Math
+
+DESCRIPTION::
+An implementation of Matt Wright's MaxMSP object [lbyl].
+It can be used for filtering sensor data as well as removing clicks in audio signals.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+argument::in
+Signal to be filtered.
+
+argument::thresh
+Threshold. (tolerance).
+
+argument::samples
+Number of samples that must be received before making the jump (quota).
+
+INSTANCEMETHODS::
+
+METHOD:: lbyl
+Language side.
+
+EXAMPLES::
+
+code::
+s.boot;
+
+b= Buffer.sendCollection(s, [0.1, 0.1, 0.1, 1, 0.2, 0.2, 0.2, 1, 1, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 0.4, 0.4, 0.4, 0.4])
+{a= PlayBuf.kr(1, b); [a, RedLbyl.kr(a)]}.plot(0.03)
+{a= PlayBuf.ar(1, b); [a, RedLbyl.ar(a)]}.plot(0.0005)
+b.free;
+
+
+//--
+{SinOsc.ar(RedLbyl.kr(MouseX.kr(400, 4000, 'exponential'), 20, 300), 0, 0.5)}.play
+
+{a= Dust.ar(5); [a, RedLbyl.ar(a, 0.1, 2)]}.play	//no clicks above 0.1 or below -0.1 in right chan
+
+{a= LFPulse.ar(2, 0, MouseX.kr, 0.5); SinOsc.ar([400, 404], 0, [a, RedLbyl.ar(a, MouseY.kr, 5000)])}.play
+
+
+//--
+b= [0.1, 0.1, 0.1, 1, 0.2, 0.2, 0.2, 1, 1, 0.3, 0.3, 0.3, 0.3, 1, 1, 1, 0.4, 0.4, 0.4, 0.4]
+a= RedLbyl.new
+b.do{|x| [x, a.lbyl(x)].postln}; ""
+::

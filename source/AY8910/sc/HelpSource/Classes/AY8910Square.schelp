@@ -1,0 +1,116 @@
+class:: AY8910Square
+summary:: wrapper class for the AY8910 UGen
+categories:: UGens>Emulators
+related:: Classes/AY8910
+
+DESCRIPTION::
+Simplifies the interface for the link::Classes/AY8910:: UGen a little and provides standard ranges with clipping for all inputs. No need to deal with so many bitwise register calculations, though note that this class is a bit less CPU efficient than to use the standard AY8910. Also it uses only one out of the three voices, but you can easily run many UGens in parallel.
+
+NOTE::
+this ugen outputs 3 separate channels of sound but only the first one is ever in use.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::freq
+Frequency (0-4095)
+
+argument::noise
+Noise period (0-255)
+
+argument::ctrl
+0 - noise+tone
+1 - noise
+2 - tone
+3 - silence
+4 - noise+tone with envelope on
+5 - noise with envelope on
+6 - tone with envelope on
+7 - silence with envelope on
+
+argument::vol
+Volume (0-15)
+
+argument::envRate
+Envelope period (0-65535)
+
+argument::envShape
+Envelope shape (0-15) (see link::Classes/AY8910:: helpfile)
+
+argument::rate
+Scale playbackrate for the 3 tones (float 0.0-...)
+
+EXAMPLES::
+
+code::
+s.boot;
+{AY8910Square.ar(100, 60, 0)}.play
+{AY8910Square.ar(20, 60, 0)}.play
+{AY8910Square.ar(20, 6, 0)}.play
+{AY8910Square.ar(20, 60, 1)}.play
+{AY8910Square.ar(20, 6, 2)}.play
+{AY8910Square.ar(20, 60, 3)}.play				//pointless
+{AY8910Square.ar(20, 60, 4, 15, 200, 2r1000)}.play
+{AY8910Square.ar(20, 60, 5, 15, 200, 2r1000)}.play
+{AY8910Square.ar(20, 60, 6, 15, 200, 2r1000)}.play
+{AY8910Square.ar(20, 60, 7, 15, 200, 2r1000)}.play	//pointless
+{AY8910Square.ar(20, 60, 4, 15, 2000, 2r1000)}.play
+{AY8910Square.ar(20, 60, 6, 15, 2000, 2r1010)}.play
+
+(
+{AY8910Square.ar(
+	MouseX.kr(1, 4096, 'exponential'),
+	MouseY.kr(1, 255, 'exponential'),
+	SinOsc.kr(0.35, [0, pi/2], 3.5, 3.5).round
+)}.play
+)
+
+(
+SynthDef(\ay8910square, {|out= 0, gate= 1, freq= 100, noise= 15, ctrl= 0, vol= 15, envRate= 200, envShape= 14, rate= 1, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= AY8910Square.ar(freq, noise, ctrl, vol, envRate, envShape, rate)[0];
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \ay8910square,
+	\dur, Pseq([Pn(0.1, 10), Pn(0.05, 12)], inf),
+	\amp, 0.8,
+	\ctrl, 2,
+	\freq, Pseq([Pseries(0, 10, 20), Pgeom(200, 0.94, 20)], inf),
+	\noise, Pseq([Pn(7, 66), Pn(6, 66), Pn(4, 66), Pn(2, 66)], inf),
+	\vol, 15
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910square,
+	\dur, Pseq([Pn(0.1, 12), Pn(0.05, 12)], inf),
+	\amp, 1,
+	\freq, Pseq([100, 90, 120, 400], inf),
+	\ctrl, Pseq([6, 6, 6, 6, 5, 5, 6, 6], inf),
+	\vol, Pseq([15, 0, 10, 0, 15, 0, 15, 0], inf),
+	\envRate, Pseq([Pn(100, 64), Pshuf([200, 250, 300, 350], 8)], inf),
+	\envShape, 9
+).play
+)
+
+(
+Pbind(
+	\instrument, \ay8910square,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.15,
+	\freq, Pseq([15, 18, 15, 18, 15, 18, 15, 18, 15, 18, 15, 18, 72, 18, 15, 18], inf),
+	\vol, Pseq([15, 15, 0, 0, 15, 0, 15, 0, 8, 8, 0, 0, 8, 0, 0, 15], inf),
+	\envRate, Pseq([Pn(0, 32), Pn(255, 64), Pseq([0, 255, 255, 0, 25, 255, 0, 25, Pseries(8, -1, 8)], inf)]),
+	\ctrl, Pseq([Pn(2, 12), Pn(6, 6), Pn(2, 4)], inf)
+).play
+)
+::

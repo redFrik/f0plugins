@@ -1,0 +1,22 @@
+class:: RedNoise
+summary:: a really bad pseudo-random noise generator
+categories:: UGens>Generators>Stochastic, UGens>Noise
+
+DESCRIPTION::
+XOR noise used in old PSG chips: code::noise= (noise<<1)|(~((noise>>14)^(noise>>13))&1);::
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+EXAMPLES::
+
+code::
+s.boot;
+
+{RedNoise.ar(0, 0.3)}.play
+
+{RedNoise.ar(MouseX.kr(0, 100), 0.3)}.play
+
+{RedNoise.ar(MouseX.kr(0, 100), 0.3)}.scope
+::

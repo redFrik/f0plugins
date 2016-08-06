@@ -1,0 +1,118 @@
+class:: PokeySquare
+summary:: wrapper class for the Pokey UGen
+categories:: UGens>Emulators
+related:: Classes/Pokey
+
+DESCRIPTION::
+Simplifies the interface for the link::Classes/Pokey:: UGen a little. Provides standard ranges with clipping for all inputs. No need to deal with bitwise register calculations, though note that this class is a bit less CPU efficient than to use the standard Pokey.
+
+NOTE::
+Requires my link::Classes/BitOr:: plugin available in the sc3-plugins package.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::freq1
+Frequency (0-255).
+
+argument::tone1
+Tone control (0-7).
+
+argument::vol1
+Volume (0-15).
+
+argument::freq2
+Frequency (0-255).
+
+argument::tone2
+Tone control (0-7).
+
+argument::vol2
+Volume (0-15).
+
+argument::freq3
+Frequency (0-255).
+
+argument::tone3
+Tone control (0-7).
+
+argument::vol3
+Volume (0-15).
+
+argument::freq4
+Frequency (0-255).
+
+argument::tone4
+Tone control (0-7).
+
+argument::vol4
+Volume (0-15).
+
+argument::ctrl
+General control (0-63).
+
+EXAMPLES::
+
+code::
+s.boot;
+
+{PokeySquare.ar(Line.kr(0, 255, 5), 7, 15)}.play
+{PokeySquare.ar(Line.kr(0, 255, 5), 6, 15)}.play
+{PokeySquare.ar(Line.kr(0, 255, 5), 4, 15)}.play
+
+
+(
+SynthDef(\pokeySquare, {|out= 0, gate= 1, f1= 0, c1= 0, v1= 15, f2= 0, c2= 0, v2= 15, f3= 0, c3= 0, v3= 15, f4= 0, c4= 0, v4= 15, ctl= 0, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= PokeySquare.ar(f1, c1, v1, f2, c2, v2, f3, c3, v3, f4, c4, v4, ctl);
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \pokeySquare,
+	\dur, Pseq([Pn(0.1, 10), Pn(0.05, 12)], inf),
+	\amp, 0.8,
+	\ctl, 0,
+	\f1, Pseq([Pseries(0, 10, 20), Pgeom(200, 0.94, 20)], inf),
+	\c1, Pseq([Pn(7, 66), Pn(6, 66), Pn(4, 66), Pn(2, 66)], inf),
+	\v1, 15
+).play
+)
+
+(
+Pbind(
+	\instrument, \pokeySquare,
+	\dur, Pseq([Pn(0.1, 10), Pn(0.05, 12)], inf),
+	\amp, 0.8,
+	\ctl, 0,
+	\f1, Pseq([100, 90, 120], inf),
+	\c1, Pseq([7, 7, 7, 7, 6, 6, 7, 7], inf),
+	\v1, Pseq([15, 0, 0, 0, 15, 0, 15, 0], inf),
+	\f2, Pseq([Pn(180, 64-8), Pshuf([20, 22, 26, 28], 2)], inf),
+	\c2, 3,
+	\v2, Pseq([10, 0, 10, 0, 10, 0, 10, 0], inf),
+	\f3, 11,
+	\c3, 6,
+	\v3, Pseq([Pseries(0, 0.05, 128)], inf)*Pseq([0, 1, 0.1, 1], inf),
+	\f4, 31,
+	\c4, 5,
+	\v4, Pseq([Pn(0, 64), Pseq([Pseries(0, 0.1, 128)], inf)*Pseq([1, 0.1, 1, 0], inf)])
+).play
+)
+
+
+
+//--or use the helper methods together with the standard Pokey to do the calculations in sclang
+({
+	Pokey.ar(
+		PokeySquare.audf(100),			//convert freq to an audf
+		PokeySquare.audc(4, 8),			//convert tone, vol pair to an audc
+		audctl: PokeySquare.audctl(0)	//convert ctrl to an audctl
+	)
+}.play)
+::

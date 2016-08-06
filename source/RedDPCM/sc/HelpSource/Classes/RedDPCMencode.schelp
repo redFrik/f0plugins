@@ -1,0 +1,68 @@
+class:: RedDPCMencode
+summary:: differential pulse-code modulation
+categories:: UGens>Filters>Linear, UGens>Math
+related:: Classes/RedDPCMdecode
+
+DESCRIPTION::
+Very simple UGen to encode signals as DPCM. It basically outputs the difference between adjacent samples.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+argument::in
+Input signal.
+
+argument::round
+Optional.
+
+INSTANCEMETHODS::
+
+METHOD:: dpcm
+Language side.
+
+EXAMPLES::
+
+code::
+s.boot
+b= Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav")
+a= {RedDPCMencode.ar(PlayBuf.ar(1, b, loop:1)).dup}.play
+a.free
+a= {PlayBuf.ar(1, b, loop:1).dup}.play
+a.free
+b.free
+
+
+//--
+a= {RedDPCMencode.ar(SoundIn.ar([0, 1]), MouseX.kr)}.play
+a.free
+
+
+//--control rate - compare with mouse full left and then full right
+(
+a= {
+	var x= Dust.kr(4);
+	SinOsc.ar([400, 800], 0, Decay.kr([x, RedDPCMencode.kr(x, MouseX.kr)], 0.5));
+}.play
+)
+
+
+//--language side
+(
+a= RedDPCMencode.new;
+[0, 0, 1, 0.6, 0.49, 0, -1].do{|x| a.dpcm(x, 0).postln}; ""
+)
+
+(
+a= RedDPCMencode.new;
+b= RedDPCMdecode.new;
+[0, 0, 1, 0.6, 0.49, 0, -1].do{|x| b.dpcm(a.dpcm(x, 0)).postln}; ""
+)
+
+
+//--whispering
+b= Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav")
+a= {var src= PlayBuf.ar(1, b, loop:1); 5.do{src= RedDPCMencode.ar(src)}; (src*5).dup}.play
+a.free
+b.free
+::

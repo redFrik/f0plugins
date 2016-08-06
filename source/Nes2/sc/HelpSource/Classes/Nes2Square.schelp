@@ -1,0 +1,61 @@
+class:: Nes2Square
+summary:: wrapper class for the Nes2 UGen
+categories:: UGens>Emulators
+related:: Classes/Nes2DMC, Classes/Nes2Noise, Classes/Nes2Triangle
+
+DESCRIPTION::
+Simplifies the interface for the link::Classes/Nes2:: UGen a little. Provides standard ranges with clipping for all inputs. No need to deal with bitwise register calculations, though note that this class is a bit less CPU efficient than to use the standard Nes2.
+
+NOTE::
+Requires my link::Classes/BitOr:: plugin available in the sc3-plugins package.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::trig
+Control or audio rate trigger.
+
+argument::dutycycle
+Type (0-3).
+
+argument::loopenv
+Loop envelope off or on (0/1).
+
+argument::envdecay
+Envelope decay off or on (0/1).
+
+argument::vol
+Volume (0-15).
+
+argument::sweep
+Off or on (0/1).
+
+argument::sweeplen
+Sweeplength (0-7).
+
+argument::sweepdir
+Sweepdirection decrease or increase (0/1).
+
+argument::sweepshi
+Sweepshift (0-7).
+
+argument::freq
+Frequency (0-2047).
+
+argument::vbl
+Length counter (0-31).
+
+EXAMPLES::
+
+code::
+s.boot
+{Nes2Square.ar(Impulse.kr(10), MouseX.kr(0, 3), 0, 1, MouseY.kr(0, 15))}.play
+{Nes2Square.ar(Impulse.kr(10), 0, 1, 1, 10, 1, MouseX.kr(0, 7), 0, MouseY.kr(0, 7))}.play
+{Nes2Square.ar(Impulse.kr(2), 0, 0, 1, 10, 1, 2, 1, 4, MouseX.kr(0, 1023), MouseY.kr(0, 31))}.play
+
+{Nes2Square.ar(Impulse.kr(10), SinOsc.kr([11, 8], 0, 1.5, 1.5), 0, 1, LFSaw.kr(0.4, [1, 0.7], -7.5, 7.5), 1, 6, 1, SinOsc.kr(0.08, 0, 3.5, 3.5))}.play
+
+{Nes2Square.ar(Dust.kr(3), 2, 1, 1, 10, 1, LFNoise0.kr(3, 3.5, 3.5), LFNoise0.kr(3, 0.5, 0.5), LFNoise0.kr(3, 3.5, 3.5), LFNoise0.kr(0.3, 100, 200)).dup}.play
+::

@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.46">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px Helvetica; min-height: 22.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+span.s1 {color: #000000}
+span.s2 {color: #0000bf}
+span.s3 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><b>Slub<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>generate cpu spikes</b></p>
+<p class="p2"><br></p>
+<p class="p3"><b>Slub.kr(trig, spike)</b> - for audio dropouts</p>
+<p class="p3"><b>Slub.bang(spike)</b> - to mess up sclang's timing</p>
+<p class="p4"><br></p>
+<p class="p3">Take control over those lovely cpu hickups and add some excitement to your live set.</p>
+<p class="p3">But careful with the amount! Need to be trimmed for your particular CPU!</p>
+<p class="p4"><br></p>
+<p class="p3"><b>trig</b> - trigger input</p>
+<p class="p3"><b>spike</b> - amount<span class="Apple-converted-space">  </span>(7.0 pushes a spike with avg.cpu ~4600% on a TiBook 1Ghz)</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p6">//scserver example</p>
+<p class="p7">s.boot;</p>
+<p class="p8"><br></p>
+<p class="p6"><span class="s1">(<span class="Apple-tab-span">	</span></span>//mouse in bottom right corner will cause a severe cpu spike</p>
+<p class="p7">{</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s2">var</span> trig;</p>
+<p class="p7"><span class="Apple-tab-span">	</span>trig= <span class="s2">MouseX</span>.kr&gt;0.99;</p>
+<p class="p6"><span class="s1"><span class="Apple-tab-span">	</span></span><span class="s2">Slub</span><span class="s1">.kr(trig, </span><span class="s2">MouseY</span><span class="s1">.kr(2, 8));<span class="Apple-tab-span">	</span></span>//increase max value here a little if no effect</p>
+<p class="p7"><span class="Apple-tab-span">	</span><span class="s2">SinOsc</span>.ar([400, 404], 0, 0.1);</p>
+<p class="p7">}.play</p>
+<p class="p7">)</p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p8"><br></p>
+<p class="p6">//sclang example</p>
+<p class="p7">(</p>
+<p class="p7">p= <span class="s2">Pbind</span>(<span class="s3">\dur</span>, 0.25, <span class="s3">\degree</span>, <span class="s2">Pshuf</span>((0..10), <span class="s2">inf</span>)).play;</p>
+<p class="p7">x= <span class="s2">Slub</span>.new;</p>
+<p class="p7">)</p>
+<p class="p8"><br></p>
+<p class="p7">x.bang(3)</p>
+<p class="p7">x.bang(4)</p>
+<p class="p7">x.bang(4.7)</p>
+<p class="p7">x.bang(4.8)</p>
+<p class="p7">x.bang(4.9)</p>
+<p class="p7">x.bang(5.0)</p>
+<p class="p7">x.bang(5.5)</p>
+<p class="p7">p.stop;</p>
+<p class="p8"><br></p>
+</body>
+</html>

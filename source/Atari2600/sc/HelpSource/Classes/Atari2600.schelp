@@ -1,0 +1,156 @@
+class:: Atari2600
+summary:: TIA Chip Sound Simulator
+categories:: UGens>Emulators
+related:: Classes/Beep
+
+DESCRIPTION::
+Emulation of the sound generation hardware of the Atari TIA chip by Ron Fries.
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::audc0
+table::
+## bits 3-0 || tone control (4bits 0-15)
+::
+
+argument::audc1
+table::
+## bits 3-0 || tone control (4bits 0-15)
+::
+
+argument::audf0
+table::
+## bits 4-0 || frequency (5bits 0-31)
+::
+
+argument::audf1
+table::
+## bits 4-0 || frequency (5bits 0-31)
+::
+
+argument::audv0
+table::
+## bits 3-0 || volume (4bits 0-15)
+::
+
+argument::audv1
+table::
+## bits 3-0 || volume (4bits 0-15)
+::
+
+argument::rate
+Floating-point playback rate 1-... (<1 gets weird)
+
+EXAMPLES::
+
+code::
+s.boot;
+{Atari2600.ar}.play
+
+{Atari2600.ar(2, 3, 10, 10, 5, 5)}.play
+{Atari2600.ar(MouseX.kr(0, 15), MouseY.kr(0, 15), 10, 10, 5, 5)}.play
+{Atari2600.ar(2, 3, MouseX.kr(0, 31), MouseY.kr(0, 31), 5, 5)}.play
+{Atari2600.ar(2, 3, 10, 10, MouseX.kr(0, 15), MouseY.kr(0, 15))}.play
+
+{Atari2600.ar(MouseX.kr(0, 15), SinOsc.kr(0.35, 0, 7.5, 7.5), 10, MouseY.kr(0, 31), SinOsc.kr(0.3, 0, 5.5, 5.5), 5).dup}.play
+
+
+(
+SynthDef(\atari2600, {|out= 0, gate= 1, tone0= 5, tone1= 8, freq0= 10, freq1= 20, rate= 1, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= Atari2600.ar(tone0, tone1, freq0, freq1, 15, 15, rate);
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \atari2600,
+	\dur, 0.125,
+	\amp, 0.8,
+	\tone0, Pseq([Pn(3, 64), Pn(2, 128), Pn(10, 8)], inf),
+	\tone1, Pseq([Pn(8, 32), Pwhite(0, 15, 12)], inf),
+	\freq0, Pseq([Pn(10, 17), Pn(Prand([1, 2, 3]), 4), Pn(10, 3)], inf),
+	\freq1, Pseq([10, 3, Pwrand([20, 1], [0.6, 0.4])], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \atari2600,
+	\dur, Pbrown(0.1, 0.15, 0.1),
+	\amp, 0.8,
+	\tone0, 1,
+	\tone1, 2,
+	\freq0, Pseq([24, 24, Pwrand([20, 23], [0.6, 0.4])], inf),
+	\freq1, Pseq([1, 3, Pwrand([2, 1], [0.6, 0.4])], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \atari2600,
+	\dur, Pseq([0.06, 0.04], inf),
+	\amp, 0.8,
+	\tone0, Pseq([10, 10, 10, 3], inf),
+	\tone1, Pseq([3, 3, 3, 3, 10], inf),
+	\freq0, Pseq([1, 2, 3], inf),
+	\freq1, Pseq([10, 2, 13, 5], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \atari2600,
+	\dur, Pseq([0.25, 0.25, 0.25, 0.45], inf),
+	\amp, 0.8,
+	\tone0, Pseq([Pseq([2, 5], 32), Pseq([3, 5], 32)], inf),
+	\tone1, 14,
+	\freq0, Pseq([Pbrown(28, 31, 1, 32), Pbrown(23, 26, 3, 32)], inf),
+	\freq1, Pseq([Pn(10, 16), Pn(11, 16)], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \atari2600,
+	\dur, 0.1,
+	\amp, 0.8,
+	\tone0, Pseq([Pseq([10, 2], 32), Pseq([1, 9], 32), Pseq([1, 2, 4], 36)], inf),
+	\tone1, Pseq([Pseries(10, 14, 16), Pseries(10, 5, 16)], inf),
+	\freq0, Pseq([Pseries(10, 31, 16), Pseries(27, 31, 16)], inf),
+	\freq1, Pseq([Pseries(9, 31, 16), Pseries(26, 31, 16)], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \atari2600,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.5,
+	\tone0, 15,
+	\tone1, Pseq([Pn(2, 80), Pn(3, 80), Pn(4, 80), Pn(0, 40)], inf),
+	\freq0, Pseq([Pseries(5, 0.1, 40)], inf),
+	\freq1, Pseq([Pseries(10, 0.05, 50)], inf),
+	\rate, Pseq([Pseries(1, 1, 20)], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \atari2600,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.2,
+	\tone0, 15,
+	\tone1, Pseq([Pn(3, 40), Pwhite(3, 10, 8).round(3)], inf),
+	\freq0, Pseq([Pn(11, 128), Pn(15, 128)], inf),
+	\freq1, Pseq([10, 3, Pwrand([2, 1], [0.6, 0.4])], inf),
+	\rate, Pseq([Pn(1, 8), Pn(2, 8), Pn(1, 8), Pn(Pwrand([1.1, 1.5], [0.8, 0.2]), 8)], inf)
+).play
+)
+::

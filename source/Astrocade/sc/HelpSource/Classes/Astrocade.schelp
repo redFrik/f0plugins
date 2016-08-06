@@ -1,0 +1,84 @@
+class:: Astrocade
+summary:: Sound Chip Simulator
+categories:: UGens>Emulators
+related:: Classes/Beep
+
+DESCRIPTION::
+Astrocade custom 'IO' chip sound chip driver by Aaron Giles and Frank Palazzolo.
+
+NOTE::
+Not sure this is working as it should, but it's still somewhat fun sounding.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::reg0
+table::
+## bits 7-0 || master oscillator frequency (8bits 0-255)
+::
+
+argument::reg1
+table::
+## bits 7-0 || tone generator A frequency (8bits 0-255)
+::
+
+argument::reg2
+table::
+## bits 7-0 || tone generator B frequency (8bits 0-255)
+::
+
+argument::reg3
+table::
+## bits 7-0 || tone generator C frequency (8bits 0-255)
+::
+
+argument::reg4
+table::
+## bits 7-6  || vibrato speed
+## bits 5-0  || vibrato depth (6bits 0-63)
+::
+
+argument::reg5
+table::
+## bit 5 || noise AM enable
+## bit 4 || mux source (0=vibrato, 1=noise)
+## bits 3-0 || tone generator C volume (4bits 0-15)
+::
+
+argument::reg6
+table::
+## bits 7-4 || tone generator B volume
+## bits 3-0 || tone generator A volume (4bits 0-15)
+::
+
+argument::reg7
+table::
+## bits 7-0 || noise volume (8bits 0-255)
+::
+
+EXAMPLES::
+
+code::
+s.boot;
+{Astrocade.ar}.play
+{Astrocade.ar(1)}.play
+{Astrocade.ar(2)}.play
+{Astrocade.ar(2, 50)}.play
+
+//--all three tones
+{Astrocade.ar(0, MouseX.kr(0, 255), 100, 200, reg5:2r00001111, reg6:2r111111)}.play
+
+//--noise only
+{Astrocade.ar(reg5:2r00100000, reg6:0, reg7:255)}.play
+
+
+{Pan2.ar(Astrocade.ar(LFSaw.kr(1, 0, 10, 10), 25, reg4:MouseX.kr(0, 255), reg5:MouseY.kr(0, 15)))}.play
+
+{Pan2.ar(Astrocade.ar(SinOsc.kr(4, 0, 10, 10), SinOsc.kr(0.1, 0, 5, 20), reg4:MouseX.kr(0, 255), reg5:2r00010000, reg6:2r00001111, reg7:MouseY.kr(0, 15)))}.play
+
+{Pan2.ar(Astrocade.ar(100, 255, reg4:2r00000111, reg5:MouseX.kr(0, 255), reg6:2r00001111, reg7:MouseY.kr(0, 255)))}.play
+
+{Mix(Astrocade.ar(MouseX.kr(0, 255), LFPulse.kr((0.1..5)*30), LFPulse.kr((0.1..5)*40), LFPulse.kr((0.1..5)*50), reg5: 2r00000111, reg6:2r01110111).dup)}.play
+::

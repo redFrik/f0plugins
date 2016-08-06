@@ -1,0 +1,49 @@
+class:: Nes2Noise
+summary:: wrapper class for the Nes2 UGen
+categories:: UGens>Emulators
+related:: Classes/Nes2DMC, Classes/Nes2Square, Classes/Nes2Triangle
+
+DESCRIPTION::
+Simplifies the interface for the link::Classes/Nes2:: UGen a little. Provides standard ranges with clipping for all inputs. No need to deal with bitwise register calculations, though note that this class is a bit less CPU efficient than to use the standard Nes2.
+
+NOTE::
+Requires my link::Classes/BitOr:: plugin available in the sc3-plugins package.
+::
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::trig
+Control or audio rate trigger.
+
+argument::loopenv
+Loop envelope off or on (0/1).
+
+argument::envdecay
+Envelope decay off or on (0/1).
+
+argument::vol
+Volume (0-15).
+
+argument::short
+Short mode off or on (0/1).
+
+argument::freq
+Frequency (0-15).
+
+argument::vbl
+Length counter (0-31).
+
+EXAMPLES::
+
+code::
+s.boot
+{Nes2Noise.ar(Impulse.kr(2), 1, MouseX.kr(0, 1), MouseY.kr(0, 15))}.play
+{Nes2Noise.ar(Impulse.kr(10), 0, 1, 10, MouseX.kr(0, 1), MouseY.kr(0, 15))}.play
+{Nes2Noise.ar(Impulse.kr(2), 0, 0, 10, 0, MouseX.kr(0, 15), MouseY.kr(0, 31))}.play
+
+{Nes2Noise.ar(Impulse.kr(4), SinOsc.kr([11, 8], 0, 0.5, 0.5)>SinOsc.kr(0.2, 0, 0.5, 0.5), 0, SinOsc.kr(0.1, pi, 0.5, 0.5)>0.1, 1, SinOsc.kr(0.25, 0, 20, 20).round(5)+1, 31)}.play
+
+{Nes2Noise.ar(Dust.kr(30), 0, 0, LFNoise0.kr(3, 3.5, 3.5), LFNoise0.kr(3, 0.5, 0.5), LFNoise0.kr(3, 3, 4), LFNoise0.kr(0.3, 15.5, 15.5)).dup}.play
+::

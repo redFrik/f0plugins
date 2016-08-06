@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="824.41">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {font: 18.0px Helvetica; color: #000000}
+span.s3 {color: #000000}
+span.s4 {color: #0000bf}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Beep</b></span><span class="s2"><b><span class="Apple-tab-span">	</span></b></span><span class="s3"><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></b></span><b>Sound Chip Simulator (well...)</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Oldskool beep sound simulation by KT.</p>
+<p class="p2"><br></p>
+<p class="p3"><b><span class="Apple-tab-span">	</span>*ar(freq, vol)</b></p>
+<p class="p4"><br></p>
+<p class="p4"><br></p>
+<p class="p5">s.boot;</p>
+<p class="p6"><span class="s3">{</span><span class="s4">Beep</span><span class="s3">.ar}.play<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>//note: a bit loud</p>
+<p class="p4"><br></p>
+<p class="p5">{<span class="s4">Beep</span>.ar(2985, <span class="s4">LFNoise0</span>.kr(4).max(0))}.play</p>
+<p class="p4"><br></p>
+<p class="p5">{<span class="s4">Beep</span>.ar(<span class="s4">SinOsc</span>.kr(0.2, 0, 100, 200).round(50), <span class="s4">LFPulse</span>.kr(2).poll)}.play</p>
+<p class="p4"><br></p>
+<p class="p5">{<span class="s4">Beep</span>.ar(<span class="s4">LFSaw</span>.kr(1).abs.round(0.2)+1*100)}.play</p>
+<p class="p4"><br></p>
+<p class="p5">{<span class="s4">Beep</span>.ar(<span class="s4">LFTri</span>.kr([4, 4]).max(0)+100, <span class="s4">LFNoise0</span>.kr(8).max(0))}.play</p>
+<p class="p4"><br></p>
+<p class="p5">{<span class="s4">Beep</span>.ar(<span class="s4">SinOsc</span>.kr(13)&gt;<span class="s4">SinOsc</span>.kr([0.75, 0.775])*200+100, <span class="s4">SinOsc</span>.kr(2)&gt;<span class="s4">SinOsc</span>.kr(1.5))}.play</p>
+<p class="p4"><br></p>
+<p class="p5">{<span class="s4">Clip</span>.ar((<span class="s4">Mix</span>(<span class="s4">Beep</span>.ar((0.1..5)*200+100, <span class="s4">LFPulse</span>.kr((0.1..5)))).dup), -1, 1)}.play</p>
+</body>
+</html>

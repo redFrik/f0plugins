@@ -1,0 +1,51 @@
+class:: RedDPCMdecode
+summary:: differential pulse-code modulation
+categories:: UGens>Filters>Linear, UGens>Math
+related:: Classes/RedDPCMencode
+
+DESCRIPTION::
+Very simple UGen to decode DPCM encoded signals. Can also be (mis)used for other purposes.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+argument::in
+Input signal.
+
+INSTANCEMETHODS::
+
+METHOD:: dpcm
+Language side.
+
+EXAMPLES::
+
+code::
+s.boot
+b= Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav")
+a= {RedDPCMdecode.ar(PlayBuf.ar(1, b, loop:1)).dup}.play	//loud!
+a.free
+a= {PlayBuf.ar(1, b, loop:1).dup}.play
+a.free
+b.free
+
+
+//--
+a= {RedDPCMdecode.ar(SoundIn.ar([0, 1]))}.play
+a.free
+a= {SoundIn.ar([0, 1])}.play
+a.free
+
+
+//--language side
+(
+a= RedDPCMdecode.new;
+[0, 0, 1, 0.6, 0.49, 0, -1].do{|x| a.dpcm(x, 0).postln}; ""
+)
+
+(
+a= RedDPCMdecode.new;
+b= RedDPCMencode.new;
+[0, 0, 1, 0.6, 0.49, 0, -1].do{|x| b.dpcm(a.dpcm(x), 0).postln}; ""
+)
+::

@@ -1,0 +1,195 @@
+class:: MZPokey
+summary:: POKEY Chip Sound Simulator
+categories:: UGens>Emulators
+related:: Classes/Pokey
+
+DESCRIPTION::
+Emulation of the sound generation hardware of the POKEY chip by Michael Borisov. This version calculates in 16bits, is bandlimited and generally better sounding. See link::Classes/Pokey:: for another more rough 8bit version.
+
+Code adapted from the MZPOKEY sound chip emulation, v1.6, from the Atari800 emulator project, available here http://atari800.sourceforge.net/
+More info on how to program this chip can be found here http://www.atariarchives.org/dere/chapt07.php and here http://www.retroclinic.com/leopardcats/bbpokey/pokey.pdf
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::audf1
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc1
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume (4bits 0-15)
+::
+
+argument::audf2
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc2
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume (4bits 0-15)
+::
+
+argument::audf3
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc3
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume (4bits 0-15)
+::
+
+argument::audf4
+table::
+## bits 7-0 || frequency (8bits 0-255)
+::
+
+argument::audc4
+table::
+## bit 7 || poly5 or direct clock
+## bit 6 || poly4 or poly17
+## bit 5 || poly4/17 or pure tone
+## bit 4 || volume output only
+## bits 3-0 || volume (4bits 0-15)
+::
+
+argument::audctl
+table::
+## bit 7 || switches main clock base from 64KHz to 15KHz
+## bit 6 || inserts high-pass filter into channel 2, clocked by channel 4
+## bit 5 || inserts high-pass filter into channel 1, clocked by channel 3
+## bit 4 || joins channel 4 to channel 3 (16bit resolution)
+## bit 3 || joins channel 2 to channel 1 (16bit resolution)
+## bit 2 || clocks channel 3 with 1.79MHz
+## bit 1 || clocks channel 1 with 1.79MHz
+## bit 0 || makes the 17bit poly-counter into a 9bit poly-counter
+::
+
+EXAMPLES::
+
+code::
+s.boot;
+
+{MZPokey.ar(Line.kr(0, 255, 5), 2r00001111)}.play
+{MZPokey.ar(Line.kr(0, 255, 5), 2r00101111)}.play	//one bit differs in the voice control register
+{MZPokey.ar(Line.kr(0, 255, 5), 2r10101111)}.play	//one bit differs in the voice control register
+{MZPokey.ar(Line.kr(0, 255, 5), 2r10101111, audctl: 2r00000001)}.play	//another clock
+{MZPokey.ar(Line.kr(0, 255, 5), 2r10101111, audctl: 2r01000001)}.play	//with highpass filter
+
+//--two voices
+{MZPokey.ar(MouseX.kr(0, 255), 2r10101010, MouseY.kr(0, 255), 2r10101010, audctl: 2r00000001)}.play
+
+//--all four voices
+({MZPokey.ar(
+	MouseX.kr(0, 255), 2r11000111,
+	MouseY.kr(0, 255), 2r11100111,
+	SinOsc.kr(0.4, 0, 127.5, 127.5), 2r11000111,
+	SinOsc.kr(0.5, 0, 127.5, 127.5), 2r01000111,
+	2r00000000	//general ctl
+).dup}.play)
+
+
+
+(
+SynthDef(\mzpokey, {|out= 0, gate= 1, f1= 0, c1= 0, f2= 0, c2= 0, f3= 0, c3= 0, f4= 0, c4= 0, ctl= 0, amp= 1, pan= 0|
+	var e, z;
+	e= EnvGen.kr(Env.asr(0.01, amp, 0.05), gate, doneAction:2);
+	z= MZPokey.ar(f1, c1, f2, c2, f3, c3, f4, c4, ctl);
+	Out.ar(out, Pan2.ar(z*e, pan));
+}).add;
+)
+
+(
+Pbind(
+	\instrument, \mzpokey,
+	\dur, Pseq([Pn(0.1, 10), Pn(0.05, 12)], inf),
+	\amp, 0.8,
+	\ctl, 2r10000000,
+	\f1, Pseq([Pseries(0, 10, 20), Pgeom(200, 0.94, 20)], inf),
+	\c1, 2r10101111
+).play
+)
+
+(
+Pbind(
+	\instrument, \mzpokey,
+	\dur, Pseq([0.1, 0.08], inf),
+	\amp, 0.8,
+	\ctl, Pseq([Pn(2r10000000, 48), Pn(2r01010001, 24)], inf),
+	\f1, Pbrown(30, 40, 8)+Pseq([0, 22], inf),
+	\c1, Pseq([2r10101100, 2r11000100, 2r00000000, 2r11100111], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \mzpokey,
+	\dur, 0.125,
+	\amp, 0.8,
+	\ctl, Pseq([2r10000001, 2r01000001, 2r00100000], inf),
+	\f1, Pseq([Pn(88, 8), Pseq([120, 130, 140, 50], 4)], inf)+Pseq([Pn(0, 72), Pn(-10, 36)], inf),
+	\c1, 2r10101111,
+	\f2, Pseq([0, 255, 255, 0, 25, 255, 0, 25, Pn(13, 11)], inf),
+	\c2, Pseq([2r10101111, 2r00100111], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \mzpokey,
+	\dur, 0.1,
+	\amp, 0.8,
+	\ctl, Pseq([2r00000110, (2r00000110).setBit(0), (2r00000110).setBit(3)], inf),
+	\f1, Pseq([30, 80, 70, 30, 80, 70, 30], inf),
+	\c1, Pseq([2r11101111], inf),
+	\f2, Pseq([8, 9, 10, 8], inf)*Pseq([Pn(1, 64), Pn(3, 32)], inf),
+	\c2, 2r11101111,
+	\f3, Pseq([Pn(255, 10), Pn(55, 6)], inf),
+	\c3, Pseq([Pn(2r10101111, 7), 0], inf)
+).play
+)
+
+(
+Pbind(
+	\instrument, \mzpokey,
+	\dur, 0.1,
+	\amp, 0.8,
+	\legato, 1.25,
+	\ctl, 2r10000000,
+	\f1, Pseq([5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 5, 6, 140, 6, 5, 6], inf),
+	\c1, Pseq([2r10000000], inf)|Pseq([15, 15, 0, 0, 15, 0, 15, 0, 8, 8, 0, 0, 8, 0, 0, 15+64], inf),
+	\f2, Pseq([Pn(0, 32), Pn(255, 64), Pseq([0, 255, 255, 0, 25, 255, 0, 25, Pseries(8, -1, 8)], inf)]),
+	\c2, Pseq([Pseq([2r10101111, 2r10101000], inf)], inf),
+	\f3, Pseq([Pn(32, 15), Prand([33, 35])], inf),
+	\c3, Pseq([Pn(0, 64), Pn(2r01101000, 32), Pn(2r11101100, 32)], inf),
+	\f4, Pseq([0, 0, 100, 155], inf),
+	\c4, Pseq([Pn(0, 128), Pseq([Pn(2r11001100, 7), 0], 128)], inf)
+).play
+)
+
+(
+Ptpar([
+	0, Pbind(\instrument, \mzpokey, \dur, 0.16, \amp, 0.2, \f1, 100, \c1, 2r01101111),
+	0.16*16, Pbind(\instrument, \mzpokey, \dur, 0.181, \amp, 0.2, \f2, 10, \c2, 2r10101111),
+	0.16*48, Pbind(\instrument, \mzpokey, \dur, 1.1, \amp, 0.2, \legato, 4, \f2, 20, \c2, 2r11101111),
+	0.16*112, Pbind(\instrument, \mzpokey, \dur, 0.322, \amp, 0.2, \legato, 1.8, \f2, 200, \c2, 2r11101111),
+	0.16*200, Pbind(\instrument, \mzpokey, \dur, 2, \amp, 0.2, \legato, 1.8, \f2, 10, \c2, 2r11101111)
+]).play
+)
+::

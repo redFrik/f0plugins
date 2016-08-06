@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #001fe8}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {color: #000000}
+span.s3 {color: #0022f8}
+span.s4 {text-decoration: underline}
+span.s5 {text-decoration: underline ; color: #0022f8}
+span.s6 {color: #0019ba}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Nes2Triangle</b></span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>wrapper class for the Nes2 UGen</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s2">requires my <a href="../Bit/BitOr.html"><span class="s3">BitOr</span></a> plugin.<span class="Apple-converted-space">  </span>available at </span><span class="s4">http://www.fredrikolofsson.com/pages/code-sc.html</span></p>
+<p class="p2"><br></p>
+<p class="p1">simplifies the interface for the [<a href="Nes2.html"><span class="s5">Nes2</span></a>] ugen a little.<span class="Apple-converted-space">  </span>provides standard ranges with clipping for all inputs.<span class="Apple-converted-space">  </span>no need to deal with bitwise register calculations, though note that this class is a bit less cpu efficient than to use the standard Nes2.</p>
+<p class="p4"><span class="s2">see also [<a href="Nes2Noise.html"><span class="s4">Nes2Noise</span></a>], [<a href="Nes2DMC.html"><span class="s4">Nes2DMC</span></a>], [<a href="Nes2Square.html"><span class="s4">Nes2Square</span></a>]</span></p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*ar(trig, start, counter, freq, vbl)</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>trig - control or audio rate trigger</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>start - linear counter start 0/1</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>counter - linear counter 0-127</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq - frequency 0-2047</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vbl - length counter 0-31</p>
+<p class="p2"><br></p>
+<p class="p5">s.boot</p>
+<p class="p5">{<span class="s6">Nes2Triangle</span>.ar(<span class="s6">Impulse</span>.kr(10), <span class="s6">MouseX</span>.kr(0, 1), <span class="s6">MouseY</span>.kr(0, 127))}.play</p>
+<p class="p5">{<span class="s6">Nes2Triangle</span>.ar(<span class="s6">Impulse</span>.kr(10), 0, 10, <span class="s6">MouseX</span>.kr(0, 2047), <span class="s6">MouseY</span>.kr(0, 31))}.play</p>
+<p class="p6"><br></p>
+<p class="p5">{<span class="s6">Nes2Triangle</span>.ar(<span class="s6">Impulse</span>.kr(10), <span class="s6">LFPulse</span>.kr(0.8, 0, #[0.6, 0.5]), <span class="s6">LFSaw</span>.kr(0.2, 0, 63.5, 63.5), <span class="s6">SinOsc</span>.kr(<span class="s6">LFSaw</span>.kr(0.3, 0, 0.1, 0.2), 0, 200, 900).round(#[100, 110]), 3)}.play</p>
+<p class="p6"><br></p>
+<p class="p5">{<span class="s6">Nes2Triangle</span>.ar(<span class="s6">Dust</span>.ar(<span class="s6">SinOsc</span>.ar(0.3, 0, 20, 40)), 0, <span class="s6">SinOsc</span>.kr(0.08, 0, 2, 3), <span class="s6">LFNoise1</span>.ar(<span class="s6">SinOsc</span>.kr(0.4, 0, 20, 40), 400, 400)).dup}.play</p>
+</body>
+</html>

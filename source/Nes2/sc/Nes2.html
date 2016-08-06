@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #0000ff}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #bf0000}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline ; color: #083aec}
+span.s3 {text-decoration: underline ; color: #0000ff}
+span.s4 {text-decoration: underline}
+span.s5 {color: #0000bf}
+span.s6 {color: #000000}
+span.s7 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>Nes2<span class="Apple-tab-span">	</span></b></span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>APU Chip Sound Simulator</b></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">Emulation of the sound generation hardware of the NES APU chip by Matthew Conte.</p>
+<p class="p1">this ugen has 5 oscillators: 2 squares, 1 triangle, 1 noise, 1 dmc.<span class="Apple-converted-space">  </span>note that dmc is only partially implemented.</p>
+<p class="p1">for simplified interfaces to this class see [<a href="Nes2Square.html"><span class="s2">Nes2Square</span></a>], [<a href="Nes2Triangle.html"><span class="s2">Nes2Triangle</span></a>], [<a href="Nes2Noise.html"><span class="s2">Nes2Noise</span></a>], [<a href="Nes2DMC.html"><span class="s2">Nes2DMC</span></a>]</p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*ar(trig, a0, a1, a2, a3, b0, b1, b2, b3, c0, c2, c3, d0, d2, d3, e0, e1, e2, e3, smask)</b></p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a0/b0 -<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(the 2 square waves)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-6 - duty cycle</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>5 - loop envelope</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4 - envelope decay disable</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3-0 - volume / envelope decay rate</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a1/b1 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7 - sweep on</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6-4 - sweep length</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3 - sweep inc/dec</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2-0 - sweep shifts</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a2/b2 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-0 - frequency low bits</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>a3/b3 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-3 - vbl length counter</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2-0 - frequency high bits</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c0 -<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(the triangle wave)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7 - linear counter start</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6-0 - linear counter</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c2 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-0 - frequency low bits</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>c3 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-3 length counter</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2-0 frequency high bits</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d0 -<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(the noise)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>5 - loop envelope</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4 - envelope decay disable</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3-0 - volume / envelope decay rate</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d2 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7 - short mode</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3-0 playback sample rate</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>d3 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-3 length counter</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e0 -<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>(the delta modulation channel)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7 - irq generator (not in use)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6 - looping</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3-0 - frequency control</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e1 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6-0 - delta count register or output dc level (not in use)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e2 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-0 - address load register (not in use)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>e3 -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7-0 - length register (not in use)</p>
+<p class="p2"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>smask -</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4 - dmc channel enabled</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3 - noise channel enabled</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2 - triangle wave channel enabled</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1 - square wave channel 2 enabled</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>0 - square wave channel 1 enabled</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1">code adapted from v1.2 of Nofrendo, available here <span class="s3">http://sourceforge.net/projects/nosefart/</span></p>
+<p class="p1">and more detailed info about this chip can be found here...</p>
+<p class="p3"><span class="s4">http://www.slack.net/~ant/nes-emu/apu_ref.txt</span></p>
+<p class="p3"><span class="s4">http://web.textfiles.com/games/nessound.txt</span></p>
+<p class="p3"><span class="s4">http://nesdev.parodius.com/dmc.txt</span></p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p4">s.boot;</p>
+<p class="p5"><br></p>
+<p class="p6">//--rectangle</p>
+<p class="p4">{<span class="s5">Nes2</span>.ar(<span class="s5">Impulse</span>.kr(3), a0:2r00010111, a2:2r10000000, smask:2r00000001)}.play</p>
+<p class="p4">{<span class="s5">Nes2</span>.ar(<span class="s5">Impulse</span>.kr(3), a0:2r00010111, a2:<span class="s5">MouseX</span>.kr(0, 255), smask:2r00000001)}.play</p>
+<p class="p4">{<span class="s5">Nes2</span>.ar(<span class="s5">Impulse</span>.kr(3), a0:2r00100000, a2:<span class="s5">MouseX</span>.kr(0, 255), smask:2r00000001)}.play</p>
+<p class="p5"><br></p>
+<p class="p6">//--2 rectangles</p>
+<p class="p4">{<span class="s5">Nes2</span>.ar(<span class="s5">Impulse</span>.kr(3), a0:2r00010111, a2:<span class="s5">MouseX</span>.kr(0, 255), b0:2r00010111, b2:<span class="s5">MouseY</span>.kr(0, 255), smask:2r00000011)}.play</p>
+<p class="p5"><br></p>
+<p class="p6">//--triangle</p>
+<p class="p4">{<span class="s5">Nes2</span>.ar(<span class="s5">Impulse</span>.kr(3), c0:2r10000100, c2:<span class="s5">MouseX</span>.kr(0, 255), smask:2r00000100)}.play</p>
+<p class="p5"><br></p>
+<p class="p6">//--noise</p>
+<p class="p4">{<span class="s5">Nes2</span>.ar(<span class="s5">Impulse</span>.kr(3), d0:2r00000100, d2:<span class="s5">MouseX</span>.kr(0, 15), smask:2r00001000)}.play</p>
+<p class="p4">{<span class="s5">Nes2</span>.ar(<span class="s5">Impulse</span>.kr(3), d0:2r00100111, d2:<span class="s5">Line</span>.kr(0, 15, 3), smask:2r00001000)}.play</p>
+<p class="p5"><br></p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p7">SynthDef<span class="s6">(</span><span class="s7">\nes2</span><span class="s6">, {</span>|out= 0, gate= 1, a0= 0, a1= 0, a2= 0, a3= 0, b0= 0, b1= 0, b2= 0, b3= 0, c0= 0, c2= 0, c3= 0, d0= 0, d2= 0, d3= 0, e0= 0, e1= 0, e2= 0, e3= 0, smask= 0, amp= 1, pan= 0|</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">var</span> e, z;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>e= <span class="s5">EnvGen</span>.kr(<span class="s5">Env</span>.asr(0.01, amp, 0.05), gate, doneAction:2);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>z= <span class="s5">Nes2</span>.ar(gate, a0, a1, a2, a3, b0, b1, b2, b3, c0, c2, c3, d0, d2, d3, e0, e1, e2, e3, smask);</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s5">Out</span>.ar(out, <span class="s5">Pan2</span>.ar(z*e, pan));</p>
+<p class="p4">}).add;</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p7">Pbind<span class="s6">(</span></p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\nes2<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 1,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 0.8,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a0</span>, 2r10111100,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a1</span>, <span class="s5">Pseq</span>([2r11111100, 2r11111100, 2r11110100, 2r11110100], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a2</span>, 2r10010000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a3</span>, <span class="s5">Pseq</span>([2r11111010, 2r00101011], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\smask</span>, 2r00000001</p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p7">Pbind<span class="s6">(</span></p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\nes2<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.12,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 0.8,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\legato</span>, 1.5,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a0</span>, <span class="s5">Pseq</span>([<span class="s5">Pn</span>(0, 12), <span class="s5">Pn</span>(2r00000100, 12), <span class="s5">Pn</span>(0, 12), <span class="s5">Pn</span>(2r11000111, 12)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a1</span>, <span class="s5">Pseq</span>([<span class="s5">Pn</span>(2r00000000, 32), <span class="s5">Pn</span>(2r11110100, 12)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a2</span>, 2r00000000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a3</span>, <span class="s5">Pseq</span>([2r00001010, 2r00000011], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\smask</span>, 2r00000001</p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p7">Pbind<span class="s6">(</span></p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\nes2<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.125,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 0.8,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a0</span>, <span class="s5">Pseq</span>([<span class="s5">Pn</span>(0, 12), <span class="s5">Pn</span>(2r00000100, 12), <span class="s5">Pn</span>(0, 12), <span class="s5">Pn</span>(2r11000111, 12)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a1</span>, <span class="s5">Pseq</span>([<span class="s5">Pn</span>(2r00000000, 32), <span class="s5">Pn</span>(2r11110100, 12)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a2</span>, 2r00000000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\a3</span>, <span class="s5">Pseq</span>([2r00001010, 2r00000011], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\b0</span>, 2r11100000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\b1</span>, <span class="s5">Pseq</span>([<span class="s5">Pn</span>(2r00000000, 32), <span class="s5">Pn</span>(2r11110011, 12)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\b2</span>, <span class="s5">Pseq</span>([<span class="s5">Pseries</span>(255, -10, 25)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\b3</span>, <span class="s5">Pseq</span>([2r11111010, 2r11111001], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\smask</span>, 2r00000011</p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p7">Pbind<span class="s6">(</span></p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\nes2<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, <span class="s5">Pbrown</span>(0.1, 0.15, 0.1),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 0.8,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\d0</span>, 2r00011000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\d2</span>, <span class="s5">Pseq</span>([2r00001000, 2r00000111, <span class="s5">Pseq</span>([2r10000100, 2r10001010], 3)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\d3</span>, <span class="s5">Pseq</span>([2r11000000, 2r11100000, <span class="s5">Pseq</span>([2r11010000, 2r11011000], 4)], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\smask</span>, 2r00001000</p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p6"><span class="s5">Pbind</span><span class="s6">(<span class="Apple-tab-span">	</span></span>//not working really but does produce some nice artifacts</p>
+<p class="p8"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\nes2<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, <span class="s5">Pseq</span>([0.06, 0.04], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 1,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\e0</span>, <span class="s5">Pseq</span>([<span class="s5">Pn</span>(2r01000000, 64), <span class="s5">Pwhite</span>(0, 12, 15).round(4)+2r01000000], <span class="s5">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\e1</span>, 2r00000000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\e2</span>, 2r00000000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\e3</span>, 2r00000000,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\smask</span>, 2r00010000</p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+</body>
+</html>

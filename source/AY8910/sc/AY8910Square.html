@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<title></title>
+<meta name="Generator" content="Cocoa HTML Writer">
+<meta name="CocoaVersion" content="949.54">
+<style type="text/css">
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000}
+p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #0000bf}
+p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 9.0px Monaco; color: #007300}
+span.s1 {font: 18.0px Helvetica}
+span.s2 {text-decoration: underline ; color: #0022f8}
+span.s3 {color: #0024b5}
+span.s4 {color: #0000bf}
+span.s5 {color: #bf0000}
+span.s6 {color: #000000}
+span.s7 {color: #007300}
+span.Apple-tab-span {white-space:pre}
+</style>
+</head>
+<body>
+<p class="p1"><span class="s1"><b>AY8910Square</b></span><b><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>wrapper class for the AY8910 UGen</b></p>
+<p class="p2"><br></p>
+<p class="p1">Simplifies the interface for the [<a href="AY8910.html"><span class="s2">AY8910</span></a>] UGen a little and provides standard ranges with clipping for all inputs.<span class="Apple-converted-space">  </span>No need to deal with so many bitwise register calculations, though note that this class is a bit less cpu efficient than to use the standard AY8910.<span class="Apple-converted-space">  </span>Also it uses only one of the voices but you can easily run many UGens in parallel.</p>
+<p class="p1">Note that this ugen outputs 3 separate channels of sound but only the first one is ever in use.</p>
+<p class="p2"><br></p>
+<p class="p1"><b><span class="Apple-tab-span">	</span>*ar(freq, noise, ctrl, vol, envRate, envShape, rate)</b></p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>freq - frequency (0-4095)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>noise - noise period (0-255)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>ctrl -<span class="Apple-tab-span">	</span>0 - noise+tone</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>1 - noise</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>2 - tone</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>3 - silence</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>4 - noise+tone with envelope on</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>5 - noise with envelope on</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>6 - tone with envelope on</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>7 - silence with envelope on</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>vol - volume (0-15)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>envRate - envelope period (0-65535)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>envShape - envelope shape (0-15) (see [<a href="AY8910.html"><span class="s2">AY8910</span></a><span class="s3">]</span> helpfile)</p>
+<p class="p1"><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>rate - scale playbackrate for the 3 tones (float 0.0-...)</p>
+<p class="p3"><br></p>
+<p class="p4">s.boot;</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(100, 60, 0)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 0)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 6, 0)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 1)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 6, 2)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 3)}.play<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span><span class="s5">//pointless</span></p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 4, 15, 200, 2r1000)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 5, 15, 200, 2r1000)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 6, 15, 200, 2r1000)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 7, 15, 200, 2r1000)}.play<span class="Apple-tab-span">	</span><span class="s5">//pointless</span></p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 4, 15, 2000, 2r1000)}.play</p>
+<p class="p4">{<span class="s4">AY8910Square</span>.ar(20, 60, 6, 15, 2000, 2r1010)}.play</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p6"><span class="s6">{</span>AY8910Square<span class="s6">.ar(</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">MouseX</span>.kr(1, 4096, <span class="s7">'exponential'</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">MouseY</span>.kr(1, 255, <span class="s7">'exponential'</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">SinOsc</span>.kr(0.35, [0, pi/2], 3.5, 3.5).round</p>
+<p class="p4">)}.play</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p6">SynthDef<span class="s6">(</span><span class="s7">\ay8910square</span><span class="s6">, {</span>|out= 0, gate= 1, freq= 100, noise= 15, ctrl= 0, vol= 15, envRate= 200, envShape= 14, rate= 1, amp= 1, pan= 0|</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">var</span> e, z;</p>
+<p class="p4"><span class="Apple-tab-span">	</span>e= <span class="s4">EnvGen</span>.kr(<span class="s4">Env</span>.asr(0.01, amp, 0.05), gate, doneAction:2);</p>
+<p class="p4"><span class="Apple-tab-span">	</span>z= <span class="s4">AY8910Square</span>.ar(freq, noise, ctrl, vol, envRate, envShape, rate)[0];</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s4">Out</span>.ar(out, <span class="s4">Pan2</span>.ar(z*e, pan));</p>
+<p class="p4">}).add;</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p6">Pbind<span class="s6">(</span></p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\ay8910square<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, <span class="s4">Pseq</span>([<span class="s4">Pn</span>(0.1, 10), <span class="s4">Pn</span>(0.05, 12)], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 0.8,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\ctrl</span>, 2,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\freq</span>, <span class="s4">Pseq</span>([<span class="s4">Pseries</span>(0, 10, 20), <span class="s4">Pgeom</span>(200, 0.94, 20)], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\noise</span>, <span class="s4">Pseq</span>([<span class="s4">Pn</span>(7, 66), <span class="s4">Pn</span>(6, 66), <span class="s4">Pn</span>(4, 66), <span class="s4">Pn</span>(2, 66)], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\vol</span>, 15</p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p6">Pbind<span class="s6">(</span></p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\ay8910square<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, <span class="s4">Pseq</span>([<span class="s4">Pn</span>(0.1, 12), <span class="s4">Pn</span>(0.05, 12)], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 1,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\freq</span>, <span class="s4">Pseq</span>([100, 90, 120, 400], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\ctrl</span>, <span class="s4">Pseq</span>([6, 6, 6, 6, 5, 5, 6, 6], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\vol</span>, <span class="s4">Pseq</span>([15, 0, 10, 0, 15, 0, 15, 0], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\envRate</span>, <span class="s4">Pseq</span>([<span class="s4">Pn</span>(100, 64), <span class="s4">Pshuf</span>([200, 250, 300, 350], 8)], <span class="s4">inf</span>),</p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span>\envShape<span class="s6">, 9</span></p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+<p class="p5"><br></p>
+<p class="p4">(</p>
+<p class="p6">Pbind<span class="s6">(</span></p>
+<p class="p7"><span class="s6"><span class="Apple-tab-span">	</span></span>\instrument<span class="s6">, </span>\ay8910square<span class="s6">,</span></p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\dur</span>, 0.1,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\amp</span>, 0.8,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\legato</span>, 1.15,</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\freq</span>, <span class="s4">Pseq</span>([15, 18, 15, 18, 15, 18, 15, 18, 15, 18, 15, 18, 72, 18, 15, 18], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\vol</span>, <span class="s4">Pseq</span>([15, 15, 0, 0, 15, 0, 15, 0, 8, 8, 0, 0, 8, 0, 0, 15], <span class="s4">inf</span>),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\envRate</span>, <span class="s4">Pseq</span>([<span class="s4">Pn</span>(0, 32), <span class="s4">Pn</span>(255, 64), <span class="s4">Pseq</span>([0, 255, 255, 0, 25, 255, 0, 25, <span class="s4">Pseries</span>(8, -1, 8)], <span class="s4">inf</span>)]),</p>
+<p class="p4"><span class="Apple-tab-span">	</span><span class="s7">\ctrl</span>, <span class="s4">Pseq</span>([<span class="s4">Pn</span>(2, 12), <span class="s4">Pn</span>(6, 6), <span class="s4">Pn</span>(2, 4)], <span class="s4">inf</span>)</p>
+<p class="p4">).play</p>
+<p class="p4">)</p>
+</body>
+</html>

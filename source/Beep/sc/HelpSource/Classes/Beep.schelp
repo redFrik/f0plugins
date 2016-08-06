@@ -1,0 +1,36 @@
+class:: Beep
+summary:: Sound Chip Simulator (well...)
+categories:: UGens>Emulators
+related:: Classes/Atari2600
+
+DESCRIPTION::
+Oldskool beep sound simulation by KT.
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+argument::freq
+Frequency.
+
+argument::vol
+Volume.
+
+EXAMPLES::
+
+code::
+s.boot;
+{Beep.ar}.play			//note: a bit loud
+
+{Beep.ar(2985, LFNoise0.kr(4).max(0))}.play
+
+{Beep.ar(SinOsc.kr(0.2, 0, 100, 200).round(50), LFPulse.kr(2).poll)}.play
+
+{Beep.ar(LFSaw.kr(1).abs.round(0.2)+1*100)}.play
+
+{Beep.ar(LFTri.kr([4, 4]).max(0)+100, LFNoise0.kr(8).max(0))}.play
+
+{Beep.ar(SinOsc.kr(13)>SinOsc.kr([0.75, 0.775])*200+100, SinOsc.kr(2)>SinOsc.kr(1.5))}.play
+
+{Clip.ar((Mix(Beep.ar((0.1..5)*200+100, LFPulse.kr((0.1..5)))).dup), -1, 1)}.play
+::
