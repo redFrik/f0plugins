@@ -1,72 +1,41 @@
 # f0plugins
 plugins for supercollider
 
+plugins for [supercollider](http://supercollider.github.io) 3.6 and above.
 
+* Astrocade - sound chip emulation
+* Atari2600 - tia sound chip emulation
+* AY8910 - sound chip emulation
+* Beep - sound chip emulation
+* MZPokey - another pokey sound chip emulation
+* Nes2 - apu sound chip emulation
+* Pokey - pokey sound chip emulation
+* RedDPCM - two plugins for encoding and decoding differential pulse-code modulation signals
+* RedLbyl - look before you leap
+* RedNoise - a really bad pseudo-random noise generator
+* RedPhasor and RedPhasor2 - two phasors that can loop
+* SID6581f - sound chip emulation
+* Slub - for generating cpu spikes
+* SN76489 - sound chip emulation
 
-for supercollider 3.5 and above (see below for building under 3.6)
+see also <http://www.fredrikolofsson.com/pages/code-sc.html#plugins>
 
-source code and compile files for my supercollider plugins.
-see http://www.fredrikolofsson.com/pages/code-sc.html#plugins
+binaries
+--
 
-to build first install cmake and download the supercollider source via git,
-then open terminal and cd to the folder containing this README and do...
+to download pre-made and ready-to-use binaries see <https://github.com/redFrik/f0plugins/releases>
 
-> mkdir build
-> cd build
-> cmake -DSC_PATH=~/supercollider/ -DINSTALL_DESTINATION="/Users/???/Library/Application Support/SuperCollider/Extensions" ..
+compile
+--
+
+to build these yourself first install cmake and download the supercollider main source code via git, then open terminal and cd to the folder containing this README and do...
+
+```shell
+> mkdir build && build
+> cmake -DSC_PATH=~/supercollider -DINSTALL_DESTINATION="/absolute/path" ..
 > make install
+```
 
-edit SC_PATH above to point to your supercollider source directory,
-and edit INSTALL_DESTINATION to point to where you want the resulting plugins.
+edit `-DSC_PATH` above to point to your supercollider source directory, and edit `-DINSTALL_DESTINATION` to where you want the resulting plugins installed. on *osx* this will typically be `/Users/???/Library/Application Support/SuperCollider/Extensions` and on *linux* you can completely remove the -DINSTALL_DESTINATION use the default location.
 
-
-NOTE:
-Not tested on Windows. Use the old binaries if problems. They are here...
-http://www.fredrikolofsson.com/pages/code-sc.html#plugins
-
-
-IMPORTANT: The supercollider plugin API changed between versions 3.5 and 3.6 so plugins built for 3.5 or earlier will not load under 3.6.
-To build f0plugins for 3.6 make sure you have set the supercollider 3.6 branch (master). Like this...
-> cd ~/supercollider
-> git checkout master
-> git submodule init && git submodule update
-and then build f0plugins as normal.
-
-
-
-
-
-
-
-
-DETAILED BUILD INSTRUCTIONS FOR LINUX:
-(tested on ubuntu desktop)
-
-//--preparation
-sudo apt-get install git
-sudo apt-get install cmake
-sudo apt-get install build-essential
-
-//--download f0plugins_src source
-http://www.fredrikolofsson.com/pages/code-sc.html#plugins
-
-//--get supercollider source
-git clone git://supercollider.git.sourceforge.net/gitroot/supercollider/supercollider
-cd supercollider
-git checkout 3.5
-git submodule init && git submodule update
-
-//--build f0plugins
-cd /home/redfrik/f0plugins_src	(or where you put them)
-mkdir build
-cd build
-cmake -DSC_PATH=/home/redfrik/supercollider ..
-make install
-
-//--move the files to sc extension folder
-sudo mv f0plugins/ /usr/share/SuperCollider/Extensions/
-
-//restart sc and test it...
-s.boot
-{Atari2600.ar}.play
-
+NOTE: Not tested under Windows.
