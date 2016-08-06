@@ -1,22 +1,20 @@
 # f0plugins
-plugins for supercollider
+unit-generator plugins for [supercollider](http://supercollider.github.io) 3.6 and above.
 
-plugins for [supercollider](http://supercollider.github.io) 3.6 and above.
-
-* Astrocade - sound chip emulation
-* Atari2600 - tia sound chip emulation
-* AY8910 - sound chip emulation
-* Beep - sound chip emulation
-* MZPokey - another pokey sound chip emulation
-* Nes2 - apu sound chip emulation
-* Pokey - pokey sound chip emulation
-* RedDPCM - two plugins for encoding and decoding differential pulse-code modulation signals
-* RedLbyl - look before you leap
-* RedNoise - a really bad pseudo-random noise generator
-* RedPhasor and RedPhasor2 - two phasors that can loop
-* SID6581f - sound chip emulation
-* Slub - for generating cpu spikes
-* SN76489 - sound chip emulation
+* _Astrocade_ - sound chip emulation
+* _Atari2600_ - tia sound chip emulation
+* _AY8910_ - sound chip emulation
+* _Beep_ - sound chip emulation
+* _MZPokey_ - another pokey sound chip emulation
+* _Nes2_ - apu sound chip emulation
+* _Pokey_ - pokey sound chip emulation
+* _RedDPCM_ - two plugins for encoding and decoding differential pulse-code modulation signals
+* _RedLbyl_ - look before you leap
+* _RedNoise_ - a really bad pseudo-random noise generator
+* _RedPhasor_ and RedPhasor2 - two phasors that can loop
+* _SID6581f_ - sound chip emulation
+* _Slub_ - for generating cpu spikes
+* _SN76489_ - sound chip emulation
 
 see also <http://www.fredrikolofsson.com/pages/code-sc.html#plugins>
 
@@ -36,6 +34,6 @@ to build these yourself first install cmake and download the supercollider main 
 > make install
 ```
 
-edit `-DSC_PATH` above to point to your supercollider source directory, and edit `-DINSTALL_DESTINATION` to where you want the resulting plugins installed. on *osx* this will typically be `/Users/???/Library/Application Support/SuperCollider/Extensions` and on *linux* you can completely remove the -DINSTALL_DESTINATION use the default location.
+edit `-DSC_PATH` above to point to your supercollider source directory (cloned from [here](https://github.com/supercollider/supercollider)), and edit `-DINSTALL_DESTINATION` to where you want the resulting plugins installed. on _osx_ this will typically be `/Users/???/Library/Application Support/SuperCollider/Extensions` and on _linux_ you can completely remove the -DINSTALL_DESTINATION use the default location.
 
 NOTE: Not tested under Windows.
