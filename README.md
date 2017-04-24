@@ -11,7 +11,7 @@ unit-generator plugins for [supercollider](http://supercollider.github.io)
 * __RedDPCM__ - two plugins for encoding and decoding differential pulse-code modulation signals
 * __RedLbyl__ - look before you leap
 * __RedNoise__ - a really bad pseudo-random noise generator
-* __RedPhasor__ and RedPhasor2 - two phasors that can loop
+* __RedPhasor__ and __RedPhasor2__ - two phasors that can loop
 * __SID6581f__ - sound chip emulation
 * __Slub__ - for generating cpu spikes
 * __SN76489__ - sound chip emulation
@@ -34,6 +34,6 @@ to build these yourself first install cmake and download the supercollider main 
 > make install
 ```
 
-edit `-DSC_PATH` above to point to your supercollider source directory (cloned from [here](https://github.com/supercollider/supercollider)), and edit `-DINSTALL_DESTINATION` to where you want the resulting plugins installed. on __osx__ this will typically be `/Users/???/Library/Application Support/SuperCollider/Extensions` and on __linux__ you can completely remove the -DINSTALL_DESTINATION use the default location.
+edit `-DSC_PATH` above to point to your supercollider source directory (cloned from [here](https://github.com/supercollider/supercollider)), and edit `-DINSTALL_DESTINATION` to where you want the resulting plugins installed. on __osx__ this will typically be `/Users/???/Library/Application Support/SuperCollider/Extensions` and on __linux__ you can completely remove the `-DINSTALL_DESTINATION` to use the default location.
 
 NOTE: Not tested under Windows.

@@ -50,64 +50,64 @@ s.boot;
 //compares RedPhasor and RedPhasor2
 (
 var syn, osc, min= 400, max= 800, lmin= 0.3, lmax= 0.7;
-var w= Window("redPhasor", Rect(400, 400, 400, 400)).front;
-var startSld= Slider(w, Rect(10, 30, 20, 200)).value_(0)
-	.action= {|v|
-		if(startSld.value<endSld.value, {
-			loopStartSld.valueAction= loopStartSld.value.clip(startSld.value, endSld.value);
-			loopEndSld.valueAction= loopEndSld.value.clip(startSld.value, endSld.value);
-		}, {
-			loopStartSld.valueAction= loopStartSld.value.clip(endSld.value, startSld.value);
-			loopEndSld.valueAction= loopEndSld.value.clip(endSld.value, startSld.value);
-		});
-		syn.set(\start, v.value.linexp(0, 1, min, max));
-	};
-var endSld= Slider(w, Rect(30, 30, 20, 200)).value_(1)
-	.action= {|v|
-		if(endSld.value>startSld.value, {
-			loopStartSld.valueAction= loopStartSld.value.clip(startSld.value, endSld.value);
-			loopEndSld.valueAction= loopEndSld.value.clip(startSld.value, endSld.value);
-		}, {
-			loopStartSld.valueAction= loopStartSld.value.clip(endSld.value, startSld.value);
-			loopEndSld.valueAction= loopEndSld.value.clip(endSld.value, startSld.value);
-		});
-		syn.set(\end, v.value.linexp(0, 1, min, max));
-	};
-var loopStartSld= Slider(w, Rect(110, 30, 20, 200)).value_(lmin)
-	.action= {|v|
-		if(startSld.value<endSld.value, {
-			v.value= v.value.clip(startSld.value, endSld.value);
-		}, {
-			v.value= v.value.clip(endSld.value, startSld.value);
-		});
-		syn.set(\loopStart, v.value.linexp(0, 1, min, max));
-	};
-var loopEndSld= Slider(w, Rect(130, 30, 20, 200)).value_(lmax)
-	.action= {|v|
-		if(endSld.value>startSld.value, {
-			v.value= v.value.clip(startSld.value, endSld.value);
-		}, {
-			v.value= v.value.clip(endSld.value, startSld.value);
-		});
-		syn.set(\loopEnd, v.value.linexp(0, 1, min, max));
-	};
-var mult1= MultiSliderView(w, Rect(10, 260, 180, 120)).value_(0.dup(180))
-	.indexThumbSize_(1).gap_(0).valueThumbSize_(1);
-var mult2= MultiSliderView(w, Rect(210, 260, 180, 120)).value_(0.dup(180))
-	.indexThumbSize_(1).gap_(0).valueThumbSize_(1);
-Button(w, Rect(200, 60, 180, 20))
-	.states_([["trig"]])
-	.action_{syn.set(\t_trig, 1)};
-Button(w, Rect(200, 120, 180, 20))
-	.states_([["loop= 0 (off)"], ["loop= 1 (on)"], ["loop= 2 (palindrome)"]])
-	.action_{|v| syn.set(\loop, v.value)};
-Slider(w, Rect(200, 180, 180, 20)).value_(0.75)
-	.action_{|v| syn.set(\rate, v.value.linlin(0, 1, -1, 1))};
-StaticText(w, Rect(60, 380, 100, 20)).string_("RedPhasor");
-StaticText(w, Rect(260, 380, 100, 20)).string_("RedPhasor2");
-StaticText(w, Rect(5, 10, 100, 20)).string_("start/end");
-StaticText(w, Rect(80, 10, 100, 20)).string_("loopStart/loopEnd");
-StaticText(w, Rect(280, 200, 100, 20)).string_("rate -1 to 1");
+var win= Window("redPhasor", Rect(400, 400, 400, 400)).front;
+var startSld= Slider(win, Rect(10, 30, 20, 200)).value_(0)
+.action= {|v|
+	if(startSld.value<endSld.value, {
+		loopStartSld.valueAction= loopStartSld.value.clip(startSld.value, endSld.value);
+		loopEndSld.valueAction= loopEndSld.value.clip(startSld.value, endSld.value);
+	}, {
+		loopStartSld.valueAction= loopStartSld.value.clip(endSld.value, startSld.value);
+		loopEndSld.valueAction= loopEndSld.value.clip(endSld.value, startSld.value);
+	});
+	syn.set(\start, v.value.linexp(0, 1, min, max));
+};
+var endSld= Slider(win, Rect(30, 30, 20, 200)).value_(1)
+.action= {|v|
+	if(endSld.value>startSld.value, {
+		loopStartSld.valueAction= loopStartSld.value.clip(startSld.value, endSld.value);
+		loopEndSld.valueAction= loopEndSld.value.clip(startSld.value, endSld.value);
+	}, {
+		loopStartSld.valueAction= loopStartSld.value.clip(endSld.value, startSld.value);
+		loopEndSld.valueAction= loopEndSld.value.clip(endSld.value, startSld.value);
+	});
+	syn.set(\end, v.value.linexp(0, 1, min, max));
+};
+var loopStartSld= Slider(win, Rect(110, 30, 20, 200)).value_(lmin)
+.action= {|v|
+	if(startSld.value<endSld.value, {
+		v.value= v.value.clip(startSld.value, endSld.value);
+	}, {
+		v.value= v.value.clip(endSld.value, startSld.value);
+	});
+	syn.set(\loopStart, v.value.linexp(0, 1, min, max));
+};
+var loopEndSld= Slider(win, Rect(130, 30, 20, 200)).value_(lmax)
+.action= {|v|
+	if(endSld.value>startSld.value, {
+		v.value= v.value.clip(startSld.value, endSld.value);
+	}, {
+		v.value= v.value.clip(endSld.value, startSld.value);
+	});
+	syn.set(\loopEnd, v.value.linexp(0, 1, min, max));
+};
+var mult1= MultiSliderView(win, Rect(10, 260, 180, 120)).value_(0.dup(180))
+.indexThumbSize_(1).gap_(0).valueThumbSize_(2);
+var mult2= MultiSliderView(win, Rect(210, 260, 180, 120)).value_(0.dup(180))
+.indexThumbSize_(1).gap_(0).valueThumbSize_(2);
+Button(win, Rect(200, 60, 180, 20))
+.states_([["trig"]])
+.action_{syn.set(\t_trig, 1)};
+Button(win, Rect(200, 120, 180, 20))
+.states_([["loop= 0 (off)"], ["loop= 1 (on)"], ["loop= 2 (palindrome)"]])
+.action_{|v| syn.set(\loop, v.value)};
+Slider(win, Rect(200, 180, 180, 20)).value_(0.75)
+.action_{|v| syn.set(\rate, v.value.linlin(0, 1, -1, 1))};
+StaticText(win, Rect(60, 380, 100, 20)).string_("RedPhasor");
+StaticText(win, Rect(260, 380, 100, 20)).string_("RedPhasor2");
+StaticText(win, Rect(5, 10, 100, 20)).string_("start/end");
+StaticText(win, Rect(80, 10, 120, 20)).string_("loopStart/loopEnd");
+StaticText(win, Rect(280, 200, 100, 20)).string_("rate -1 to 1");
 syn= SynthDef(\redPhasor, {|t_trig= 1, rate= 0.5, start= 400, end= 800, loop= 0, loopStart= 500, loopEnd= 600|
 	var rp1= RedPhasor.kr(t_trig, rate, start, end, loop, loopStart, loopEnd);
 	var rp2= RedPhasor2.kr(t_trig, rate, start, end, loop, loopStart, loopEnd);
@@ -115,13 +115,13 @@ syn= SynthDef(\redPhasor, {|t_trig= 1, rate= 0.5, start= 400, end= 800, loop= 0,
 	SendTrig.kr(report, #[0, 1], [rp1, rp2]);
 	Out.ar(0, SinOsc.ar([rp1, rp2], 0, 0.3));
 }).play(s, [\start, min, \end, max, \loopStart, lmin.linexp(0, 1, min, max), \loopEnd, lmax.linexp(0, 1, min, max)]);
-osc= OSCresponder(s.addr, '/tr', {|t, r, m|
-	switch(m[2],
-		0, {{mult1.value= mult1.value.rotate(-1).put(179, m[3].explin(min, max, 0, 1))}.defer},
-		1, {{mult2.value= mult2.value.rotate(-1).put(179, m[3].explin(min, max, 0, 1))}.defer}
+osc= OSCFunc({|msg|
+	switch(msg[2],
+		0, {{mult1.value= mult1.value.rotate(-1).put(179, msg[3].explin(min, max, 0, 1))}.defer},
+		1, {{mult2.value= mult2.value.rotate(-1).put(179, msg[3].explin(min, max, 0, 1))}.defer}
 	);
-}).add;
-w.onClose= {osc.remove; syn.free};
-CmdPeriod.doOnce({if(w.isClosed.not, {w.close})});
+}, '/tr', s.addr);
+win.onClose= {osc.free; syn.free};
+CmdPeriod.doOnce({win.close});
 )
 ::
