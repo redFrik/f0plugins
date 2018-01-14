@@ -12,61 +12,57 @@ Nes2 : UGen {
 	*categories {^#["UGens>Emulators"]}
 }
 
-//requiress my Bit plugins
 Nes2Square {
 	*ar {|trig= 0, dutycycle= 0, loopenv= 0, envdecay= 0, vol= 10, sweep= 0, sweeplen= 0, sweepdir= 0, sweepshi= 0, freq= 100, vbl= 0|
 		var a0, a1, a2, a3;
 		a0= Clip.kr(dutycycle.round, 0, 3)*64;
-		a0= BitOr.kr(a0, (Clip.kr(loopenv.round, 0, 1)*32));
-		a0= BitOr.kr(a0, (Clip.kr(envdecay.round, 0, 1)*16));
-		a0= BitOr.kr(a0, Clip.kr(vol.round, 0, 15));
+		a0= a0|(Clip.kr(loopenv.round, 0, 1)*32);
+		a0= a0|(Clip.kr(envdecay.round, 0, 1)*16);
+		a0= a0|Clip.kr(vol.round, 0, 15);
 		a1= Clip.kr(sweep.round, 0, 1)*128;
-		a1= BitOr.kr(a1, (Clip.kr(sweeplen.round, 0, 7)*16));
-		a1= BitOr.kr(a1, (Clip.kr(sweepdir.round, 0, 1)*8));
-		a1= BitOr.kr(a1, Clip.kr(sweepshi.round, 0, 7));
+		a1= a1|(Clip.kr(sweeplen.round, 0, 7)*16);
+		a1= a1|(Clip.kr(sweepdir.round, 0, 1)*8);
+		a1= a1|Clip.kr(sweepshi.round, 0, 7);
 		a2= freq.max(0).round%256;
 		a3= Clip.kr((freq/256).floor, 0, 7);
-		a3= BitOr.kr(a3, (Clip.kr(vbl.round, 0, 31)*8));
+		a3= a3|(Clip.kr(vbl.round, 0, 31)*8);
 		^Nes2.ar(trig, a0, a1, a2, a3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
 	}
 	*categories {^#["UGens>Emulators"]}
 }
 
-//requiress my Bit plugins
 Nes2Triangle {
 	*ar {|trig= 0, start= 0, counter= 10, freq= 100, vbl= 0|
 		var c0, c2, c3;
 		c0= Clip.kr(start.round, 0, 1)*128;
-		c0= BitOr.kr(c0, Clip.kr(counter.round, 0, 127));
+		c0= c0|Clip.kr(counter.round, 0, 127);
 		c2= freq.max(0).round%256;
 		c3= Clip.kr((freq/256).floor, 0, 7);
-		c3= BitOr.kr(c3, (Clip.kr(vbl.round, 0, 31)*8));
+		c3= c3|(Clip.kr(vbl.round, 0, 31)*8);
 		^Nes2.ar(trig, 0, 0, 0, 0, 0, 0, 0, 0, c0, c2, c3, 0, 0, 0, 0, 0, 0, 0, 4)
 	}
 	*categories {^#["UGens>Emulators"]}
 }
 
-//requiress my Bit plugins
 Nes2Noise {
 	*ar {|trig= 0, loopenv= 0, envdecay= 0, vol= 10, short= 0, freq= 10, vbl= 0|
 		var d0, d2, d3;
 		d0= Clip.kr(loopenv.round, 0, 1)*32;
-		d0= BitOr.kr(d0, (Clip.kr(envdecay.round, 0, 1)*16));
-		d0= BitOr.kr(d0, Clip.kr(vol.round, 0, 15));
+		d0= d0|(Clip.kr(envdecay.round, 0, 1)*16);
+		d0= d0|Clip.kr(vol.round, 0, 15);
 		d2= Clip.kr(short.round, 0, 1)*128;
-		d2= BitOr.kr(d2, Clip.kr(freq.round, 0, 15));
+		d2= d2|Clip.kr(freq.round, 0, 15);
 		d3= Clip.kr(vbl.round, 0, 31)*8;
 		^Nes2.ar(trig, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, d0, d2, d3, 0, 0, 0, 0, 8)
 	}
 	*categories {^#["UGens>Emulators"]}
 }
 
-//requiress my Bit plugins
 Nes2DMC {
 	*ar {|trig= 0, loop= 0, freq= 1|
 		var e0, e1, e2, e3;
 		e0= Clip.kr(loop.round, 0, 1)*64;
-		e0= BitOr.kr(e0, Clip.kr(freq.round, 0, 7));
+		e0= e0|Clip.kr(freq.round, 0, 7);
 		e1= e2= e3= 0;
 		^Nes2.ar(trig, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, e0, e1, e2, e3, 16)
 	}

@@ -6,10 +6,6 @@ related:: Classes/Nes2DMC, Classes/Nes2Square, Classes/Nes2Noise
 DESCRIPTION::
 Simplifies the interface for the link::Classes/Nes2:: UGen a little. Provides standard ranges with clipping for all inputs. No need to deal with bitwise register calculations, though note that this class is a bit less CPU efficient than to use the standard Nes2.
 
-NOTE::
-Requires my link::Classes/BitOr:: plugin available in the sc3-plugins package.
-::
-
 CLASSMETHODS::
 
 METHOD:: ar
