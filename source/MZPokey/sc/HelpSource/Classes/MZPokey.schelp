@@ -6,7 +6,8 @@ related:: Classes/Pokey
 DESCRIPTION::
 Emulation of the sound generation hardware of the POKEY chip by Michael Borisov. This version calculates in 16bits, is bandlimited and generally better sounding. See link::Classes/Pokey:: for another more rough 8bit version.
 
-Code adapted from the MZPOKEY sound chip emulation, v1.6, from the Atari800 emulator project, available here http://atari800.sourceforge.net/
+Code adapted from the MZPOKEY sound chip emulation, v1.6, from the Atari800 emulator project, available here https://atari800.github.io
+
 More info on how to program this chip can be found here http://www.atariarchives.org/dere/chapt07.php and here http://www.retroclinic.com/leopardcats/bbpokey/pokey.pdf
 
 CLASSMETHODS::

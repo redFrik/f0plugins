@@ -30,7 +30,7 @@ s.boot;
 {
 	var trig;
 	trig= MouseX.kr>0.99;
-	Slub.kr(trig, MouseY.kr(2, 8));	//increase max value here a little if no effect
+	Slub.kr(trig, MouseY.kr(2, 15));	//increase max value here a little if no effect
 	SinOsc.ar([400, 404], 0, 0.1);
 }.play
 )
@@ -45,10 +45,11 @@ x= Slub.new;
 
 x.bang(3)
 x.bang(4)
-x.bang(4.7)
-x.bang(4.8)
+x.bang(5)
 x.bang(4.9)
 x.bang(5.0)
 x.bang(5.5)
+x.bang(5.75)
+x.bang(6.0)
 p.stop;
 ::

@@ -6,7 +6,7 @@ related:: Classes/Beep
 DESCRIPTION::
 Emulation of the sound generation hardware of the SN76489 chip by Lawrence Sebald.
 This chip was used in SegaMasterSystem, Acorn BBC among many others.
-http://www.smspower.org/maxim/docs/SN76489.txt
+http://www.smspower.org/Development/SN76489
 
 CLASSMETHODS::
 

@@ -6,9 +6,13 @@ related:: Classes/AY8910Square
 DESCRIPTION::
 Emulation of the sound generation hardware of the AY-3-8910 chip by Ville Hallik, Michael Cuddy, Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
 This was a very popular sound chip used in many arcade games and consoles (Intellivision, Vectrex) as well as in many home computers (MSX, AtariST, ZX Spectrum 128...)
+
 http://en.wikipedia.org/wiki/AY-3-8910
+
 http://www.atarimagazines.com/v4n7/stsound.html
-http://www.howell1964.freeserve.co.uk/parts/ay3891x_datasheet.htm
+
+https://www.silicon-heaven.net/atom/howel/parts/ay3891x_datasheet.htm
+
 
 NOTE::
 This UGen outputs 3 separate channels of sound! Often you want to mix them.

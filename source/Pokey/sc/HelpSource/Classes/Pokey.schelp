@@ -6,6 +6,7 @@ related:: Classes/PokeySquare
 DESCRIPTION::
 Emulation of the sound generation hardware of the POKEY chip by Ron Fries.
 Code adapted from v2.3 of POKEYSND: POKEY Chip Sound Emulation Library (Atari 8-bit), available at ftp://members.aol.com/atari800xl/pokey23.zip
+
 See also link::Classes/PokeySquare:: for a simpler interface.
 
 NOTE::
