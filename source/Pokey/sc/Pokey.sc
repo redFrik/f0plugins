@@ -6,23 +6,22 @@ Pokey : UGen {
 	*categories {^#["UGens>Emulators"]}
 }
 
-//requiress my Bit plugins
 PokeySquare {		//wrapper class for Pokey
 	*ar {|freq1= 0, tone1= 0, vol1= 0, freq2= 0, tone2= 0, vol2= 0, freq3= 0, tone3= 0, vol3= 0, freq4= 0, tone4= 0, vol4= 0, ctrl= 0|
 		^Pokey.ar(
 			Clip.kr(freq1, 0, 255),
-			BitOr.kr(Clip.kr(tone1.round, 0, 7)*32, Clip.kr(vol1.round, 0, 15)),
+			Clip.kr(tone1.round, 0, 7)*32 | Clip.kr(vol1.round, 0, 15),
 			Clip.kr(freq2, 0, 255),
-			BitOr.kr(Clip.kr(tone2.round, 0, 7)*32, Clip.kr(vol2.round, 0, 15)),
+			Clip.kr(tone2.round, 0, 7)*32 | Clip.kr(vol2.round, 0, 15),
 			Clip.kr(freq3, 0, 255),
-			BitOr.kr(Clip.kr(tone3.round, 0, 7)*32, Clip.kr(vol3.round, 0, 15)),
+			Clip.kr(tone3.round, 0, 7)*32 | Clip.kr(vol3.round, 0, 15),
 			Clip.kr(freq4, 0, 255),
-			BitOr.kr(Clip.kr(tone4.round, 0, 7)*32, Clip.kr(vol4.round, 0, 15)),
+			Clip.kr(tone4.round, 0, 7)*32 | Clip.kr(vol4.round, 0, 15),
 			(ctrl.round%64-1).round(2)*4+(ctrl.round%2)
 		)
 	}
-	
-	
+
+
 	//-- equivalent conversion - scland helper methods
 	*audf {|freq|
 		//simple clip to keep within range
