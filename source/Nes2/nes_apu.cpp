@@ -22,6 +22,7 @@
 	Author Matthew Conte, Ported by Fredrik Olofsson 070227
 */
 
+#include <cstdio>
 #include "SC_PlugIn.h"
 static InterfaceTable *ft;
 
