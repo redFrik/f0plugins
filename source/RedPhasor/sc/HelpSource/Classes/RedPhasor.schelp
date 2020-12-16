@@ -43,6 +43,7 @@ EXAMPLES::
 
 code::
 s.boot;
+
 //no looping & it will play through once. Mouse x acts as trigger
 {SinOsc.ar(RedPhasor.kr(MouseX.kr>0.5, 0.3, 400, 800, 0, 500, 600), 0, 0.2)}.play
 
@@ -75,31 +76,37 @@ a.free
 //--loopbuf examples:
 b= Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
 
-({	//mouse x/y controls looppoints
-	var rate= BufRateScale.ir(b.bufnum);
-	var end= BufFrames.ir(b.bufnum)-1;
+(
+{	//mouse x/y controls looppoints
+	var rate= BufRateScale.ir(b);
+	var end= BufFrames.ir(b)-1;
 	var min= MouseX.kr*end;
 	var max= MouseY.kr*end;
 	var looptype= 2;	//pingpong
 	var i= RedPhasor.ar(0, rate, min, max, 2, min, max);
-	BufRd.ar(1, b.bufnum, i, 0, 2);
-}.play)
+	BufRd.ar(1, b, i, 0, 2);
+}.play;
+)
 
-({	//click and drag
+(
+{	//click and drag
 	//mouse button starts looping between 45 and 55%. Release it and the phasor continues to end
-	var rate= BufRateScale.ir(b.bufnum);
-	var end= BufFrames.ir(b.bufnum)-1;
+	var rate= BufRateScale.ir(b);
+	var end= BufFrames.ir(b)-1;
 	var trig= MouseButton.kr(lag:0);
 	var i= RedPhasor.ar(trig, rate*MouseX.kr(0.1, 10), 0, end, trig, end*0.45, end*0.55);
-	BufRd.ar(1, b.bufnum, i, 0, 2);
-}.play)
+	BufRd.ar(1, b, i, 0, 2);
+}.play;
+)
 
-({	//audiorate control for trigger (unused here) and rate
+(
+{	//audiorate control for trigger (unused here) and rate
 	var rate= SinOsc.ar(MouseX.kr(-50, 50), 0, MouseY.kr(0, 0.5), 1);
-	var end= BufFrames.ir(b.bufnum)-1;
+	var end= BufFrames.ir(b)-1;
 	var i= RedPhasor.ar(DC.ar(0), rate, 0, end, 2, 0, end);
-	BufRd.ar(1, b.bufnum, i, 0, 2);
-}.play)
+	BufRd.ar(1, b, i, 0, 2);
+}.play;
+)
 
 b.free
 
@@ -107,22 +114,22 @@ b.free
 //--
 b= Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
 (
-SynthDef(\redPhasorLooper, {|out= 0, bufnum, rate= 1, loop= 1, loopStart= 0, loopEnd= 1, gate= 1|
+SynthDef(\redPhasorLooper, {|out= 0, buf, rate= 1, loop= 1, loopStart= 0, loopEnd= 1, gate= 1|
 	var e= EnvGen.kr(Env.asr(0.01, 1, 0.01), gate, doneAction: 2);
-	var end= BufFrames.kr(b.bufnum)-1;
-	var p= RedPhasor.ar(0, rate*BufRateScale.kr(bufnum), 0, end, loop, loopStart*end, loopEnd*end);
-	var z= BufRd.ar(1, bufnum, p, 0, 2);
+	var end= BufFrames.kr(buf)-1;
+	var p= RedPhasor.ar(0, rate*BufRateScale.kr(buf), 0, end, loop, loopStart*end, loopEnd*end);
+	var z= BufRd.ar(1, buf, p, 0, 2);
 	Out.ar(out, z*e);
 }).add;
 )
 
-a= Pmono(\redPhasorLooper, \dur, Pseq([Pn(0.25, 2), 0.5], inf), \rate, Pseq([0.5, 1, 2], inf)).play
+a= Pmono(\redPhasorLooper, \buf, b, \dur, Pseq([Pn(0.25, 2), 0.5], inf), \rate, Pseq([0.5, 1, 2], inf)).play
 a.stop
 
-a= Pmono(\redPhasorLooper, \dur, Pseq([Pn(0.125, 2), 0.25], inf), \rate, Pseq([0.75, 1, 1.25, 1], inf), \loop, Pseq([1, 1, 1, 2, 0], inf), \loopStart, Pseq([0, 0.25, 0.5, 0.75], inf), \loopEnd, Pseq([0.99, 0.66, 0.33], inf)).play
+a= Pmono(\redPhasorLooper, \buf, b, \dur, Pseq([Pn(0.125, 2), 0.25], inf), \rate, Pseq([0.75, 1, 1.25, 1], inf), \loop, Pseq([1, 1, 1, 2, 0], inf), \loopStart, Pseq([0, 0.25, 0.5, 0.75], inf), \loopEnd, Pseq([0.99, 0.66, 0.33], inf)).play
 a.stop
 
-a= Pmono(\redPhasorLooper, \dur, 0.125, \rate, Pseq([2, 3, 4]*0.25, inf), \loop, Pseq([Pn(2, 64), Pn(0, 32)], inf), \loopStart, Pseq([0, 0.25, 0.5, 0.75], inf), \loopEnd, Pseq([0.99, 0.66, 0.33], inf)).play
+a= Pmono(\redPhasorLooper, \buf, b, \dur, 0.125, \rate, Pseq([2, 3, 4]*0.25, inf), \loop, Pseq([Pn(2, 64), Pn(0, 32)], inf), \loopStart, Pseq([0, 0.25, 0.5, 0.75], inf), \loopEnd, Pseq([0.99, 0.66, 0.33], inf)).play
 a.stop
 
 b.free
@@ -131,19 +138,19 @@ b.free
 //--
 b= Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
 (
-SynthDef(\redPhasorLooper2, {|out= 0, bufnum, rate= 1, lag= 0.01, gate= 1, amp= 0.5, pan= 0|
+SynthDef(\redPhasorLooper2, {|out= 0, buf, rate= 1, lag= 0.01, gate= 1, amp= 0.5, pan= 0|
 	var e= EnvGen.ar(Env.asr(0.01, 1, 0.1), gate, doneAction:2);
-	var end= BufFrames.kr(b.bufnum)-1;
+	var end= BufFrames.kr(buf)-1;
 	var startLoop= K2A.ar(MouseX.kr(0, end, 0, 0));	//no lag and convert to .ar
 	var endLoop= K2A.ar(MouseY.kr(0, end, 0, 0));		//no lag and convert to .ar
 	var r= Lag.kr(rate, lag);
 	var trig= Ramp.ar(HPZ2.ar(startLoop), 0.1);
-	var p= RedPhasor.ar(trig, r*BufRateScale.kr(bufnum), startLoop, end, 1, startLoop, endLoop);
-	var z= BufRd.ar(1, bufnum, p, 0, 2);
+	var p= RedPhasor.ar(trig, r*BufRateScale.kr(buf), startLoop, end, 1, startLoop, endLoop);
+	var z= BufRd.ar(1, buf, p, 0, 2);
 	Out.ar(out, Pan2.ar(z*e, pan, amp));
 }).add;
 )
-a= Synth(\redPhasorLooper2, [\bufnum, b.bufnum]);
+a= Synth(\redPhasorLooper2, [\buf, b]);
 a.set(\rate, 1.25)
 a.free
 b.free
