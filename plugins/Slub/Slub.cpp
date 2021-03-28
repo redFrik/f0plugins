@@ -33,7 +33,6 @@ struct Slub : public Unit
 
 extern "C"
 {
-	void load(InterfaceTable *inTable);
 	void theFunction(Slub *unit, float spikeValue);
 	void Slub_Ctor(Slub *unit);
 	void Slub_next(Slub *unit, int inNumSamples);

@@ -61,7 +61,6 @@ static const int volume_values[16] = {
 
 
 extern "C" {											//f0
-	void load(InterfaceTable *inTable);
 	void SN76489_Ctor(SN76489 *unit);
 	void SN76489_next_k(SN76489 *unit, int inNumSamples);
 };

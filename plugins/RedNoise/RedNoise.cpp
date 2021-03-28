@@ -30,7 +30,6 @@ struct RedNoise : public Unit {
 };
 
 extern "C" {
-	void load(InterfaceTable *inTable);
 	void RedNoise_Ctor(RedNoise *unit);
 	void RedNoise_next_k(RedNoise *unit, int inNumSamples);
 	void RedNoise_next_a(RedNoise *unit, int inNumSamples);

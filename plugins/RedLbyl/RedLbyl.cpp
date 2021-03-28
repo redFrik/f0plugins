@@ -30,7 +30,6 @@ struct RedLbyl : public Unit {
 };
 
 extern "C" {
-	void load(InterfaceTable *inTable);
 	void RedLbyl_Ctor(RedLbyl *unit);
 	void RedLbyl_next_a(RedLbyl *unit, int inNumSamples);
 	void RedLbyl_next_k(RedLbyl *unit, int inNumSamples);

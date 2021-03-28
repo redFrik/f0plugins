@@ -122,7 +122,6 @@ struct Astrocade : public Unit							//f0 -renamed and made public
 
 
 extern "C" {										//f0
-	void load(InterfaceTable *inTable);
 	void Astrocade_Ctor(Astrocade *unit);
 	void Astrocade_next_k(Astrocade *unit, int inNumSamples);
 	void astrocade_update(Astrocade *unit, float *buffer, int samples);

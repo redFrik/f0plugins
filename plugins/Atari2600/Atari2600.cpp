@@ -149,7 +149,6 @@ struct Atari2600 : public Unit {
 };
 
 extern "C" {
-	void load(InterfaceTable *inTable);
 	void Atari2600_Ctor(Atari2600 *unit);
 	void Atari2600_next_k(Atari2600 *unit, int inNumSamples);
 	void Tia_sound_init(Atari2600 *unit, uint16 sample_freq, uint16 playback_freq);

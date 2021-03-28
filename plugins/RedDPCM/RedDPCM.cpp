@@ -32,7 +32,6 @@ struct RedDPCMdecode : public Unit {
 };
 
 extern "C" {
-	void load(InterfaceTable *inTable);
 	void RedDPCMencode_Ctor(RedDPCMencode *unit);
 	void RedDPCMencode_next_a(RedDPCMencode *unit, int inNumSamples);
 	void RedDPCMencode_next_k(RedDPCMencode *unit, int inNumSamples);

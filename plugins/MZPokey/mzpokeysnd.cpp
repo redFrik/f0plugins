@@ -309,7 +309,6 @@ static void event3_pure(PokeyState* ps, char p5v, char p4v, char p917v);
 
 
 extern "C" {	//f0
-	void load(InterfaceTable *inTable);
 	void MZPokey_Ctor(PokeyState *ps);
 	void MZPokey_next_k(PokeyState *ps, int inNumSamples);
 	void ResetPokeyState(PokeyState* ps);

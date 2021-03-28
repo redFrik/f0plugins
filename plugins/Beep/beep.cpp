@@ -65,7 +65,6 @@ struct BeepU : public Unit							//f0 -renamed and made public unit
 
 
 extern "C" {										//f0
-	void load(InterfaceTable *inTable);
 	void BeepU_Ctor(BeepU *unit);
 	void BeepU_next_k(BeepU *unit, int inNumSamples);
 	void BeepU_sound_update(BeepU *unit, float *buffer, int length);

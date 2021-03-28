@@ -63,7 +63,6 @@ static SIDTYPE sidtype= MOS6581;							//f0 -change here for different chips/uge
 //static SIDTYPE sidtype= MOS8580;
 
 extern "C" {												//f0
-	void load(InterfaceTable *inTable);
 	void SID6581f_Ctor(SID6581f *unit);
 	void SID6581_next_k(SID6581f *unit, int inNumSamples);
 };

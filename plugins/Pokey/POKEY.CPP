@@ -234,7 +234,6 @@ struct Pokey : public Unit {
 };
 
 extern "C" {
-	void load(InterfaceTable *inTable);
 	void Pokey_Ctor(Pokey *unit);
 	void Pokey_next_k(Pokey *unit, int inNumSamples);
 	void Pokey_sound_init (Pokey *unit, uint32 freq17, uint16 playback_freq, uint8 num_pokeys);

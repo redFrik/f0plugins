@@ -41,7 +41,6 @@ struct RedPhasor : public Unit {
 };
 
 extern "C" {
-	void load(InterfaceTable *inTable);
 	void RedPhasor_Ctor(RedPhasor *unit);
 	void RedPhasor_next_kk(RedPhasor *unit, int inNumSamples);
 	void RedPhasor_next_ak(RedPhasor *unit, int inNumSamples);

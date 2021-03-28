@@ -272,7 +272,6 @@ static void shift_register15(int8 *buf, int count)
 
 
 extern "C" {							//f0
-	void load(InterfaceTable *inTable);
 	void Nes2_Ctor(Nes2 *unit);
 	void Nes2_next_k(Nes2 *unit, int inNumSamples);
 	void Nes2_next_a(Nes2 *unit, int inNumSamples);

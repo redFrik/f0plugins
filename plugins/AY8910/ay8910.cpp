@@ -107,7 +107,6 @@ struct AY8910 : public Unit							//f0 -made public unit
 #define MAX(a, b) (a > b ? a : b)						//f0 -added this
 
 extern "C" {											//f0
-	void load(InterfaceTable *inTable);
 	void AY8910_Ctor(AY8910 *unit);
 	void AY8910_next_k(AY8910 *unit, int inNumSamples);
 	void AY8910Update(AY8910 *PSG, float *buf1, float *buf2, float *buf3, int length);
