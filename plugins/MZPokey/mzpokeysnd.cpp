@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	--
 	MZPokey - POKEY Chip Sound Simulator for SC
 	Author Michael Borisov, Ported by Fredrik Olofsson 070226
@@ -92,8 +92,8 @@ extern int	samp_consol_val;				/* actual value of console sound */
 static unsigned int num_cur_pokeys = 0;
 
 /* Filter */
-static unsigned sample_rate; /* Hz */
-static unsigned pokey_frq; /* Hz - for easier resampling */
+static unsigned int sample_rate; /* Hz */
+static unsigned int pokey_frq; /* Hz - for easier resampling */
 static int filter_size;
 static double filter_data[SND_FILTER_SIZE];
 static unsigned audible_frq;
@@ -196,7 +196,7 @@ typedef struct MZPokey : public Unit	//f0
     unsigned char vol0;
 
     unsigned char outvol_0;
-	
+
     /* channel 1 state */
 
     readout_t readout_1;
@@ -271,7 +271,7 @@ typedef struct MZPokey : public Unit	//f0
     unsigned char vol3;
 
     unsigned char outvol_3;
-	
+
 	float last0;	//f0
 	float last1;
 	float last2;
@@ -1083,7 +1083,7 @@ static void advance_ticks(PokeyState* ps, unsigned long ticks)
             }
 
             outvol_new = ps->outvol_0 + ps->outvol_1 + ps->outvol_2 + ps->outvol_3;
-			
+
             if(outvol_new != ps->outvol_all)
             {
                 ps->outvol_all = outvol_new;
@@ -2275,7 +2275,7 @@ static void Pokey_process_16(void* sndbuffer, unsigned sndn)
 
     if(num_cur_pokeys<1)
         return; /* module was not initialized */
-	
+
     /* if there are two pokeys, then the signal is stereo
        we assume even sndn */
 	while(nsam >= (int) num_cur_pokeys)
