@@ -23,7 +23,6 @@
 
 
 #include "SC_PlugIn.h"
-static InterfaceTable *ft;
 
 struct RedPhasor2 : public Unit {
 	double mLevel;
@@ -32,16 +31,10 @@ struct RedPhasor2 : public Unit {
 };
 
 extern "C" {
-	void load(InterfaceTable *inTable);
 	void RedPhasor2_Ctor(RedPhasor2 *unit);
 	void RedPhasor2_next_kk(RedPhasor2 *unit, int inNumSamples);
 	void RedPhasor2_next_ak(RedPhasor2 *unit, int inNumSamples);
 	void RedPhasor2_next_aa(RedPhasor2 *unit, int inNumSamples);
-}
-
-PluginLoad(InterfaceTable *inTable) {
-	ft= inTable;
-	DefineSimpleUnit(RedPhasor2);
 }
 
 void RedPhasor2_Ctor(RedPhasor2 *unit) {

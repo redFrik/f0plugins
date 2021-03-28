@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-	
+
 	--
 	Pokey - POKEY Chip Sound Simulator for SC
 	Author Ron Fries, Ported by Fredrik Olofsson 070222
@@ -114,7 +114,7 @@ static InterfaceTable *ft;
 #include <stdlib.h>
 //#include <time.h>
 
-#include "pokey.h"
+#include "POKEY.H"
 
 #ifndef __POWERPC__
 #undef BIG_ENDIAN
@@ -201,16 +201,16 @@ static uint8 bit5[POLY5_SIZE] =
 
 
 struct Pokey : public Unit {
-	
+
 	/* structures to hold the 9 pokey control bytes */
 	uint8 AUDF[4 * MAXPOKEYS];			/* AUDFx (D200, D202, D204, D206) */
 	uint8 AUDC[4 * MAXPOKEYS];			/* AUDCx (D201, D203, D205, D207) */
 	uint8 AUDCTL[MAXPOKEYS];			/* AUDCTL (D208) */
-	
+
 	uint8 AUDV[4 * MAXPOKEYS];			/* Channel volume - derived */
 	uint8 Outbit[4 * MAXPOKEYS];		/* current state of the output (high or low) */
 	uint8 Outvol[4 * MAXPOKEYS];		/* last output volume for each channel */
-	
+
 	uint32 Poly_adjust;					/* the amount that the polynomial will need */
 										/* to be adjusted to process the next bit */
 	uint32 P4;							/* Global position pointer for the 4-bit  POLY array */
@@ -658,7 +658,7 @@ void Pokey_process (Pokey *unit, float *buffer, register uint16 n)
     register uint8 next_event;
 //#ifdef CLIP                    /* if clipping is selected */	//f0 had to comment out here
     register int16 cur_val;    /* then we have to count as 16-bit signed */
-//#else                       
+//#else
 //    register uint8 cur_val;    /* otherwise we'll simplify as 8-bit unsigned */
 //#endif
     register uint8 *out_ptr;
@@ -666,9 +666,9 @@ void Pokey_process (Pokey *unit, float *buffer, register uint16 n)
     register uint8 toggle;
     register uint8 count;
     register uint8 *vol_ptr;
-	
+
 	RGen& rgen= *unit->mParent->mRGen;		//added this /f0
-	
+
     /* set a pointer to the whole portion of the samp_n_cnt */
 #ifdef BIG_ENDIAN
     samp_cnt_w_ptr = (uint32 *)((uint8 *)(&unit->Samp_n_cnt[0])+3);

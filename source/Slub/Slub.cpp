@@ -53,7 +53,7 @@ void Slub_next(Slub *unit, int inNumSamples)
 	float *trig = ZIN(0);
 	float *spike= ZIN(1);
 	float prevtrig = unit->m_prevtrig;
-	
+
 	LOOP(inNumSamples,
 		float curtrig = ZXP(trig);
 		if (prevtrig <= 0.f && curtrig > 0.f) theFunction(unit, ZXP(spike));
@@ -132,7 +132,7 @@ void theFunction(Slub *unit, float spikeValue)
 			)
 	{
 			for
-			
+
 					(
 			l
 			=
@@ -146,7 +146,7 @@ void theFunction(Slub *unit, float spikeValue)
 			{
 	fmod(
 			l				,
-			unit->dummy= 3.1415
+			unit->dummy= 3.1415 + rand()
 	)
 			;
 					}

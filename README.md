@@ -1,5 +1,6 @@
 # f0plugins
-unit-generator plugins for [supercollider](https://supercollider.github.io)
+
+Unit-Generator Plugins (UGens) for [SuperCollider](https://supercollider.github.io)
 
 * __Astrocade__ - sound chip emulation
 * __Atari2600__ - tia sound chip emulation
@@ -16,24 +17,42 @@ unit-generator plugins for [supercollider](https://supercollider.github.io)
 * __Slub__ - for generating cpu spikes
 * __SN76489__ - sound chip emulation
 
-see also <https://fredrikolofsson.com/code/sc/#plugins>
+See also <https://fredrikolofsson.com/code/sc/#plugins>
 
-binaries
---
+## Binaries
 
-to download pre-made and ready-to-use binaries see <https://github.com/redFrik/f0plugins/releases>
+Fownload these plugins as ready-to-use binaries for macOS, Windows or Linux from here:
 
-compile
---
+<https://github.com/redFrik/f0plugins/releases>
 
-to build these yourself first install cmake and download the supercollider main source code via git, then open terminal and cd to the folder containing this README and do...
+---
 
-```shell
-> mkdir build && cd build
-> cmake -DSC_PATH=~/supercollider -DINSTALL_DESTINATION="/absolute/path" ..
-> make install
-```
+## Building
 
-edit `-DSC_PATH` above to point to your supercollider source directory (cloned from [here](https://github.com/supercollider/supercollider)), and edit `-DINSTALL_DESTINATION` to where you want the resulting plugins installed. on __osx__ this will typically be `/Users/???/Library/Application Support/SuperCollider/Extensions` and on __linux__ you can completely remove the `-DINSTALL_DESTINATION` to use the default location.
+To compile the binaries yourself follow these instructions...
 
-NOTE: Not tested under Windows.
+### Requirements
+
+- CMake >= 3.5
+- SuperCollider source code
+
+### Building
+
+Clone the project:
+
+    git clone https://github.com/redFrik/f0plugins
+    cd f0plugins
+    mkdir build
+    cd build
+
+Then, use CMake to configure and build it:
+
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+    cmake --build . --config Release
+    cmake --build . --config Release --target install
+
+You may want to manually specify the install location in the first step to point it at your
+SuperCollider extensions directory: add the option `-DCMAKE_INSTALL_PREFIX=/path/to/extensions`.
+
+It's expected that the SuperCollider repo is cloned at `../supercollider` relative to this repo. If
+it's not: add the option `-DSC_PATH=/path/to/sc/source`.

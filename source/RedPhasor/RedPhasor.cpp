@@ -29,6 +29,8 @@
 //added different looping types (pingpong).
 //corrected bug when start < end.  also loop points.
 
+#include "RedPhasor2.cpp"
+
 #include "SC_PlugIn.h"
 static InterfaceTable *ft;
 
@@ -49,6 +51,7 @@ extern "C" {
 PluginLoad(InterfaceTable *inTable) {
 	ft= inTable;
 	DefineSimpleUnit(RedPhasor);
+	DefineSimpleUnit(RedPhasor2);
 }
 
 void RedPhasor_Ctor(RedPhasor *unit) {

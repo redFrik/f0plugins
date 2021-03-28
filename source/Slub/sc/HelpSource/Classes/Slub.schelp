@@ -1,5 +1,5 @@
 class:: Slub
-summary:: generate cpu spikes
+summary:: generate CPU spikes
 categories:: UGens>User Interaction
 
 DESCRIPTION::
@@ -26,7 +26,9 @@ code::
 //scserver example
 s.boot;
 
-(	//mouse in bottom right corner will cause a severe cpu spike
+(	//mouse in bottom right corner will cause a severe CPU spike
+	//as you move up towards the top right corner the CPU usage increases
+	//WARNING - will probably freeze your server and stop your sound
 {
 	var trig;
 	trig= MouseX.kr>0.99;
@@ -39,13 +41,14 @@ s.boot;
 
 //sclang example
 (
+s.latency= 0.05;
 p= Pbind(\dur, 0.25, \degree, Pshuf((0..10), inf)).play;
 x= Slub.new;
 )
 
 x.bang(3)
 x.bang(4)
-x.bang(5)
+x.bang(5)	//this makes timing hickup on my macbook pro. depends on latency settings and how fast computer you have
 x.bang(4.9)
 x.bang(5.0)
 x.bang(5.5)
