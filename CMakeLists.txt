@@ -118,7 +118,7 @@ sc_add_server_plugin(
 )
 
 set(Beep_cpp_files
-    plugins/Beep/Beep.cpp
+    plugins/Beep/beep.cpp
 )
 set(Beep_sc_files
     plugins/Beep/sc/Beep.sc
