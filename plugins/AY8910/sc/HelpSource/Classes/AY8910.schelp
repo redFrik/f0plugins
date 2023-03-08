@@ -138,7 +138,7 @@ s.boot;
 //three voices.  to listen to all three in a stereo output you'll need to mix
 {Mix(AY8910.ar(r0:50, r1:0, r2:75, r3:0, r4:90, r5:0, r7:2r00111000, r8:13, r9:13, rA:13))*0.5}.play
 
-//noise only on first voice + mouse xy countrol
+//noise only on first voice + mouse xy control
 {AY8910.ar(r0:100, r1:0, r6:MouseY.kr(0, 31), r7:2r00000001, r8:MouseX.kr(0, 15))}.play
 
 //looping envelope on voice first voice

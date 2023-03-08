@@ -21,7 +21,7 @@ See also <https://fredrikolofsson.com/code/sc/#plugins>
 
 ## Binaries
 
-Fownload these plugins as ready-to-use binaries for macOS, Windows or Linux from here:
+Download these plugins as ready-to-use binaries for macOS, Windows or Linux from here:
 
 <https://github.com/redFrik/f0plugins/releases>
 

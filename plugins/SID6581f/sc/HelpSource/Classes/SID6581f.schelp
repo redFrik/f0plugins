@@ -159,7 +159,7 @@ table::
 
 argument::resFilt
 table::
-## bits 7-4 || filter resonanse
+## bits 7-4 || filter resonance
 ## bit 3 || filter enable for external input strong::(not used)::
 ## bits 2-0 || filter enable for voices 1-3 (3bits 0-7)
 ::
