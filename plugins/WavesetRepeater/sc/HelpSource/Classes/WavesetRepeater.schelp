@@ -6,7 +6,9 @@ related:: Classes/Squiz
 DESCRIPTION::
 With inspiration from Trevor Wishart and Dan Stowell's Squiz.
 
-The way wavesets are defined are a little bit different here as both rising and falling zero crossings are considered as the start/end for a waveset. And with the numzc one can collect longer waveforms with several zero crossings.
+Recording and playing back wavesets in realtime. Number of repetitions and playback rate (transposition) can be changed dynamically.
+
+A waveset can start with either a rising or falling zero crossing and last until the next similar crossing. With the numzc longer wavesets with several zero crossings can be defined.
 
 CLASSMETHODS::
 
@@ -16,24 +18,59 @@ ARGUMENT:: in
 The input signal.
 
 ARGUMENT:: repeats
-Number of repeats. If 0 then the input signal will pass straight through.
+Number of repeats.
 
 ARGUMENT:: rate
-Playback rate. Can also be negative.
+Playback rate. If negative the waveset will be played back in reverse.
 
 ARGUMENT:: numzc
 Number of zero crossings that define a waveset.
 
 ARGUMENT:: memlen
-In seconds. How much internally memory to allocate. Not modulate-able. Increase this if numzc is high and you expected long wavesets.
+In seconds. How much internally memory to allocate. Not modulate-able. Increase this if numzc is high and you expected long wavesets. Usually the default is ok.
 
 ARGUMENT:: interpolation
-0, 1 or 2.
+2 is linear, 4 cubic and any other value no interpolation. Mainly audible when playback rate is less than 1.0.
 
 
 EXAMPLES::
 
 CODE::
 s.boot;
-{WavesetRepeater.ar}.play;
+{WavesetRepeater.ar(SinOsc.ar([400, 404])*0.5, 1, MouseY.kr(0.25, 5), MouseX.kr(0, 15))}.play;
+
+{WavesetRepeater.ar(SinOsc.ar([400, 404])*0.5, MouseX.kr(0, 20), MouseY.kr(0.1, 15), 2)}.play;
+
+//every waveset is repeated twice. top graph repeat forward, bottom backward
+(
+{
+	[
+		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 1),
+		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -1)
+	]
+}.plot(0.02)
+)
+
+//same but repeating at 1/4 playback rate
+(
+{
+	[
+		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 0.25),
+		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -0.25)
+	]
+}.plot(0.02)
+)
+
+//same but three zerocrossings define the waveset
+(
+{
+	[
+		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 0.25, 3),
+		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -0.25, 3)
+	]
+}.plot(0.02)
+)
+
+//test with delayed mic input
+{WavesetRepeater.ar(DelayN.ar(SoundIn.ar, 1, 1), MouseX.kr(0, 10), MouseY.kr(0.25, 5), 3)!2*0.5}.play	
 ::

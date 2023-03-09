@@ -47,7 +47,7 @@ void WavesetRepeater_Ctor(WavesetRepeater *unit) {
 	SETCALC(WavesetRepeater_next);
 
 	unit->m_buflen = sc_max((int)(ZIN0(4) * SAMPLERATE), 1);
-	unit->m_buf = (float*)RTAlloc(unit->mWorld, unit->m_buflen * sizeof(float));
+	unit->m_buf = (float *)RTAlloc(unit->mWorld, unit->m_buflen * sizeof(float));
 	ClearUnitIfMemFailed(unit->m_buf);
 	memset(unit->m_buf, 0, unit->m_buflen * sizeof(float));
 
@@ -59,7 +59,7 @@ void WavesetRepeater_Ctor(WavesetRepeater *unit) {
 	unit->m_dir = 0;
 	unit->m_state = 0;
 
-	//Print("buflen: %i\n", unit->m_buflen);
+	// Print("buflen: %i\n", unit->m_buflen);
 	WavesetRepeater_next(unit, 1);
 }
 
@@ -82,167 +82,158 @@ void WavesetRepeater_next(WavesetRepeater *unit, int inNumSamples) {
 	float *in = ZIN(0);
 	float *out = ZOUT(0);
 	int repeats = sc_max((int)ZIN0(1), 0);
-	float rate = sc_min(sc_max(ZIN0(2), (float)(0 - buflen)), (float)buflen);
+	float rate = ZIN0(2);
 	int numzc = sc_max((int)ZIN0(3), 1);
 	int interpol = ZIN0(5);
 
 	float curr;
-	LOOP(inNumSamples,
+	LOOP1(
+			inNumSamples,
 
-		switch(state) {
-
-		case 0:	//waiting
-			curr = ZXP(in);
-			if((prev <= 0.f) && (curr > 0.f)) {
-				dir = 1;
-			} else if((prev > 0.f) && (curr <= 0.f)) {
-				dir = -1;
-			} else {
-				dir = 0;
-			}
-			if(dir != 0) {
-				buf[0] = curr;
-				bufindex = 1;
-				state = 1;
-				ZXP(out) = curr;
-			} else {
-				ZXP(out) = 0.f;
-			}
-			prev = curr;
-			break;
-
-		case 1:	//recording
-			curr = ZXP(in);
-			bool end;
-			if(dir == 1) {
-				end = (prev <= 0.f) && (curr > 0.f);
-			} else {
-				end = (prev > 0.f) && (curr <= 0.f);
-			}
-			if((end && (++zerocrosscounter >= numzc)) || (bufindex == buflen)) {
-				zerocrosscounter = 0;
-				if(repeats > 0) {
-					bufindexmax = bufindex;
-					repeatpos = 0.f;
-					repeatcounter = repeats;
-					curr= buf[0];
-					switch(interpol) {
-						case 2:
-							state = 2;
-							break;
-						case 4:
-							state = 4;
-							break;
-						default:
-							state = 3;
+			switch (state) {
+				case 0: // waiting
+					curr = ZXP(in);
+					if ((prev <= 0.f) && (curr > 0.f)) {
+						dir = 1;
+					} else if ((prev > 0.f) && (curr <= 0.f)) {
+						dir = -1;
+					} else {
+						dir = 0;
 					}
-				} else {
-					buf[0] = curr;
-					bufindex = 1;
-				}
-			} else {
-				buf[bufindex] = curr;
-				bufindex++;
-			}
-			ZXP(out) = curr;
-			prev = curr;
-			break;
-
-		case 2:	//repeating - linear interpolation
-			PZ(in);
-			repeatpos += abs(rate);
-			if((int)repeatpos >= bufindexmax) {
-				repeatpos = repeatpos - bufindexmax;
-				repeatcounter--;
-				if(repeatcounter == 0) {
-					state = 0;
-					prev = ZX(in);
-					ZXP(out) = 0.f;
+					if (dir != 0) {
+						buf[0] = curr;
+						bufindex = 1;
+						state = 1;
+						ZXP(out) = curr;
+					} else {
+						ZXP(out) = 0.f;
+					}
+					prev = curr;
 					break;
-				}
-			}
-			if(rate == 0.f) {
-				curr = 0.f;
-			} else {
-				int irepeatpos = (int)repeatpos;
-				float frac = irepeatpos - repeatpos;
-				int irp1 = irepeatpos;
-				int irp2;
-				if(irepeatpos == 0) {
-					irp2 = bufindexmax;
-				} else {
-					irp2 = irepeatpos - 1;
-				}
-				if(rate < 0.f) {
-					irp1 = bufindexmax - irp1;
-					irp2 = bufindexmax - irp2 - 1;
-				}
-				curr = lininterp(frac, buf[irp1], buf[irp2]);
-			}
-			ZXP(out) = curr;
-			break;
 
-		case 3:	//repeating - no interpolation
-			PZ(in);
-			repeatpos += abs(rate);
-			if((int)repeatpos >= bufindexmax) {
-				repeatpos = repeatpos - bufindexmax;
-				repeatcounter--;
-				if(repeatcounter == 0) {
-					state = 0;
-					prev = ZX(in);
-					ZXP(out) = 0.f;
+				case 1: // recording
+					curr = ZXP(in);
+					bool end;
+					if (dir == 1) {
+						end = (prev <= 0.f) && (curr > 0.f);
+					} else {
+						end = (prev > 0.f) && (curr <= 0.f);
+					}
+					if ((end && (++zerocrosscounter == numzc)) || (bufindex == buflen)) {
+						zerocrosscounter = 0;
+						if (repeats == 0) {
+							state = 0;
+						} else {
+							bufindexmax = bufindex;
+							buf[bufindex] = prev;
+							repeatpos = 0.f;
+							repeatcounter = repeats;
+							if (interpol == 2)
+							{
+								state = 2;
+							}
+							else if (interpol == 4)
+							{
+								state = 4;
+							}
+							else
+							{
+								state = 3;
+							}
+						}
+					} else {
+						buf[bufindex] = curr;
+						bufindex++;
+					}
+					ZXP(out) = curr;
+					prev = curr;
 					break;
-				}
-			}
-			if(rate > 0.f) {
-				curr = buf[(int)repeatpos];
-			} else if(rate < 0.f) {
-				curr = buf[bufindexmax - (int)repeatpos];
-			} else {
-				curr = 0.f;
-			}
-			ZXP(out) = curr;
-			break;
 
-		case 4:	//repeating - cubic interpolation
-			PZ(in);
-			repeatpos += abs(rate);
-			if((int)repeatpos >= bufindexmax) {
-				repeatpos = repeatpos - bufindexmax;
-				repeatcounter--;
-				if(repeatcounter == 0) {
-					state = 0;
-					prev = ZX(in);
-					ZXP(out) = 0.f;
+				case 2: // repeating - linear interpolation
+					PZ(in);
+					repeatpos += abs(rate);
+					if ((int)repeatpos >= bufindexmax) {
+						repeatpos = repeatpos - bufindexmax;
+						repeatcounter--;
+						if (repeatcounter == 0) {
+							state = 0;
+							prev = ZX(in);
+							ZXP(out) = 0.f;
+							break;
+						}
+					}
+					if (rate == 0.f) {
+						curr = 0.f;
+					} else {
+						int irp1 = (int)repeatpos;
+						float frac = repeatpos - irp1;
+						int irp2 = (irp1 + 1) % (bufindexmax + 1);
+						if (rate < 0.f) {
+							irp1 = bufindexmax - irp1;
+							irp2 = bufindexmax - irp2;
+						}
+						curr = lininterp(frac, buf[irp1], buf[irp2]);
+					}
+					ZXP(out) = curr;
 					break;
-				}
-			}
-			if(rate == 0.f) {
-				curr = 0.f;
-			} else {
-				int irepeatpos = (int)repeatpos;
-				float frac = repeatpos - irepeatpos;
-				int irp1 = irepeatpos;
-				int irp0;
-				if(irepeatpos == 0) {
-					irp0 = bufindexmax;
-				} else {
-					irp0 = irepeatpos - 1;
-				}
-				int irp2 = (irepeatpos + 1) % (bufindexmax + 1);
-				int irp3 = (irepeatpos + 2) % (bufindexmax + 1);
 
-				/*if(rate < 0.f) {
-					irp1 = bufindexmax - irp1;
-					irp2 = bufindexmax - irp2-1;
-				}*/
-				curr = cubicinterp(frac, buf[irp0], buf[irp1], buf[irp2], buf[irp3]);
-			}
-			ZXP(out) = curr;
-			break;
-		}
-	);
+				case 3: // repeating - no interpolation
+					PZ(in);
+					repeatpos += abs(rate);
+					if ((int)repeatpos >= bufindexmax) {
+						repeatpos = repeatpos - bufindexmax;
+						repeatcounter--;
+						if (repeatcounter == 0) {
+							state = 0;
+							prev = ZX(in);
+							ZXP(out) = 0.f;
+							break;
+						}
+					}
+					if (rate > 0.f) {
+						curr = buf[(int)repeatpos];
+					} else if (rate < 0.f) {
+						curr = buf[bufindexmax - (int)repeatpos];
+					} else {
+						curr = 0.f;
+					}
+					ZXP(out) = curr;
+					break;
+
+				case 4: // repeating - cubic interpolation
+					PZ(in);
+					repeatpos += abs(rate);
+					if ((int)repeatpos >= bufindexmax) {
+						repeatpos = repeatpos - bufindexmax;
+						repeatcounter--;
+						if (repeatcounter == 0) {
+							state = 0;
+							prev = ZX(in);
+							ZXP(out) = 0.f;
+							break;
+						}
+					}
+					if (rate == 0.f) {
+						curr = 0.f;
+					} else {
+						int irp1 = (int)repeatpos;
+						float frac = repeatpos - irp1;
+						int mod = bufindexmax + 1;
+						int irp2 = (irp1 + 1) % mod;
+						int irp3 = (irp1 + 2) % mod;
+						int irp0 = (irp1 - 1 + mod) % mod;
+						if (rate < 0.f)
+						{
+							irp1 = bufindexmax - irp1;
+							irp2 = bufindexmax - irp2;
+							irp3 = bufindexmax - irp3;
+							irp0 = bufindexmax - irp0;
+						}
+						curr = cubicinterp(frac, buf[irp0], buf[irp1], buf[irp2], buf[irp3]);
+					}
+					ZXP(out) = curr;
+					break;
+			});
 
 	unit->m_bufindex = bufindex;
 	unit->m_bufindexmax = bufindexmax;
