@@ -1,0 +1,39 @@
+class:: WavesetRepeater
+summary:: Realtime repeating wavesets
+categories:: UGens>Wavesets
+related:: Classes/Squiz
+
+DESCRIPTION::
+With inspiration from Trevor Wishart and Dan Stowell's Squiz.
+
+The way wavesets are defined are a little bit different here as both rising and falling zero crossings are considered as the start/end for a waveset. And with the numzc one can collect longer waveforms with several zero crossings.
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: in
+The input signal.
+
+ARGUMENT:: repeats
+Number of repeats. If 0 then the input signal will pass straight through.
+
+ARGUMENT:: rate
+Playback rate. Can also be negative.
+
+ARGUMENT:: numzc
+Number of zero crossings that define a waveset.
+
+ARGUMENT:: memlen
+In seconds. How much internally memory to allocate. Not modulate-able. Increase this if numzc is high and you expected long wavesets.
+
+ARGUMENT:: interpolation
+0, 1 or 2.
+
+
+EXAMPLES::
+
+CODE::
+s.boot;
+{WavesetRepeater.ar}.play;
+::

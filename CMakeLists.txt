@@ -332,6 +332,22 @@ sc_add_server_plugin(
     "${SN76489_schelp_files}"
 )
 
+set(WavesetRepeater_cpp_files
+    plugins/WavesetRepeater/WavesetRepeater.cpp
+)
+set(WavesetRepeater_sc_files
+    plugins/WavesetRepeater/sc/WavesetRepeater.sc
+)
+set(WavesetRepeater_schelp_files
+    plugins/WavesetRepeater/sc/HelpSource/Classes/WavesetRepeater.schelp
+)
+sc_add_server_plugin(
+    "f0plugins/WavesetRepeater" # desination directory
+    "WavesetRepeater" # target name
+    "${WavesetRepeater_cpp_files}"
+    "${WavesetRepeater_sc_files}"
+    "${WavesetRepeater_schelp_files}"
+)
 
 
 ####################################################################################################

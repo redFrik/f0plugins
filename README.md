@@ -16,6 +16,7 @@ Unit-Generator Plugins (UGens) for [SuperCollider](https://supercollider.github.
 * __SID6581f__ - sound chip emulation
 * __Slub__ - for generating cpu spikes
 * __SN76489__ - sound chip emulation
+* __WavesetRepeater__ - realtime repeating wavesets
 
 See also <https://fredrikolofsson.com/code/sc/#plugins>
 
@@ -40,7 +41,7 @@ To compile the binaries yourself follow these instructions...
 
 Clone the project:
 
-    git clone https://github.com/redFrik/f0plugins
+    git clone https://github.com/redFrik/f0plugins --depth 1
     cd f0plugins
     mkdir build
     cd build
