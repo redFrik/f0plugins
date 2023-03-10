@@ -41,36 +41,39 @@ s.boot;
 
 {WavesetRepeater.ar(SinOsc.ar([400, 404])*0.5, MouseX.kr(0, 20), MouseY.kr(0.1, 15), 2)}.play;
 
+//noisy
+{WavesetRepeater.ar(SinOsc.ar([400, 404])+SinOsc.ar(567)*0.25, MouseX.kr(0, 20), MouseY.kr(0.25, 5))}.play;
+
 //every waveset is repeated twice. top graph repeat forward, bottom backward
 (
 {
-	[
-		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 1),
-		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -1)
-	]
+    [
+        WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 1),
+        WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -1)
+    ]
 }.plot(0.02)
 )
 
 //same but repeating at 1/4 playback rate
 (
 {
-	[
-		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 0.25),
-		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -0.25)
-	]
+    [
+        WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 0.25),
+        WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -0.25)
+    ]
 }.plot(0.02)
 )
 
 //same but three zerocrossings define the waveset
 (
 {
-	[
-		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 0.25, 3),
-		WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -0.25, 3)
-	]
+    [
+        WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, 0.25, 3),
+        WavesetRepeater.ar(SinOsc.ar(400)+SinOsc.ar(567), 2, -0.25, 3)
+    ]
 }.plot(0.02)
 )
 
 //test with delayed mic input
-{WavesetRepeater.ar(DelayN.ar(SoundIn.ar, 1, 1), MouseX.kr(0, 10), MouseY.kr(0.25, 5), 3)!2*0.5}.play	
+{WavesetRepeater.ar(DelayN.ar(SoundIn.ar, 1, 1, 0.5), MouseX.kr(0, 10), MouseY.kr(0.25, 5), 3)!2}.play
 ::
