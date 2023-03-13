@@ -332,6 +332,24 @@ sc_add_server_plugin(
     "${SN76489_schelp_files}"
 )
 
+set(Tbjorklund_cpp_files
+    plugins/Tbjorklund/Tbjorklund.cpp
+)
+set(Tbjorklund_sc_files
+    plugins/Tbjorklund/sc/Tbjorklund.sc
+    plugins/Tbjorklund/sc/Tests/TestTbjorklund.sc
+)
+set(Tbjorklund_schelp_files
+    plugins/Tbjorklund/sc/HelpSource/Classes/Tbjorklund.schelp
+)
+sc_add_server_plugin(
+    "f0plugins/Tbjorklund" # desination directory
+    "Tbjorklund" # target name
+    "${Tbjorklund_cpp_files}"
+    "${Tbjorklund_sc_files}"
+    "${Tbjorklund_schelp_files}"
+)
+
 set(WavesetRepeater_cpp_files
     plugins/WavesetRepeater/WavesetRepeater.cpp
 )

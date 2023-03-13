@@ -1,0 +1,46 @@
+class:: Tbjorklund
+summary:: Euclidean rhythms in audio and control rate
+categories:: UGens>f0plugins
+related:: Classes/Bjorklund, Classes/Pbjorklund, Classes/Dbjorklund
+
+
+DESCRIPTION::
+After an algorithm by E. Bjorklund. See paper by Godfried Toussaint.
+
+As audio and control rate signals. Can be used as triggers or as a strange pulse train.
+
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: rate
+Time per tick. Multiply this with CODE::n:: to set playback rate of the complete phrase.
+
+ARGUMENT:: k
+The number of 'hits'.
+
+ARGUMENT:: n
+The total array size.
+
+ARGUMENT:: offset
+Starting index.
+
+
+EXAMPLES::
+
+CODE::
+s.boot;
+{SinOsc.ar*Tbjorklund.ar(8, 3, 8)*0.1!2}.play;  //tresillio
+{SinOsc.ar*Tbjorklund.ar(8, 5, 8)*0.1!2}.play;  //cinquillo
+{SinOsc.ar*Tbjorklund.ar(8, 9, 16)*0.1!2}.play;  //rumba
+
+//multichannel expansion
+{SinOsc.ar([400, 500])*Tbjorklund.ar(8, 3, 8, [0, 1])*0.1}.play;
+
+//modulating the offset
+{SinOsc.ar([400, 500])*Tbjorklund.ar(16, 9, 16, [0, Line.kr(0, 16, 60).floor.poll])*0.1}.play;
+
+//as strange square wave
+{Tbjorklund.ar(MouseX.kr(20, 2000, 1), MouseY.kr(0, 16).round.poll, 16)*0.1!2}.play;
+::
