@@ -16,6 +16,7 @@ Unit-Generator Plugins (UGens) for [SuperCollider](https://supercollider.github.
 * __SID6581f__ - sound chip emulation
 * __Slub__ - for generating cpu spikes
 * __SN76489__ - sound chip emulation
+* __Dbjorklund__ - euclidean rhythms in demand rate
 * __Tbjorklund__ - euclidean rhythms in audio and control rate
 * __WavesetRepeater__ - realtime repeating wavesets
 

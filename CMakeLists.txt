@@ -346,6 +346,27 @@ sc_add_server_plugin(
     ""
 )
 
+set(Dbjorklund_cpp_files
+    plugins/Dbjorklund/Dbjorklund.cpp
+)
+set(Dbjorklund_sc_files
+    plugins/Dbjorklund/sc/Dbjorklund.sc
+)
+set(Dbjorklund_sctest_files
+    plugins/Dbjorklund/sc/Tests/TestDbjorklund.sc
+)
+set(Dbjorklund_schelp_files
+    plugins/Dbjorklund/sc/HelpSource/Classes/Dbjorklund.schelp
+)
+sc_add_server_plugin(
+    "f0plugins/Dbjorklund" # destination directory
+    "Dbjorklund" # target name
+    "${Dbjorklund_cpp_files}"
+    "${Dbjorklund_sc_files}"
+    "${Dbjorklund_schelp_files}"
+    "${Dbjorklund_sctest_files}"
+)
+
 set(Tbjorklund_cpp_files
     plugins/Tbjorklund/Tbjorklund.cpp
 )

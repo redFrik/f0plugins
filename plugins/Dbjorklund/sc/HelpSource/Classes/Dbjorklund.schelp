@@ -1,0 +1,56 @@
+class:: Dbjorklund
+summary:: Euclidean rhythms in demand rate
+categories:: UGens>Demand
+related:: Classes/Bjorklund, Classes/Pbjorklund, Classes/Tbjorklund
+
+DESCRIPTION::
+After an algorithm by E. Bjorklund. See paper by Godfried Toussaint.
+
+CLASSMETHODS::
+
+METHOD:: new
+
+ARGUMENT:: k
+The number of 'hits'.
+
+ARGUMENT:: n
+The total array size. Not modulate-able.
+
+ARGUMENT:: offset
+Starting index.
+
+ARGUMENT:: length
+Number of values to create. For repeating a number of complete cycles multiply this with CODE::n::.
+
+
+EXAMPLES::
+
+CODE::
+s.boot;
+{SinOsc.ar*Duty.ar(1/8, 0, Dbjorklund(3, 8))*0.1!2}.play;  //tresillio
+{SinOsc.ar*Duty.ar(1/8, 0, Dbjorklund(5, 8))*0.1!2}.play;  //cinquillo
+{SinOsc.ar*Duty.ar(1/8, 0, Dbjorklund(9, 16))*0.1!2}.play;  //rumba
+
+//nested DUGens
+{SinOsc.ar*Duty.ar(1/8, 0, Dbjorklund(Ddup(8, Dseq([4, 3], inf)), 8))*0.1!2}.play;
+
+//note that pulse width is always 100% so there will be legato between the 1s
+//use Tbjorklund instead for triggers
+//although one can set up Dbjorklund as a gate to get the proper rhythm
+{Duty.ar(1/8, 0, Dbjorklund(5, 8))*Impulse.ar(8)*0.4!2}.play;
+
+//using the mouse to control playback rate and k
+{SinOsc.ar*Duty.ar(1/MouseX.kr(1, 50), 0, Dbjorklund(MouseY.kr(0, 16).round, 16))*0.1!2}.play;
+
+//multichannel expansion - here two different offsets
+{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund(5, 8, [0, 1]))*0.1!2}.play;
+
+//slowly shifting the offset of one - repeating each offset 4 bars
+{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund([3, 5], 8, [0, Ddup(8*4, Dseries(1, 1))]))*0.1!2}.play;
+
+//slowly shifting one of the k - repeating each k 4 bars
+{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund([3, Ddup(8*4, Dseq((1..8), inf))], 8))*0.1!2}.play;
+
+//length makes it stop when done - here repeat twice (Duty's doneAction:2 free the synth)
+{SinOsc.ar*Duty.ar(1/8, 0, Dbjorklund(5, 8, 0, 2*8), 2)*0.1!2}.play;
+::
