@@ -20,8 +20,6 @@
 
 // f.olofsson 2023
 
-//TODO tappar sync!
-
 #include "SC_PlugIn.h"
 static InterfaceTable *ft;
 
@@ -30,7 +28,7 @@ struct Tbjorklund : public Unit {
 	unsigned short *m_copyarr;
 	int m_k;
 	int m_n;
-	float m_readpos;
+	double m_readpos;
 };
 
 void Tbjorklund_Ctor(Tbjorklund *unit);
@@ -76,7 +74,7 @@ void Tbjorklund_Dtor(Tbjorklund *unit) {
 
 void Tbjorklund_next_kk(Tbjorklund *unit, int inNumSamples) {
 	int n = unit->m_n;
-	float readpos = unit->m_readpos;
+	double readpos = unit->m_readpos;
 	unsigned short *arr = unit->m_currarr;
 
 	float rate = ZIN0(0) * SAMPLEDUR;
@@ -113,7 +111,7 @@ void Tbjorklund_next_kk(Tbjorklund *unit, int inNumSamples) {
 
 void Tbjorklund_next_ak(Tbjorklund *unit, int inNumSamples) {
 	int n = unit->m_n;
-	float readpos = unit->m_readpos;
+	double readpos = unit->m_readpos;
 	unsigned short *arr = unit->m_currarr;
 
 	float *rate = ZIN(0);
@@ -151,7 +149,7 @@ void Tbjorklund_next_ak(Tbjorklund *unit, int inNumSamples) {
 
 void Tbjorklund_next_aa(Tbjorklund *unit, int inNumSamples) {
 	int n = unit->m_n;
-	float readpos = unit->m_readpos;
+	double readpos = unit->m_readpos;
 	unsigned short *arr = unit->m_currarr;
 
 	float *rate = ZIN(0);
