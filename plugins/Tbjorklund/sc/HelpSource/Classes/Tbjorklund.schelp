@@ -18,13 +18,13 @@ ARGUMENT:: rate
 Time per tick. Multiply this with CODE::n:: to set playback rate of the complete phrase.
 
 ARGUMENT:: width
-Pulse width ratio from zero to one. 1.0 makes 'legato'.
+Pulse width ratio from zero to one. 1.0 makes 'legato', 0.0 will be silent.
 
 ARGUMENT:: k
 The number of 'hits'.
 
 ARGUMENT:: n
-The total array size.
+The total array size. Not modulate-able.
 
 ARGUMENT:: offset
 Starting index.
@@ -38,7 +38,13 @@ s.boot;
 {SinOsc.ar*Tbjorklund.ar(8, 0.5, 5, 8)*0.1!2}.play;  //cinquillo
 {SinOsc.ar*Tbjorklund.ar(8, 0.5, 9, 16)*0.1!2}.play;  //rumba
 
-//multichannel expansion
+//modulating the rate
+{SinOsc.ar*Tbjorklund.ar(SinOsc.kr(0.1).range(1, 10), 0.5, 9, 16)*0.1!2}.play;
+
+//pulse width can also be modulated
+{SinOsc.ar*Tbjorklund.ar(8, Line.ar(1, 0, 10, doneAction:2), 3, 8)*0.1!2}.play;
+
+//multichannel expansion - here two different offsets
 {SinOsc.ar([400, 500])*Tbjorklund.ar(8, 1, 3, 8, [0, 1])*0.1}.play;
 
 //modulating the offset
@@ -55,9 +61,9 @@ s.boot;
 	var t2= Tbjorklund.ar(8, 0.5, 3, 8, 4);  //offset
 	var t3= Tbjorklund.ar(4, 0.5, 9, 16);
 	([
-		EnvGen.ar(Env.perc(0.001, 0.1), t1)*SinOsc.ar(500, 0, 0.4),
-		EnvGen.ar(Env.perc(0.001, 0.2), t2)*SinOscFB.ar(300, LFNoise2.kr(0.4).abs, 0.3),
-		EnvGen.ar(Env.perc(0.001, 0.4), t3)*VarSaw.ar(100, 0, 0.2, 0.2)
+		EnvGen.ar(Env.perc(0.001, 0.1), t1)*SinOsc.ar(500, 0, 0.3),
+		EnvGen.ar(Env.perc(0.001, 0.2), t2)*SinOscFB.ar(300, LFNoise2.kr(0.4).abs, 0.2),
+		EnvGen.ar(Env.perc(0.001, 0.4), t3)*VarSaw.ar(100, 0, 0.2, 0.1)
 	]).sum.dup;
 }.play;
 )
