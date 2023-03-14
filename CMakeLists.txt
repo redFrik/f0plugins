@@ -74,7 +74,7 @@ set(Astrocade_schelp_files
     plugins/Astrocade/sc/HelpSource/Classes/Astrocade.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/Astrocade" # desination directory
+    "f0plugins/Astrocade" # destination directory
     "Astrocade" # target name
     "${Astrocade_cpp_files}"
     "${Astrocade_sc_files}"
@@ -91,7 +91,7 @@ set(Atari2600_schelp_files
     plugins/Atari2600/sc/HelpSource/Classes/Atari2600.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/Atari2600" # desination directory
+    "f0plugins/Atari2600" # destination directory
     "Atari2600" # target name
     "${Atari2600_cpp_files}"
     "${Atari2600_sc_files}"
@@ -110,7 +110,7 @@ set(AY8910_schelp_files
     plugins/AY8910/sc/HelpSource/Classes/AY8910Square.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/AY8910" # desination directory
+    "f0plugins/AY8910" # destination directory
     "AY8910" # target name
     "${AY8910_cpp_files}"
     "${AY8910_sc_files}"
@@ -127,7 +127,7 @@ set(Beep_schelp_files
     plugins/Beep/sc/HelpSource/Classes/Beep.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/Beep" # desination directory
+    "f0plugins/Beep" # destination directory
     "Beep" # target name
     "${Beep_cpp_files}"
     "${Beep_sc_files}"
@@ -149,7 +149,7 @@ set(MZPokey_schelp_files
     plugins/MZPokey/sc/HelpSource/Classes/MZPokey.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/MZPokey" # desination directory
+    "f0plugins/MZPokey" # destination directory
     "MZPokey" # target name
     "${MZPokey_cpp_files}"
     "${MZPokey_sc_files}"
@@ -172,7 +172,7 @@ set(Nes2_schelp_files
     plugins/Nes2/sc/HelpSource/Classes/Nes2Triangle.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/Nes2" # desination directory
+    "f0plugins/Nes2" # destination directory
     "Nes2" # target name
     "${Nes2_cpp_files}"
     "${Nes2_sc_files}"
@@ -191,7 +191,7 @@ set(Pokey_schelp_files
     plugins/Pokey/sc/HelpSource/Classes/PokeySquare.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/Pokey" # desination directory
+    "f0plugins/Pokey" # destination directory
     "Pokey" # target name
     "${Pokey_cpp_files}"
     "${Pokey_sc_files}"
@@ -210,7 +210,7 @@ set(RedDPCM_schelp_files
     plugins/RedDPCM/sc/HelpSource/Classes/RedDPCMencode.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/RedDPCM" # desination directory
+    "f0plugins/RedDPCM" # destination directory
     "RedDPCM" # target name
     "${RedDPCM_cpp_files}"
     "${RedDPCM_sc_files}"
@@ -227,7 +227,7 @@ set(RedLbyl_schelp_files
     plugins/RedLbyl/sc/HelpSource/Classes/RedLbyl.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/RedLbyl" # desination directory
+    "f0plugins/RedLbyl" # destination directory
     "RedLbyl" # target name
     "${RedLbyl_cpp_files}"
     "${RedLbyl_sc_files}"
@@ -244,7 +244,7 @@ set(RedNoise_schelp_files
     plugins/RedNoise/sc/HelpSource/Classes/RedNoise.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/RedNoise" # desination directory
+    "f0plugins/RedNoise" # destination directory
     "RedNoise" # target name
     "${RedNoise_cpp_files}"
     "${RedNoise_sc_files}"
@@ -263,7 +263,7 @@ set(RedPhasor_schelp_files
     plugins/RedPhasor/sc/HelpSource/Classes/RedPhasor2.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/RedPhasor" # desination directory
+    "f0plugins/RedPhasor" # destination directory
     "RedPhasor" # target name
     "${RedPhasor_cpp_files}"
     "${RedPhasor_sc_files}"
@@ -290,7 +290,7 @@ set(SID6581f_schelp_files
     plugins/SID6581f/sc/HelpSource/Classes/SID6581f.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/SID6581f" # desination directory
+    "f0plugins/SID6581f" # destination directory
     "SID6581f" # target name
     "${SID6581f_cpp_files}"
     "${SID6581f_sc_files}"
@@ -307,7 +307,7 @@ set(Slub_schelp_files
     plugins/Slub/sc/HelpSource/Classes/Slub.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/Slub" # desination directory
+    "f0plugins/Slub" # destination directory
     "Slub" # target name
     "${Slub_cpp_files}"
     "${Slub_sc_files}"
@@ -325,7 +325,7 @@ set(SN76489_schelp_files
     plugins/SN76489/sc/HelpSource/Classes/SN76489.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/SN76489" # desination directory
+    "f0plugins/SN76489" # destination directory
     "SN76489" # target name
     "${SN76489_cpp_files}"
     "${SN76489_sc_files}"
@@ -343,7 +343,7 @@ set(Tbjorklund_schelp_files
     plugins/Tbjorklund/sc/HelpSource/Classes/Tbjorklund.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/Tbjorklund" # desination directory
+    "f0plugins/Tbjorklund" # destination directory
     "Tbjorklund" # target name
     "${Tbjorklund_cpp_files}"
     "${Tbjorklund_sc_files}"
@@ -360,7 +360,7 @@ set(WavesetRepeater_schelp_files
     plugins/WavesetRepeater/sc/HelpSource/Classes/WavesetRepeater.schelp
 )
 sc_add_server_plugin(
-    "f0plugins/WavesetRepeater" # desination directory
+    "f0plugins/WavesetRepeater" # destination directory
     "WavesetRepeater" # target name
     "${WavesetRepeater_cpp_files}"
     "${WavesetRepeater_sc_files}"
