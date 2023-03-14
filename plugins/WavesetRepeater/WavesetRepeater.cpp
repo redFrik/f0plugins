@@ -26,7 +26,7 @@ struct WavesetRepeater : public Unit {
 	int m_buflen;
 	int m_bufindex;
 	int m_bufindexmax;
-	float m_repeatpos;
+	double m_repeatpos;
 	int m_repeatcounter;
 	int m_zerocrosscounter;
 	float m_prev;
@@ -52,7 +52,7 @@ void WavesetRepeater_Ctor(WavesetRepeater *unit) {
 	memset(unit->m_buf, 0, unit->m_buflen * sizeof(float));
 
 	unit->m_bufindex = 0;
-	unit->m_repeatpos = 0.f;
+	unit->m_repeatpos = 0.0;
 	unit->m_repeatcounter = 0;
 	unit->m_zerocrosscounter = 0;
 	unit->m_prev = ZIN0(0);
@@ -72,7 +72,7 @@ void WavesetRepeater_next(WavesetRepeater *unit, int inNumSamples) {
 	int buflen = unit->m_buflen;
 	int bufindex = unit->m_bufindex;
 	int bufindexmax = unit->m_bufindexmax;
-	float repeatpos = unit->m_repeatpos;
+	double repeatpos = unit->m_repeatpos;
 	int repeatcounter = unit->m_repeatcounter;
 	int zerocrosscounter = unit->m_zerocrosscounter;
 	float prev = unit->m_prev;
@@ -126,7 +126,7 @@ void WavesetRepeater_next(WavesetRepeater *unit, int inNumSamples) {
 					} else {
 						bufindexmax = bufindex;
 						buf[bufindex] = prev;
-						repeatpos = 0.f;
+						repeatpos = 0.0;
 						repeatcounter = repeats;
 						if (interpol == 2) {
 							state = 2;
