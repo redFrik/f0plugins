@@ -18,7 +18,9 @@
 		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-//f.olofsson 2023
+// f.olofsson 2023
+
+//TODO tappar sync!
 
 #include "SC_PlugIn.h"
 static InterfaceTable *ft;
@@ -33,8 +35,9 @@ struct Tbjorklund : public Unit {
 
 void Tbjorklund_Ctor(Tbjorklund *unit);
 void Tbjorklund_Dtor(Tbjorklund *unit);
-void Tbjorklund_next_k(Tbjorklund *unit, int inNumSamples);
-void Tbjorklund_next_a(Tbjorklund *unit, int inNumSamples);
+void Tbjorklund_next_kk(Tbjorklund *unit, int inNumSamples);
+void Tbjorklund_next_ak(Tbjorklund *unit, int inNumSamples);
+void Tbjorklund_next_aa(Tbjorklund *unit, int inNumSamples);
 void Tbjorklund_update(Tbjorklund *unit);
 void Tbjorklund_recursive(unsigned short *curr, unsigned short *copy, int n, int k, int alen, int blen);
 
@@ -45,19 +48,24 @@ PluginLoad(InterfaceTable *inTable) {
 
 void Tbjorklund_Ctor(Tbjorklund *unit) {
 	unit->m_k = -1;
-	unit->m_n = (int)sc_max(ZIN0(2), 1);
+	unit->m_n = sc_max(ZIN0(3), 1);
 	unit->m_readpos = unit->m_n;
 
 	unit->m_currarr = (unsigned short *)RTAlloc(unit->mWorld, unit->m_n * sizeof(unsigned short));
 	ClearUnitIfMemFailed(unit->m_currarr);
-
 	unit->m_copyarr = (unsigned short *)RTAlloc(unit->mWorld, unit->m_n * sizeof(unsigned short));
 	ClearUnitIfMemFailed(unit->m_copyarr);
 
-	if ((unit->mCalcRate == calc_FullRate) && (INRATE(0) == calc_FullRate)) {
-		SETCALC(Tbjorklund_next_a);
+	if (unit->mCalcRate == calc_FullRate) {
+		if ((INRATE(0) == calc_FullRate) && (INRATE(1) == calc_FullRate)) {
+			SETCALC(Tbjorklund_next_aa);
+		} else if ((INRATE(0) == calc_FullRate) && (INRATE(1) == calc_BufRate)) {
+			SETCALC(Tbjorklund_next_ak);
+		} else {
+			SETCALC(Tbjorklund_next_kk);
+		}
 	} else {
-		SETCALC(Tbjorklund_next_k);
+		SETCALC(Tbjorklund_next_kk);
 	}
 }
 
@@ -66,13 +74,14 @@ void Tbjorklund_Dtor(Tbjorklund *unit) {
 	RTFree(unit->mWorld, unit->m_copyarr);
 }
 
-void Tbjorklund_next_k(Tbjorklund *unit, int inNumSamples) {
+void Tbjorklund_next_kk(Tbjorklund *unit, int inNumSamples) {
 	int n = unit->m_n;
 	float readpos = unit->m_readpos;
 	unsigned short *arr = unit->m_currarr;
 
 	float rate = ZIN0(0) * SAMPLEDUR;
-	int offset = ZIN0(3);
+	float width = ZIN0(1);
+	int offset = ZIN0(4);
 	float *out = ZOUT(0);
 
 	int index;
@@ -84,26 +93,32 @@ void Tbjorklund_next_k(Tbjorklund *unit, int inNumSamples) {
 			readpos -= n;
 			index = 0;
 		}
+		float fraction = readpos - index;
 		index = sc_mod(index + offset, n);
-		if(rate < 0.f) {
-			ZXP(out) = arr[n - index];
-			readpos -= rate;
+
+		readpos += abs(rate);
+		if (fraction > width) {
+			ZXP(out) = 0.f;
 		} else {
-			ZXP(out) = arr[index];
-			readpos += rate;
+			if (rate < 0.f) {
+				ZXP(out) = arr[n - 1 - index];
+			} else {
+				ZXP(out) = arr[index];
+			}
 		}
 	);
 
 	unit->m_readpos = readpos;
 }
 
-void Tbjorklund_next_a(Tbjorklund *unit, int inNumSamples) {
+void Tbjorklund_next_ak(Tbjorklund *unit, int inNumSamples) {
 	int n = unit->m_n;
 	float readpos = unit->m_readpos;
 	unsigned short *arr = unit->m_currarr;
-	
+
 	float *rate = ZIN(0);
-	int offset = ZIN0(3);
+	float width = ZIN0(1);
+	int offset = ZIN0(4);
 	float *out = ZOUT(0);
 
 	int index;
@@ -115,14 +130,57 @@ void Tbjorklund_next_a(Tbjorklund *unit, int inNumSamples) {
 			readpos -= n;
 			index = 0;
 		}
+		float fraction = readpos - index;
 		index = sc_mod(index + offset, n);
+
 		float zrate = ZXP(rate) * SAMPLEDUR;
-		if(zrate < 0.f) {
-			ZXP(out) = arr[n - index];
-			readpos -= zrate;
+		readpos += abs(zrate);
+		if (fraction > width) {
+			ZXP(out) = 0.f;
 		} else {
-			ZXP(out) = arr[index];
-			readpos += zrate;
+			if (zrate < 0.f) {
+				ZXP(out) = arr[n - 1 - index];
+			} else {
+				ZXP(out) = arr[index];
+			}
+		}
+	);
+
+	unit->m_readpos = readpos;
+}
+
+void Tbjorklund_next_aa(Tbjorklund *unit, int inNumSamples) {
+	int n = unit->m_n;
+	float readpos = unit->m_readpos;
+	unsigned short *arr = unit->m_currarr;
+
+	float *rate = ZIN(0);
+	float *width = ZIN(1);
+	int offset = ZIN0(4);
+	float *out = ZOUT(0);
+
+	int index;
+	LOOP1(
+		inNumSamples,
+		index = (int)readpos;
+		if (index >= n) {
+			Tbjorklund_update(unit);
+			readpos -= n;
+			index = 0;
+		}
+		float fraction = readpos - index;
+		index = sc_mod(index + offset, n);
+
+		float zrate = ZXP(rate) * SAMPLEDUR;
+		readpos += abs(zrate);
+		if (fraction > ZXP(width)) {
+			ZXP(out) = 0.f;
+		} else {
+			if (zrate < 0.f) {
+				ZXP(out) = arr[n - 1 - index];
+			} else {
+				ZXP(out) = arr[index];
+			}
 		}
 	);
 
@@ -132,7 +190,7 @@ void Tbjorklund_next_a(Tbjorklund *unit, int inNumSamples) {
 void Tbjorklund_update(Tbjorklund *unit) {
 	int n = unit->m_n;
 
-	int k = sc_min(sc_max(ZIN0(1), 0), n);
+	int k = sc_min(sc_max(ZIN0(2), 0), n);
 	if (unit->m_k == k) {
 		return;
 	}

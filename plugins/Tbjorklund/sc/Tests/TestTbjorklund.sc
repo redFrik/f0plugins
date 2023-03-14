@@ -4,13 +4,13 @@ TestTbjorklund : UnitTest {
 		var c= CondVar();
 		var r1, r2;
 		var f= {|k, n, o, a|
-			{Tbjorklund.ar(r1, k, n, o)}.loadToFloatArray(n+0.5/r1, action:{|b|
+			{Tbjorklund.ar(DC.ar(r1), 0.5, k, n, o, 1)}.loadToFloatArray(n+0.5/r1, action:{|b|
 				this.assertEquals(a, b.asInteger, "ar k % n % o %".format(k, n, o));
 				c.signalOne;
 			});
 			Server.default.sync;
 			c.wait;
-			{Tbjorklund.kr(r2, k, n, o)}.loadToFloatArray(n+0.5/r2, action:{|b|
+			{Tbjorklund.kr(r2, 0.5, k, n, o, 1)}.loadToFloatArray(n+0.5/r2, action:{|b|
 				this.assertEquals(a, b.asInteger, "kr k % n % o %".format(k, n, o));
 				c.signalOne;
 			});
@@ -51,7 +51,7 @@ TestTbjorklund : UnitTest {
 		f.(12, 17, 0, #[1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1]);
 		f.(12, 27, 0, #[1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0]);
 		f.(41, 50, 0, #[1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1]);
-		
+
 		f.(3, 8, 1, #[0, 0, 1, 0, 0, 1, 0, 1]);
 		f.(3, 8, -1, #[0, 1, 0, 0, 1, 0, 0, 1]);
 		f.(5, 12, 3, #[1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0]);
