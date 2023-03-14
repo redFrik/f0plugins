@@ -79,6 +79,7 @@ sc_add_server_plugin(
     "${Astrocade_cpp_files}"
     "${Astrocade_sc_files}"
     "${Astrocade_schelp_files}"
+    ""
 )
 
 set(Atari2600_cpp_files
@@ -96,6 +97,7 @@ sc_add_server_plugin(
     "${Atari2600_cpp_files}"
     "${Atari2600_sc_files}"
     "${Atari2600_schelp_files}"
+    ""
 )
 
 set(AY8910_cpp_files
@@ -115,6 +117,7 @@ sc_add_server_plugin(
     "${AY8910_cpp_files}"
     "${AY8910_sc_files}"
     "${AY8910_schelp_files}"
+    ""
 )
 
 set(Beep_cpp_files
@@ -132,6 +135,7 @@ sc_add_server_plugin(
     "${Beep_cpp_files}"
     "${Beep_sc_files}"
     "${Beep_schelp_files}"
+    ""
 )
 
 set(MZPokey_cpp_files
@@ -154,6 +158,7 @@ sc_add_server_plugin(
     "${MZPokey_cpp_files}"
     "${MZPokey_sc_files}"
     "${MZPokey_schelp_files}"
+    ""
 )
 
 set(Nes2_cpp_files
@@ -177,6 +182,7 @@ sc_add_server_plugin(
     "${Nes2_cpp_files}"
     "${Nes2_sc_files}"
     "${Nes2_schelp_files}"
+    ""
 )
 
 set(Pokey_cpp_files
@@ -196,6 +202,7 @@ sc_add_server_plugin(
     "${Pokey_cpp_files}"
     "${Pokey_sc_files}"
     "${Pokey_schelp_files}"
+    ""
 )
 
 set(RedDPCM_cpp_files
@@ -215,6 +222,7 @@ sc_add_server_plugin(
     "${RedDPCM_cpp_files}"
     "${RedDPCM_sc_files}"
     "${RedDPCM_schelp_files}"
+    ""
 )
 
 set(RedLbyl_cpp_files
@@ -232,6 +240,7 @@ sc_add_server_plugin(
     "${RedLbyl_cpp_files}"
     "${RedLbyl_sc_files}"
     "${RedLbyl_schelp_files}"
+    ""
 )
 
 set(RedNoise_cpp_files
@@ -249,6 +258,7 @@ sc_add_server_plugin(
     "${RedNoise_cpp_files}"
     "${RedNoise_sc_files}"
     "${RedNoise_schelp_files}"
+    ""
 )
 
 set(RedPhasor_cpp_files
@@ -268,6 +278,7 @@ sc_add_server_plugin(
     "${RedPhasor_cpp_files}"
     "${RedPhasor_sc_files}"
     "${RedPhasor_schelp_files}"
+    ""
 )
 
 set(SID6581f_cpp_files
@@ -295,6 +306,7 @@ sc_add_server_plugin(
     "${SID6581f_cpp_files}"
     "${SID6581f_sc_files}"
     "${SID6581f_schelp_files}"
+    ""
 )
 
 set(Slub_cpp_files
@@ -312,6 +324,7 @@ sc_add_server_plugin(
     "${Slub_cpp_files}"
     "${Slub_sc_files}"
     "${Slub_schelp_files}"
+    ""
 )
 
 set(SN76489_cpp_files
@@ -330,6 +343,7 @@ sc_add_server_plugin(
     "${SN76489_cpp_files}"
     "${SN76489_sc_files}"
     "${SN76489_schelp_files}"
+    ""
 )
 
 set(Tbjorklund_cpp_files
@@ -337,6 +351,8 @@ set(Tbjorklund_cpp_files
 )
 set(Tbjorklund_sc_files
     plugins/Tbjorklund/sc/Tbjorklund.sc
+)
+set(Tbjorklund_sctest_files
     plugins/Tbjorklund/sc/Tests/TestTbjorklund.sc
 )
 set(Tbjorklund_schelp_files
@@ -348,6 +364,7 @@ sc_add_server_plugin(
     "${Tbjorklund_cpp_files}"
     "${Tbjorklund_sc_files}"
     "${Tbjorklund_schelp_files}"
+    "${Tbjorklund_sctest_files}"
 )
 
 set(WavesetRepeater_cpp_files
@@ -365,6 +382,7 @@ sc_add_server_plugin(
     "${WavesetRepeater_cpp_files}"
     "${WavesetRepeater_sc_files}"
     "${WavesetRepeater_schelp_files}"
+    ""
 )
 
 
