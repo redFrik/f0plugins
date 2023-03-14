@@ -28,6 +28,8 @@ Download these plugins as ready-to-use binaries for macOS, Windows or Linux from
 
 <https://github.com/redFrik/f0plugins/releases>
 
+NOTE: the macOS binaries are not currently signed. I recommend building them yourself (below) or see https://github.com/supercollider/supercollider/wiki/macOS-Signing-and-Notarization
+
 ---
 
 ## Building
