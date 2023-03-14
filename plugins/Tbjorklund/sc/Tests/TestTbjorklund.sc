@@ -5,13 +5,13 @@ TestTbjorklund : UnitTest {
 		var r1, r2;
 		var f= {|k, n, o, a|
 			{Tbjorklund.ar(DC.ar(r1), 0.5, k, n, o, 1)}.loadToFloatArray(n+0.5/r1, action:{|b|
-				this.assertEquals(a, b.asInteger, "ar k % n % o %".format(k, n, o));
+				this.assertEquals(b.asInteger, a, "ar k % n % o %".format(k, n, o));
 				c.signalOne;
 			});
 			Server.default.sync;
 			c.wait;
 			{Tbjorklund.kr(r2, 0.5, k, n, o, 1)}.loadToFloatArray(n+0.5/r2, action:{|b|
-				this.assertEquals(a, b.asInteger, "kr k % n % o %".format(k, n, o));
+				this.assertEquals(b.asInteger, a, "kr k % n % o %".format(k, n, o));
 				c.signalOne;
 			});
 			Server.default.sync;
