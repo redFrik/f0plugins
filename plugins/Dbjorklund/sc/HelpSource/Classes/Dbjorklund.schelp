@@ -1,10 +1,15 @@
 class:: Dbjorklund
 summary:: Euclidean rhythms in demand rate
 categories:: UGens>Demand
-related:: Classes/Bjorklund, Classes/Pbjorklund, Classes/Tbjorklund
+related:: Classes/Dbjorklund2, Classes/Bjorklund, Classes/Pbjorklund, Classes/Tbjorklund
 
 DESCRIPTION::
 After an algorithm by E. Bjorklund. See paper by Godfried Toussaint.
+
+NOTE::
+Depending on your needs, LINK::Classes/Dbjorklund2:: in combination with LINK::Classes/Duty:: might be a better option.
+::
+
 
 CLASSMETHODS::
 
@@ -35,7 +40,7 @@ s.boot;
 {SinOsc.ar*Duty.ar(1/8, 0, Dbjorklund(Ddup(8, Dseq([4, 3], inf)), 8))*0.1!2}.play;
 
 //note that pulse width is always 100% so there will be legato between the 1s
-//use Tbjorklund instead for triggers
+//use Tbjorklund instead for triggers, or try Dbjorklund2
 //although one can set up Dbjorklund as a gate to get the proper rhythm
 {Duty.ar(1/8, 0, Dbjorklund(5, 8))*Impulse.ar(8)*0.4!2}.play;
 
@@ -43,13 +48,13 @@ s.boot;
 {SinOsc.ar*Duty.ar(1/MouseX.kr(1, 50), 0, Dbjorklund(MouseY.kr(0, 16).round, 16))*0.1!2}.play;
 
 //multichannel expansion - here two different offsets
-{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund(5, 8, [0, 1]))*0.1!2}.play;
+{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund(5, 8, [0, 1]))*0.1}.play;
 
 //slowly shifting the offset of one - repeating each offset 4 bars
-{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund([3, 5], 8, [0, Ddup(8*4, Dseries(1, 1))]))*0.1!2}.play;
+{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund([3, 5], 8, [0, Ddup(8*4, Dseries(1, 1))]))*0.1}.play;
 
 //slowly shifting one of the k - repeating each k 4 bars
-{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund([3, Ddup(8*4, Dseq((1..8), inf))], 8))*0.1!2}.play;
+{SinOsc.ar([400, 500])*Duty.ar(1/8, 0, Dbjorklund([3, Ddup(8*4, Dseq((1..8), inf))], 8))*0.1}.play;
 
 //length makes it stop when done - here repeat twice (Duty's doneAction:2 free the synth)
 {SinOsc.ar*Duty.ar(1/8, 0, Dbjorklund(5, 8, 0, 2*8), 2)*0.1!2}.play;

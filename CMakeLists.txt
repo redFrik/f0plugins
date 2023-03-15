@@ -354,9 +354,11 @@ set(Dbjorklund_sc_files
 )
 set(Dbjorklund_sctest_files
     plugins/Dbjorklund/sc/Tests/TestDbjorklund.sc
+    plugins/Dbjorklund/sc/Tests/TestDbjorklund2.sc
 )
 set(Dbjorklund_schelp_files
     plugins/Dbjorklund/sc/HelpSource/Classes/Dbjorklund.schelp
+    plugins/Dbjorklund/sc/HelpSource/Classes/Dbjorklund2.schelp
 )
 sc_add_server_plugin(
     "f0plugins/Dbjorklund" # destination directory

@@ -2,23 +2,23 @@
 
 Unit-Generator Plugins (UGens) for [SuperCollider](https://supercollider.github.io)
 
-* __Astrocade__ - sound chip emulation
-* __Atari2600__ - tia sound chip emulation
-* __AY8910__ - sound chip emulation (also __AY8910Square__)
-* __Beep__ - sound chip emulation
-* __MZPokey__ - another pokey sound chip emulation
-* __Nes2__ - apu sound chip emulation (also __Nes2DMC__, __Nes2Noise__, __Nes2Square__ and __Nes2Triangle__)
-* __Pokey__ - pokey sound chip emulation (also __PokeySquare__)
-* __RedDPCMdecode__ and __RedDPCMencode__ - plugins for encoding and decoding differential pulse-code modulation signals
-* __RedLbyl__ - look before you leap
-* __RedNoise__ - a really bad pseudo-random noise generator
-* __RedPhasor__ and __RedPhasor2__ - two phasors that can loop
-* __SID6581f__ - sound chip emulation
-* __Slub__ - for generating cpu spikes
-* __SN76489__ - sound chip emulation
-* __Dbjorklund__ - euclidean rhythms in demand rate
-* __Tbjorklund__ - euclidean rhythms in audio and control rate
-* __WavesetRepeater__ - realtime repeating wavesets
+- __Astrocade__ - sound chip emulation
+- __Atari2600__ - TIA sound chip emulation
+- __AY8910__ - sound chip emulation (also __AY8910Square__)
+- __Beep__ - sound chip emulation
+- __MZPokey__ - another Pokey sound chip emulation
+- __Nes2__ - APU sound chip emulation (also __Nes2DMC__, __Nes2Noise__, __Nes2Square__ and __Nes2Triangle__)
+- __Pokey__ - Pokey sound chip emulation (also __PokeySquare__)
+- __RedDPCMdecode__ and __RedDPCMencode__ - plugins for encoding and decoding differential pulse-code modulation signals
+- __RedLbyl__ - look before you leap
+- __RedNoise__ - a really bad pseudo-random noise generator
+- __RedPhasor__ and __RedPhasor2__ - two phasors that can loop
+- __SID6581f__ - sound chip emulation
+- __Slub__ - for generating CPU spikes
+- __SN76489__ - sound chip emulation
+- __Dbjorklund__ - euclidean rhythms in demand rate (also __Dbjorklund2__)
+- __Tbjorklund__ - euclidean rhythms in audio and control rate
+- __WavesetRepeater__ - realtime repeating wavesets
 
 See also <https://fredrikolofsson.com/code/sc/#plugins>
 

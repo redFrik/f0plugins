@@ -34,16 +34,35 @@ struct Dbjorklund : public Unit {
 	int32 m_offset;
 };
 
+struct Dbjorklund2 : public Unit {
+	double m_length;
+	int32 m_count;
+	unsigned short *m_currarr;
+	unsigned short *m_copyarr;
+	int32 m_k;
+	int32 m_kprev;
+	int32 m_m;
+	int32 m_n;
+	int32 m_offset;
+};
+
 void Dbjorklund_Ctor(Dbjorklund *unit);
 void Dbjorklund_Dtor(Dbjorklund *unit);
 void Dbjorklund_next(Dbjorklund *unit, int inNumSamples);
-void Dbjorklund_update(Dbjorklund *unit);
 void Dbjorklund_recursive(unsigned short *curr, unsigned short *copy, int n, int k, int alen, int blen);
+
+void Dbjorklund2_Ctor(Dbjorklund2 *unit);
+void Dbjorklund2_Dtor(Dbjorklund2 *unit);
+void Dbjorklund2_next(Dbjorklund2 *unit, int inNumSamples);
+void Dbjorklund2_recursive(unsigned short *curr, unsigned short *copy, int n, int k, int alen, int blen);
 
 PluginLoad(InterfaceTable *inTable) {
 	ft = inTable;
 	DefineDtorUnit(Dbjorklund);
+	DefineDtorUnit(Dbjorklund2);
 }
+
+//--
 
 void Dbjorklund_Ctor(Dbjorklund *unit) {
 	unit->m_n = (int32)sc_max(ZIN0(2), 1.f);
@@ -95,7 +114,12 @@ void Dbjorklund_next(Dbjorklund *unit, int inNumSamples) {
 		unsigned short *arr = unit->m_currarr;
 		int index = sc_mod(unit->m_count, n);
 		if ((index == 0) && (unit->m_k != unit->m_kprev)) {
-			Dbjorklund_update(unit);
+			for (int i = 0; i < n; i++) {
+				arr[i] = (i < unit->m_k) ? 1 : 0;
+			}
+			if ((unit->m_k > 0) && ((n - unit->m_k) > 1)) {
+				Dbjorklund_recursive(arr, unit->m_copyarr, n, unit->m_k, 1, 1);
+			}
 			unit->m_kprev = unit->m_k;
 		}
 		index = sc_mod(index + unit->m_offset, n);
@@ -108,17 +132,90 @@ void Dbjorklund_next(Dbjorklund *unit, int inNumSamples) {
 	}
 }
 
-void Dbjorklund_update(Dbjorklund *unit) {
-	unsigned short *curr = unit->m_currarr;
-	for (int i = 0; i < unit->m_n; i++) {
-		curr[i] = (i < unit->m_k) ? 1 : 0;
-	}
-	if ((unit->m_k == 0) || ((unit->m_n - unit->m_k) <= 1)) {
-		return;
-	}
+//--
 
-	Dbjorklund_recursive(curr, unit->m_copyarr, unit->m_n, unit->m_k, 1, 1);
+void Dbjorklund2_Ctor(Dbjorklund2 *unit) {
+	unit->m_n = (int32)sc_max(ZIN0(2), 1.f);
+
+	unit->m_currarr = (unsigned short *)RTAlloc(unit->mWorld, unit->m_n * sizeof(unsigned short));
+	ClearUnitIfMemFailed(unit->m_currarr);
+	unit->m_copyarr = (unsigned short *)RTAlloc(unit->mWorld, unit->m_n * sizeof(unsigned short));
+	ClearUnitIfMemFailed(unit->m_copyarr);
+
+	unit->m_kprev = -1;
+	unit->m_m = unit->m_n;
+
+	SETCALC(Dbjorklund2_next);
+	Dbjorklund2_next(unit, 0);
+	OUT0(0) = 0.f;
 }
+
+void Dbjorklund2_Dtor(Dbjorklund2 *unit) {
+	RTFree(unit->mWorld, unit->m_currarr);
+	RTFree(unit->mWorld, unit->m_copyarr);
+}
+
+void Dbjorklund2_next(Dbjorklund2 *unit, int inNumSamples) {
+	if (inNumSamples) {
+		if (unit->m_length < 0.0) {
+			float x = DEMANDINPUT_A(0, inNumSamples);
+			unit->m_length = sc_isnan(x) ? 0.f : floor(x + 0.5f);
+		}
+		if (unit->m_count >= unit->m_length) {
+			OUT0(0) = NAN;
+			return;
+		}
+
+		int32 n = unit->m_n;
+		float k = DEMANDINPUT_A(1, inNumSamples);
+		if (!sc_isnan(k)) {
+			unit->m_k = sc_min((int32)sc_max(k, 1.f), n);
+		} else {
+			OUT0(0) = NAN;
+			return;
+		}
+		float offset = DEMANDINPUT_A(3, inNumSamples);
+		if (!sc_isnan(offset)) {
+			unit->m_offset = (int32)offset;
+		} else {
+			OUT0(0) = NAN;
+			return;
+		}
+
+		unsigned short *arr = unit->m_currarr;
+		unsigned short *copy = unit->m_copyarr;
+		int index = sc_mod(unit->m_count, unit->m_m);
+		if ((index == 0) && (unit->m_k != unit->m_kprev)) {
+			for (int i = 0; i < n; i++) {
+				arr[i] = (i < unit->m_k) ? 1 : 0;
+			}
+			if ((unit->m_k > 0) && ((n - unit->m_k) > 1)) {
+				Dbjorklund_recursive(arr, copy, n, unit->m_k, 1, 1);
+			}
+
+			int m = 0;
+			for (int i = 1, sum = 1; i <= n; i++) {
+				if (arr[sc_mod(i, n)] == 0) {
+					sum++;
+				} else {
+					copy[m++] = sum;
+					sum = 1;
+				}
+			}
+			unit->m_m = m;
+			unit->m_kprev = unit->m_k;
+		}
+		index = sc_mod(index + unit->m_offset, unit->m_m);
+		OUT0(0) = copy[index];
+		unit->m_count++;
+
+	} else {
+		unit->m_length = -1.f;
+		unit->m_count = 0;
+	}
+}
+
+//--
 
 void Dbjorklund_recursive(unsigned short *curr, unsigned short *copy, int n, int k, int alen, int blen) {
 	int a = 0;
