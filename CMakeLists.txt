@@ -267,6 +267,7 @@ set(RedPhasor_cpp_files
 )
 set(RedPhasor_sc_files
     plugins/RedPhasor/sc/RedPhasor.sc
+    plugins/RedPhasor/sc/RedPhasor2.sc
 )
 set(RedPhasor_schelp_files
     plugins/RedPhasor/sc/HelpSource/Classes/RedPhasor.schelp
