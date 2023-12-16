@@ -409,6 +409,26 @@ sc_add_server_plugin(
     ""
 )
 
+set(Dsieve_cpp_files
+    plugins/Dsieve/Dsieve.cpp
+)
+set(Dsieve_sc_files
+    plugins/Dsieve/sc/Dsieve.sc
+)
+set(Dsieve_sctest_files
+    plugins/Dsieve/sc/Tests/TestDsieve.sc
+)
+set(Dsieve_schelp_files
+    plugins/Dsieve/sc/HelpSource/Classes/Dsieve.schelp
+)
+sc_add_server_plugin(
+    "f0plugins/Dsieve" # destination directory
+    "Dsieve" # target name
+    "${Dsieve_cpp_files}"
+    "${Dsieve_sc_files}"
+    "${Dsieve_schelp_files}"
+    "${Dsieve_sctest_files}"
+)
 
 ####################################################################################################
 # END PLUGIN TARGET DEFINITION

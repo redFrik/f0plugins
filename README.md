@@ -19,6 +19,7 @@ Unit-Generator Plugins (UGens) for [SuperCollider](https://supercollider.github.
 - __Dbjorklund__ - euclidean rhythms in demand rate (also __Dbjorklund2__)
 - __Tbjorklund__ - euclidean rhythms in audio and control rate
 - __WavesetRepeater__ - realtime repeating wavesets
+- __Dsieve__ - simple demand rate sives
 
 See also <https://fredrikolofsson.com/code/sc/#plugins>
 
