@@ -83,7 +83,7 @@ b= Buffer.read(s, Platform.resourceDir +/+ "sounds/a11wlk01.wav");
 	var min= MouseX.kr*end;
 	var max= MouseY.kr*end;
 	var looptype= 2;	//pingpong
-	var i= RedPhasor.ar(0, rate, min, max, 2, min, max);
+	var i= RedPhasor.ar(0, rate, min, max, looptype, min, max);
 	BufRd.ar(1, b, i, 0, 2);
 }.play;
 )
