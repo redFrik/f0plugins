@@ -25,6 +25,53 @@ ARGUMENT:: repeats
 Number of values to create.
 
 
+INSTANCEMETHODS::
+
+METHOD:: union
+Helper method. Same as and (&).
+
+ARGUMENT:: other
+Another Dsieve
+
+CODE::
+Dsieve([0], 3).union(Dsieve([0], 4))
+-> [1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0 ...]
+::
+
+METHOD:: sect
+Helper method. Same as or (|).
+
+ARGUMENT:: other
+Another Dsieve
+
+CODE::
+Dsieve([0], 3).sect(Dsieve([0], 4))
+-> [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ...]
+::
+
+METHOD:: difference
+Helper method. Same as CODE::this * (1 - other)::.
+
+ARGUMENT:: other
+Another Dsieve
+
+CODE::
+Dsieve([0], 3).difference(Dsieve([0], 4))
+-> [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0 ...]
+::
+
+METHOD:: symmetricDifference
+Helper method. Same as bitXor.
+
+ARGUMENT:: other
+Another Dsieve
+
+CODE::
+Dsieve([0], 3).symmetricDifference(Dsieve([0], 4))
+-> [0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0 ...]
+::
+
+
 EXAMPLES::
 
 CODE::
