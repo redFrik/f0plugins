@@ -10,6 +10,24 @@ TestTbjorklund : UnitTest {
 			});
 			Server.default.sync;
 			c.wait;
+			{Tbjorklund.ar(DC.ar(r1), DC.ar(0.5), k, n, o)}.loadToFloatArray(n+0.5/r1, action:{|b|
+				this.assertEquals(b.asInteger, a, "ar2 k % n % o %".format(k, n, o));
+				c.signalOne;
+			});
+			Server.default.sync;
+			c.wait;
+			{Tbjorklund.ar(r1, DC.ar(0.5), k, n, o)}.loadToFloatArray(n+0.5/r1, action:{|b|
+				this.assertEquals(b.asInteger, a, "ar3 k % n % o %".format(k, n, o));
+				c.signalOne;
+			});
+			Server.default.sync;
+			c.wait;
+			{Tbjorklund.ar(DC.kr(r1), 0.5, k, n, o)}.loadToFloatArray(n+0.5/r1, action:{|b|
+				this.assertEquals(b.asInteger, a, "ar4 k % n % o %".format(k, n, o));
+				c.signalOne;
+			});
+			Server.default.sync;
+			c.wait;
 			{Tbjorklund.kr(r2, 0.5, k, n, o)}.loadToFloatArray(n+0.5/r2, action:{|b|
 				this.assertEquals(b.asInteger, a, "kr k % n % o %".format(k, n, o));
 				c.signalOne;

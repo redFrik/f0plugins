@@ -19,13 +19,13 @@ TestDsieve : UnitTest {
 		};
 		var g= {|i1, p1, o1, op, i2, p2, o2, n, a|
 			{Duty.ar(1/n/r1, 0, Dsieve(i1, p1, o1, n).perform(op, Dsieve(i2, p2, o2, n)))}.loadToFloatArray(n+0.5/r1, action:{|b|
-				this.assertEquals(b.asInteger, a, "ar op %%".format(op));
+				this.assertEquals(b.asInteger, a, "ar op % n %".format(op, n));
 				c.signalOne;
 			});
 			Server.default.sync;
 			c.wait;
 			{Duty.kr(1/n/r2, 0, Dsieve(i1, p1, o1, n).perform(op, Dsieve(i2, p2, o2, n)))}.loadToFloatArray(n+0.5/r2, action:{|b|
-				this.assertEquals(b.asInteger, a, "kr op %".format(op));
+				this.assertEquals(b.asInteger, a, "kr op % n %".format(op, n));
 				c.signalOne;
 			});
 			Server.default.sync;
