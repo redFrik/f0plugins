@@ -1,0 +1,74 @@
+class:: Tsieve
+summary:: Simple sieves as triggers
+categories:: UGens>f0plugins
+related:: Classes/Dsieve, Classes/Tbjorklund
+
+
+DESCRIPTION::
+Sieves as audio and control rate signals. Can be used as triggers or as a strange pulse train.
+
+
+CLASSMETHODS::
+
+METHOD:: ar, kr
+
+ARGUMENT:: rate
+Time per tick. Multiply this with CODE::period:: to set playback rate of the complete phrase.
+
+ARGUMENT:: width
+Pulse width ratio from zero to one. 1.0 makes 'legato', 0.0 will be silent.
+
+ARGUMENT:: indices
+Indices to match.
+
+ARGUMENT:: period
+Periodicity.
+
+ARGUMENT:: shift
+Offset the internal counter. Can be negative.
+
+
+EXAMPLES::
+
+CODE::
+s.boot;
+{SinOsc.ar*Tsieve.ar(8, 0.5, [0, 1, 3], 8)*0.1!2}.play;
+{SinOsc.ar*Tsieve.ar(8, 0.5, [0, 1, 3, 6, 7], 8)*0.1!2}.play;
+{SinOsc.ar*Tsieve.ar(8, 0.5, [0, 3, 6, 8, 15], 16)*0.1!2}.play;
+
+//modulating the rate
+{SinOsc.ar*Tsieve.ar(SinOsc.kr(0.1).exprange(1, 10), 0.5, [0, 1, 3], 4)*0.1!2}.play;
+
+//pulse width can also be modulated
+{SinOsc.ar*Tsieve.ar(8, SinOsc.kr(0.1).range(0, 1), [0, 1, 3], 4)*0.1!2}.play;
+
+//modulated period - important to .round
+{SinOsc.ar*Tsieve.ar(8, 0.5, {|i| SinOsc.kr(0.1, i).range(0, 4).round}!3, 4)*0.1!2}.play;
+
+//modulated period - important to .round
+{SinOsc.ar*Tsieve.ar(8, 0.5, [0, 1, 3], SinOsc.kr(0.1).range(2, 8).round.poll)*0.1!2}.play;
+
+//multichannel expansion - here two different offsets (shift)
+{SinOsc.ar([400, 500])*Tsieve.ar(8, 0.5, [0, 1, 3], 8, [0, 1])*0.1}.play;
+
+//modulating the shift
+{SinOsc.ar([400, 500])*Tsieve.ar(8, 0.5, [0, 1, 3], 8, [0, SinOsc.kr(0.01).range(-8, 8).round.poll])*0.1}.play;
+
+//as strange square waves
+{Tsieve.ar(MouseX.kr(20, 2000, 1), 0.5, [MouseY.kr(0, 8), 1, 3], 8)*0.1!2}.play;
+{Tsieve.ar(MouseX.kr(100, 1000, 1), 0.75, [0, MouseY.kr(0, 4).round], 4)*0.1!2}.play;
+
+//used as triggers for envelopes
+(
+{
+	var t1= Tsieve.ar(8, 0.5, [0, 1, 3, 8], 12);
+	var t2= Tsieve.ar(8, 0.5, [0, 2, 4, 7], 8, 2);
+	var t3= Tsieve.ar(4, 0.5, [0, 5, 8], 16);
+	([
+		EnvGen.ar(Env.perc(0.001, 0.1), t1)*SinOsc.ar(500, 0, 0.3),
+		EnvGen.ar(Env.perc(0.001, 0.2), t2)*SinOscFB.ar(300, LFNoise2.kr(0.4).abs, 0.2),
+		EnvGen.ar(Env.perc(0.001, 0.4), t3)*VarSaw.ar(100, 0, 0.2, 0.1)
+	]).sum.dup;
+}.play;
+)
+::

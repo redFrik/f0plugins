@@ -1,7 +1,7 @@
 class:: Dbjorklund
 summary:: Euclidean rhythms in demand rate
 categories:: UGens>Demand
-related:: Classes/Dbjorklund2, Classes/Bjorklund, Classes/Pbjorklund, Classes/Tbjorklund
+related:: Classes/Dbjorklund2, Classes/Bjorklund, Classes/Pbjorklund, Classes/Tbjorklund, Classes/Dsieve
 
 DESCRIPTION::
 After an algorithm by E. Bjorklund. See paper by Godfried Toussaint.

@@ -430,6 +430,27 @@ sc_add_server_plugin(
     "${Dsieve_sctest_files}"
 )
 
+set(Tsieve_cpp_files
+    plugins/Tsieve/Tsieve.cpp
+)
+set(Tsieve_sc_files
+    plugins/Tsieve/sc/Tsieve.sc
+)
+set(Tsieve_sctest_files
+    plugins/Tsieve/sc/Tests/TestTsieve.sc
+)
+set(Tsieve_schelp_files
+    plugins/Tsieve/sc/HelpSource/Classes/Tsieve.schelp
+)
+sc_add_server_plugin(
+    "f0plugins/Tsieve" # destination directory
+    "Tsieve" # target name
+    "${Tsieve_cpp_files}"
+    "${Tsieve_sc_files}"
+    "${Tsieve_schelp_files}"
+    "${Tsieve_sctest_files}"
+)
+
 ####################################################################################################
 # END PLUGIN TARGET DEFINITION
 ####################################################################################################

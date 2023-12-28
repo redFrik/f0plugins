@@ -1,7 +1,7 @@
 class:: Dsieve
 summary:: Simple sieves
 categories:: UGens>Demand
-related:: Classes/Dbjorklund
+related:: Classes/Tsieve, Classes/Dbjorklund
 
 
 DESCRIPTION::

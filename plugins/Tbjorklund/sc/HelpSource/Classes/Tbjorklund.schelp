@@ -1,7 +1,7 @@
 class:: Tbjorklund
 summary:: Euclidean rhythms in audio and control rate
 categories:: UGens>f0plugins
-related:: Classes/Bjorklund, Classes/Pbjorklund, Classes/Dbjorklund
+related:: Classes/Bjorklund, Classes/Pbjorklund, Classes/Dbjorklund, Classes/Tsieve
 
 
 DESCRIPTION::
