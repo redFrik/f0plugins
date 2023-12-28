@@ -19,7 +19,7 @@ ARGUMENT:: period
 Periodicity.
 
 ARGUMENT:: shift
-Offset or add to the internal counter. Can be negative.
+Offset the internal counter. Can be negative.
 
 ARGUMENT:: repeats
 Number of values to create.
@@ -28,7 +28,7 @@ Number of values to create.
 INSTANCEMETHODS::
 
 METHOD:: union
-Helper method. Same as and (&).
+Helper method. Same as CODE::and:: (CODE::&::).
 
 ARGUMENT:: other
 Another Dsieve
@@ -39,7 +39,7 @@ Dsieve([0], 3).union(Dsieve([0], 4))
 ::
 
 METHOD:: sect
-Helper method. Same as or (|).
+Helper method. Same as CODE::or:: (CODE::|::).
 
 ARGUMENT:: other
 Another Dsieve
@@ -61,7 +61,7 @@ Dsieve([0], 3).difference(Dsieve([0], 4))
 ::
 
 METHOD:: symmetricDifference
-Helper method. Same as bitXor.
+Helper method. Same as CODE::bitXor::.
 
 ARGUMENT:: other
 Another Dsieve

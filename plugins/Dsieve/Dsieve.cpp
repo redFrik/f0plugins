@@ -27,7 +27,7 @@ struct Dsieve : public Unit {
 	uint32 m_period;
 	int32 m_shift;
 	double m_repeats;
-	uint32 m_repeatCount;
+	uint32 m_index;
 };
 
 void Dsieve_Ctor(Dsieve *unit);
@@ -62,25 +62,25 @@ void Dsieve_next(Dsieve *unit, int inNumSamples) {
 			unit->m_repeats = sc_isnan(x) ? 0.f : floor(x + 0.5f);
 		}
 
-		if (unit->m_repeatCount >= unit->m_repeats) {
+		if (unit->m_index >= unit->m_repeats) {
 			OUT0(0) = NAN;
 			return;
 		}
 
-		uint32 test = (unit->m_repeatCount - unit->m_shift) % unit->m_period;
-		int result = 0;
+		uint32 test = (unit->m_index - unit->m_shift) % unit->m_period;
+		float result = 0.f;
 		for (int i = 3; i < unit->mNumInputs; ++i) {
 			float x = DEMANDINPUT_A(i, inNumSamples);
 			if (test == x) {
-				result = 1;
+				result = 1.f;
 				break;
 			}
 		}
 		OUT0(0) = result;
-		unit->m_repeatCount++;
+		unit->m_index++;
 
 	} else {
-		unit->m_repeats = -1.f;
-		unit->m_repeatCount = 0;
+		unit->m_repeats = -1.0;
+		unit->m_index = 0;
 	}
 }
