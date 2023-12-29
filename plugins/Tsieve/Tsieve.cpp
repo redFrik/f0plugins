@@ -60,8 +60,8 @@ void Tsieve_Ctor(Tsieve *unit) {
 void Tsieve_next_kk(Tsieve *unit, int inNumSamples) {
 	float rate = ZIN0(0) * SAMPLEDUR;
 	float width = ZIN0(1);
-	double period = ZIN0(2);
-	double shift = ZIN0(3);
+	double period = sc_floor(ZIN0(2));
+	double shift = sc_floor(ZIN0(3));
 	float *out = ZOUT(0);
 
 	double index = unit->m_index;
@@ -78,8 +78,8 @@ void Tsieve_next_kk(Tsieve *unit, int inNumSamples) {
 void Tsieve_next_ak(Tsieve *unit, int inNumSamples) {
 	float *rate = ZIN(0);
 	float width = ZIN0(1);
-	double period = ZIN0(2);
-	double shift = ZIN0(3);
+	double period = sc_floor(ZIN0(2));
+	double shift = sc_floor(ZIN0(3));
 	float *out = ZOUT(0);
 
 	double index = unit->m_index;
@@ -97,8 +97,8 @@ void Tsieve_next_ak(Tsieve *unit, int inNumSamples) {
 void Tsieve_next_ka(Tsieve *unit, int inNumSamples) {
 	float rate = ZIN0(0) * SAMPLEDUR;
 	float *width = ZIN(1);
-	double period = ZIN0(2);
-	double shift = ZIN0(3);
+	double period = sc_floor(ZIN0(2));
+	double shift = sc_floor(ZIN0(3));
 	float *out = ZOUT(0);
 
 	double index = unit->m_index;
@@ -115,8 +115,8 @@ void Tsieve_next_ka(Tsieve *unit, int inNumSamples) {
 void Tsieve_next_aa(Tsieve *unit, int inNumSamples) {
 	float *rate = ZIN(0);
 	float *width = ZIN(1);
-	double period = ZIN0(2);
-	double shift = ZIN0(3);
+	double period = sc_floor(ZIN0(2));
+	double shift = sc_floor(ZIN0(3));
 	float *out = ZOUT(0);
 
 	double index = unit->m_index;
@@ -134,7 +134,7 @@ void Tsieve_next_aa(Tsieve *unit, int inNumSamples) {
 float Tsieve_update(Tsieve *unit, double index, double shift, double period) {
 	float test = sc_mod(sc_floor(index) - shift, period);
 	for (int i = 4; i < unit->mNumInputs; ++i) {
-		float x = ZIN0(i);
+		float x = sc_floor(ZIN0(i));
 		if (test == x) {
 			return 1.f;
 		}
