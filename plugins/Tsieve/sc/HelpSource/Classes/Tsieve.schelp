@@ -28,6 +28,53 @@ ARGUMENT:: shift
 Offset the internal counter. Can be negative.
 
 
+INSTANCEMETHODS::
+
+METHOD:: union
+Helper method. Same as CODE::and:: (CODE::&::).
+
+ARGUMENT:: other
+Another Tsieve
+
+CODE::
+{Tsieve.kr(8, period:3).union(Tsieve.kr(8, period:4)).poll(8); DC.ar(0)}.play;
+-> [1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0 ...]
+::
+
+METHOD:: sect
+Helper method. Same as CODE::or:: (CODE::|::).
+
+ARGUMENT:: other
+Another Tsieve
+
+CODE::
+{Tsieve.kr(8, period:3).sect(Tsieve.kr(8, period:4)).poll(8); DC.ar(0)}.play;
+-> [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ...]
+::
+
+METHOD:: difference
+Helper method. Same as CODE::this * (1 - other)::.
+
+ARGUMENT:: other
+Another Tsieve
+
+CODE::
+{Tsieve.kr(8, period:3).difference(Tsieve.kr(8, period:4)).poll(8); DC.ar(0)}.play;
+-> [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0 ...]
+::
+
+METHOD:: symmetricDifference
+Helper method. Same as CODE::bitXor::.
+
+ARGUMENT:: other
+Another Tsieve
+
+CODE::
+{Tsieve.kr(8, period:3).symmetricDifference(Tsieve.kr(8, period:4)).poll(8); DC.ar(0)}.play;
+-> [0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0 ...]
+::
+
+
 EXAMPLES::
 
 CODE::

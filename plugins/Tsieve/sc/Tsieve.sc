@@ -10,4 +10,9 @@ Tsieve : UGen {
 	}
 	signalRange { ^\unipolar }
 	*categories { ^#["UGens>Triggers"] }
+
+	union {|other| ^this.bitOr(other)}
+	sect {|other| ^this.bitAnd(other)}
+	difference {|other| ^this*(1-other)}
+	symmetricDifference {|other| ^this.bitXor(other)}
 }
