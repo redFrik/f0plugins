@@ -238,7 +238,7 @@ extern "C" {
 	void Pokey_next_k(Pokey *unit, int inNumSamples);
 	void Pokey_sound_init (Pokey *unit, uint32 freq17, uint16 playback_freq, uint8 num_pokeys);
 	void Update_pokey_sound (Pokey *unit, uint16 addr, uint8 val, uint8 chip, uint8 gain);
-	void Pokey_process (Pokey *unit, float *buffer, register uint16 n);
+	void Pokey_process (Pokey *unit, float *buffer, uint16 n);
 };
 
 PluginLoad(InterfaceTable *inTable) {
@@ -649,22 +649,22 @@ void Update_pokey_sound (Pokey *unit, uint16 addr, uint8 val, uint8 chip, uint8 
 /*                                                                           */
 /*****************************************************************************/
 
-void Pokey_process (Pokey *unit, float *buffer, register uint16 n)
+void Pokey_process (Pokey *unit, float *buffer, uint16 n)
 {
-    register uint32 *div_n_ptr;
-    register uint32 *samp_cnt_w_ptr;
-    register uint32 event_min;
-    register uint8 next_event;
+    uint32 *div_n_ptr;
+    uint32 *samp_cnt_w_ptr;
+    uint32 event_min;
+    uint8 next_event;
 //#ifdef CLIP                    /* if clipping is selected */	//f0 had to comment out here
-    register int16 cur_val;    /* then we have to count as 16-bit signed */
+    int16 cur_val;    /* then we have to count as 16-bit signed */
 //#else
-//    register uint8 cur_val;    /* otherwise we'll simplify as 8-bit unsigned */
+//    uint8 cur_val;    /* otherwise we'll simplify as 8-bit unsigned */
 //#endif
-    register uint8 *out_ptr;
-    register uint8 audc;
-    register uint8 toggle;
-    register uint8 count;
-    register uint8 *vol_ptr;
+    uint8 *out_ptr;
+    uint8 audc;
+    uint8 toggle;
+    uint8 count;
+    uint8 *vol_ptr;
 
 	RGen& rgen= *unit->mParent->mRGen;		//added this /f0
 

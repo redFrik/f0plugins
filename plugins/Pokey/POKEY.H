@@ -140,7 +140,7 @@ extern "C" {
 
 /*void Pokey_sound_init (uint32 freq17, uint16 playback_freq, uint8 num_pokeys);
 void Update_pokey_sound (uint16 addr, uint8 val, uint8 chip, uint8 gain);
-void Pokey_process (register uint8 *buffer, register uint16 n);*/
+void Pokey_process (uint8 *buffer, uint16 n);*/
 //f0
 
 

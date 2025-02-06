@@ -349,9 +349,9 @@ void Tia_process (Atari2600 *unit, float *buffer, uint16 n)
     uint16 Samp_n_max = unit->Samp_n_max;
 	int16 Samp_n_cnt = unit->Samp_n_cnt;
 	
-	register uint8 audc0,audv0,audc1,audv1;
-    register uint8 div_n_cnt0,div_n_cnt1;
-    register uint8 p5_0, p5_1,outvol_0,outvol_1;
+    uint8 audc0,audv0,audc1,audv1;
+    uint8 div_n_cnt0,div_n_cnt1;
+    uint8 p5_0, p5_1,outvol_0,outvol_1;
 
     audc0 = unit->AUDC[0];
     audv0 = unit->AUDV[0];

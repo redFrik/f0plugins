@@ -310,9 +310,9 @@ static void sidMode74(sidOperator* pVoice)  {
 /*  else */
 	{
 #if defined(DIRECT_FIXPOINT)
-		register uint16 diff = pVoice->cycleLenCount - pVoice->cycleLen.w[HI];
+		uint16 diff = pVoice->cycleLenCount - pVoice->cycleLen.w[HI];
 #else
-		register uint16 diff = pVoice->cycleLenCount - pVoice->cycleLen;
+		uint16 diff = pVoice->cycleLenCount - pVoice->cycleLen;
 #endif
 		if ( pVoice->wavePre[diff].len != pVoice->cycleLenCount )
 		{
