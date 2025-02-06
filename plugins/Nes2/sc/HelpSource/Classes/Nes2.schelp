@@ -6,15 +6,15 @@ related:: Classes/Nes2DMC, Classes/Nes2Noise, Classes/Nes2Square, Classes/Nes2Tr
 DESCRIPTION::
 Emulation of the sound generation hardware of the NES APU chip by Matthew Conte. This UGen has 5 oscillators: 2 squares, 1 triangle, 1 noise, 1 dmc.
 
-Code adapted from v1.2 of Nofrendo, available here http://nosefart.sourceforge.net
+Code adapted from v1.2 of Nofrendo, available here https://nosefart.sourceforge.net
 
 and more detailed info about this chip can be found here...
 
-http://nesdev.com/apu_ref.txt
+https://nesdev.com/apu_ref.txt
 
 http://web.textfiles.com/games/nessound.txt
 
-http://nesdev.com/dmc.txt
+https://nesdev.com/dmc.txt
 
 NOTE::
 dmc is only partially implemented.

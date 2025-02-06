@@ -7,9 +7,9 @@ DESCRIPTION::
 Emulation of the sound generation hardware of the AY-3-8910 chip by Ville Hallik, Michael Cuddy, Tatsuyuki Satoh, Fabrice Frances, Nicola Salmoria.
 This was a very popular sound chip used in many arcade games and consoles (Intellivision, Vectrex) as well as in many home computers (MSX, AtariST, ZX Spectrum 128...)
 
-http://en.wikipedia.org/wiki/AY-3-8910
+https://en.wikipedia.org/wiki/AY-3-8910
 
-http://www.atarimagazines.com/v4n7/stsound.html
+https://www.atarimagazines.com/v4n7/stsound.html
 
 https://www.silicon-heaven.net/atom/howel/parts/ay3891x_datasheet.htm
 
@@ -271,7 +271,7 @@ Pbind(
 	\instrument, \ay8910,
 	\dur, 0.1,
 	\amp, 0.8,
-	\legato, 1.5,	
+	\legato, 1.5,
 	\r0, Pseq([Pn(2, 80), Pn(3, 80), Pn(4, 80), Pn(0, 40)], inf),
 	\r1, Pseq([Pseries(0, 0.01, 10)], inf),
 	\r2, Pseq([Pseries(5, 0.1, 40)], inf),

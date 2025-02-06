@@ -8,7 +8,7 @@ Emulation of the sound generation hardware of the POKEY chip by Michael Borisov.
 
 Code adapted from the MZPOKEY sound chip emulation, v1.6, from the Atari800 emulator project, available here https://atari800.github.io
 
-More info on how to program this chip can be found here http://www.atariarchives.org/dere/chapt07.php and here http://www.retroclinic.com/leopardcats/bbpokey/pokey.pdf
+More info on how to program this chip can be found here https://www.atariarchives.org/dere/chapt07.php and here link::https://web.archive.org/web/20220705124539/http://www.retroclinic.com/leopardcats/bbpokey/pokey.pdf::
 
 CLASSMETHODS::
 

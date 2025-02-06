@@ -30,7 +30,9 @@ Download these plugins as ready-to-use binaries for macOS, Windows or Linux from
 
 <https://github.com/redFrik/f0plugins/releases>
 
-NOTE: currently the macOS binaries are not signed. I recommend building them yourself (below) or see https://github.com/supercollider/supercollider/wiki/macOS-Signing-and-Notarization
+**NOTE**: the macOS binaries will not run under 10.14. The minimum required macOS version (i guess) is 10.15. Binaries that run under 10.14 can be downloaded from <https://fredrikolofsson.com/code/sc/#plugins>
+
+**NOTE**: currently the macOS binaries are not signed. I recommend building them yourself (below) or see https://github.com/supercollider/supercollider/wiki/macOS-Signing-and-Notarization
 
 ---
 

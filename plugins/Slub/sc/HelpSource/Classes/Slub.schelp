@@ -48,11 +48,11 @@ x= Slub.new;
 
 x.bang(3)
 x.bang(4)
-x.bang(5)	//this makes timing hickup on my macbook pro. depends on latency settings and how fast computer you have
+x.bang(5)	//this makes timing hickup on my macbook pro 2015. depends on latency settings and how fast computer you have
 x.bang(4.9)
 x.bang(5.0)
 x.bang(5.5)
-x.bang(5.75)
+x.bang(5.75)  //noticable hickup on my macbook pro 2021 (M1)
 x.bang(6.0)
 p.stop;
 ::

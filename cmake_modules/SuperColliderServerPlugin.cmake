@@ -56,7 +56,7 @@ endfunction()
 
 function(sc_add_server_plugin dest_dir name cpp sc schelp sctests)
     if (APPLE)
-	    set(subdir "osx")
+	    set(subdir "macOS")
     elseif (WIN32)
 	    set(subdir "windows")
     else ()

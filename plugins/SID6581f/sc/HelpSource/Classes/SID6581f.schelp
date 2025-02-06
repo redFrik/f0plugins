@@ -5,7 +5,7 @@ related:: Classes/Beep
 
 DESCRIPTION::
 Emulation of the sound generation hardware of the famous SID chip. Original code by Peter Trauner and Michael Schwend among others.
-http://en.wikipedia.org/wiki/MOS_Technology_SID
+https://en.wikipedia.org/wiki/MOS_Technology_SID
 
 NOTE::
 Something is wrong with my port so this will sound different from a real SID chip.

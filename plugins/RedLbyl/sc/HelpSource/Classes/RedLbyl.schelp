@@ -36,7 +36,7 @@ b.free;
 
 
 //--
-{SinOsc.ar(RedLbyl.kr(MouseX.kr(400, 4000, 'exponential'), 20, 300), 0, 0.5)}.play
+{SinOsc.ar(RedLbyl.kr(MouseX.kr(400, 4000, 'exponential'), 20, 300), 0, 0.5)}.play  //ignore sudden large mouse movements
 
 {a= Dust.ar(5); [a, RedLbyl.ar(a, 0.1, 2)]}.play	//no clicks above 0.1 or below -0.1 in right chan
 
