@@ -30,9 +30,15 @@ Download these plugins as ready-to-use binaries for macOS, Windows or Linux from
 
 <https://github.com/redFrik/f0plugins/releases>
 
-**NOTE**: the macOS binaries will not run under 10.14. The minimum required macOS version (i guess) is 10.15. Binaries that run under 10.14 can be downloaded from <https://fredrikolofsson.com/code/sc/#plugins>
+To install unzip and put them in your SuperCollider userExtensionDir.
 
-**NOTE**: currently the macOS binaries are not signed. I recommend building them yourself (below) or see https://github.com/supercollider/supercollider/wiki/macOS-Signing-and-Notarization
+**NOTE**: For macOS you probably will need to remove the quarantine flag manually.
+```bash
+xattr -rd com.apple.quarantine "/Users/<USERNAME>/Library/Application Support/SuperCollider/Extensions/f0plugins"
+```
+
+**NOTE**: The macOS binaries will not run under 10.14. The minimum required macOS version (i guess) is 10.15. Binaries that run under 10.14 can be downloaded from <https://fredrikolofsson.com/code/sc/#plugins>
+
 
 ---
 
@@ -48,20 +54,19 @@ To compile the binaries yourself follow these instructions...
 ### Building
 
 Clone the project:
-
-    git clone https://github.com/redFrik/f0plugins --depth 1
-    cd f0plugins
-    mkdir build
-    cd build
+```bash
+git clone https://github.com/redFrik/f0plugins --depth 1
+cd f0plugins
+mkdir build && build
+```
 
 Then, use CMake to configure and build it:
+```bash
+cmake .. -DCMAKE_BUILD_TYPE=Release
+cmake --build . --config Release
+cmake --build . --config Release --target install
+```
 
-    cmake .. -DCMAKE_BUILD_TYPE=Release
-    cmake --build . --config Release
-    cmake --build . --config Release --target install
+You may want to manually specify the install location in the first step to point it at your SuperCollider extensions directory: add the option `-DCMAKE_INSTALL_PREFIX=/path/to/extensions`
 
-You may want to manually specify the install location in the first step to point it at your
-SuperCollider extensions directory: add the option `-DCMAKE_INSTALL_PREFIX=/path/to/extensions`.
-
-It's expected that the SuperCollider repo is cloned at `../supercollider` relative to this repo. If
-it's not: add the option `-DSC_PATH=/path/to/sc/source`.
+It's expected that the SuperCollider repo is cloned at `../supercollider` relative to this repo. If it's not: add the option `-DSC_PATH=/path/to/sc/source`
